@@ -1,0 +1,13 @@
+# execute: ansible-playbook docker_install.yml --ask-sudo-pass
+- hosts: all
+  sudo: yes
+  tasks:
+    # Update all yum packages if system is old
+    - name: update yum
+      shell: yum -y update
+
+    - name: install docker
+      yum: name=https://get.docker.com/rpm/1.7.0/centos-7/RPMS/x86_64/docker-engine-1.7.0-1.el7.centos.x86_64.rpm state=present
+
+    - name: make sure docker starts on boot
+      service: name=docker enabled=yes state=started
