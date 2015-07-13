@@ -10,3 +10,11 @@
 - name: make sure docker starts on boot
   service: name=docker enabled=yes state=started
   tags: [docker]
+
+- name: install pip
+  shell: yum -y install python-pip
+  tags: [docker]
+
+- name: install docker-py
+  shell: pip install docker-py
+  tags: [docker]
