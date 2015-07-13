@@ -1,0 +1,5 @@
+- name: create ansible on centos 7 image
+  docker_image: path="./roles/ansible/files" name="devops/ansible-on-centos7" state=build
+  tags: [ansible]
+
+# - name: run ansible on centos7 container
