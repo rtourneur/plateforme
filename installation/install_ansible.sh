@@ -12,3 +12,4 @@ yum install -y openssh-clients
 yum install -y ansible
 
 # set ansible/hosts file
+printf "[local]\nlocalhost  ansible_connection=local" > /etc/ansible/hosts
