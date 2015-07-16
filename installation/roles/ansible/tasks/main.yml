@@ -16,4 +16,4 @@
     state: restarted 
     stdin_open: yes
     volumes: 
-    - recettes
+    - /recettes:/recettes
