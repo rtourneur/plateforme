@@ -16,7 +16,7 @@
   tags: [docker]
 
 - name: upgrade/install pip module six (pre-req)
-  pip: name=six
+  pip: name=six version=1.9.0
   tags: [docker]
 
 - name: install docker-py
