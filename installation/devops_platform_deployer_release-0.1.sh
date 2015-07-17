@@ -1,4 +1,4 @@
-#Execute: sudo bash install_deployer.sh
+#Execute: sudo bash devops_platform_deployer_release-0.1.sh
 
 #(Pre-req: python >= 2.7)
 
