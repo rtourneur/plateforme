@@ -7,6 +7,7 @@
 
 - name: create recettes directory
   file: path=/recettes state=directory
+  tags: [ansible]
   # TODO: add all ansible project/playbooks...
 
 - name: run ansible on centos7 container
@@ -17,3 +18,4 @@
     stdin_open: yes
     volumes: 
     - /recettes:/recettes
+  tags: [ansible]

@@ -1,27 +1,30 @@
-#Execute: sudo bash install_ansible.sh
+#Execute: sudo bash install_deployer.sh
 
 #(Pre-req: python >= 2.7)
 
 #First add the EPEL repository:
-printf "**************************** ADDING EPEL REPOSITORY ****************************"
-rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+printf "**************************** ADDING EPEL REPOSITORY ****************************\n"
+rpm -iUvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
 # install git
-printf "**************************** INSTALLING GIT ****************************"
+printf "**************************** INSTALLING GIT ****************************\n"
 yum install -y git
 
 # pull platforme source code
-printf "**************************** PULL PLATFORME SOURCE CODE ****************************"
-git clone ssh://niv.goor@git.polymont-itservices.fr:29418/Interne/4SASL00004-Devops/plateforme.git
+printf "**************************** PULL PLATFORME SOURCE CODE ****************************\n"
+git clone ssh://PRENOM.NOM@git.polymont-itservices.fr:29418/Interne/4SASL00004-Devops/plateforme.git
 
 # verify ssh installed
-printf "**************************** INSTALL SSH (ANSIBLE PRE-REQ) ****************************"
+printf "**************************** INSTALL SSH (ANSIBLE PRE-REQ) ****************************\n"
 yum install -y openssh-clients
 
 #then run
-printf "**************************** INSTALL ANSIBLE ****************************"
+printf "**************************** INSTALL ANSIBLE ****************************\n"
 yum install -y ansible
 
 # set ansible/hosts file
-printf "**************************** SET ANSIBLE TO WORK LOCALLY ****************************"
+printf "**************************** SET ANSIBLE TO WORK LOCALLY ****************************\n"
 printf "[local]\nlocalhost  ansible_connection=local" > /etc/ansible/hosts
+
+printf "**************************** DEPLOY THE PLATFORM ****************************\n"
+ansible-playbook plateforme/installation/install_platforme.yml --ask-sudo-pass --skip-tags "update_all"
