@@ -1,3 +1,7 @@
+- name: create jenkins/files directory
+  file: path="./roles/jenkins/files" state=directory
+  tags: [jenkins]
+
 - name: create dockerfile
   template: src=Dockerfile.j2 dest="./roles/jenkins/files/Dockerfile"
   tags: [jenkins]
