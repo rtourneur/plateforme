@@ -1,0 +1,19 @@
+- name: create dockerfile
+  template: src=Dockerfile.j2 dest="./roles/jenkins/files/Dockerfile"
+  tags: [jenkins]
+
+- name: create jenkins image
+  docker_image: 
+    path: "./roles/jenkins/files" 
+    name: "devops/jenkins" 
+    state: build
+  tags: [jenkins]
+
+- name: run jenkins container
+  docker:
+    name: jenkins
+    image: "devops/jenkins"
+    state: restarted 
+    stdin_open: yes
+    ports: "{{ jenkins_host_port }}:{{ jenkins_container_port }}"
+  tags: [jenkins]

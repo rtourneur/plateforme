@@ -1,0 +1,21 @@
+FROM jenkins
+
+MAINTAINER <niv.goor@polymont.fr>
+
+WORKDIR /opt
+USER root
+
+# set java home path
+RUN export JAVA_HOME={{ jenkins_java_home }}
+
+# get zipped maven binaries
+RUN wget {{ jenkins_maven_url }}
+
+# unzip them
+RUN tar xzvf {{ jenkins_maven_zipped }}
+
+# add maven dir to path
+RUN export PATH=/opt/{{ jenkins_maven_version }}/bin:$PATH
+
+# add the jenkins git plugin
+RUN wget -P $JENKINS_HOME/plugins {{ jenkins_git_url }}
