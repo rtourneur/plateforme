@@ -1,0 +1,37 @@
+---
+# handlers file for nginx
+
+- name: stop nginx container
+  docker:
+    name: hub_nginx_1
+    image: "polymont/nginx"
+    state: stopped
+    ports:
+    - "80:80"
+    - "443:443"
+    links:
+    - hub_registry_1:registry
+    - hub_gitblit_1:gitblit
+    volumes:
+    - /docker/certs/:/etc/nginx/conf.d
+  notify: restart nginx container
+
+- name: check or build nginx image
+  docker_image: 
+    path: "{{nginx_dir}}"
+    name: "polymont/nginx" 
+    state: build
+
+- name: restart nginx container
+  docker:
+    name: hub_nginx_1
+    image: "polymont/nginx"
+    state: restarted
+    ports:
+    - "80:80"
+    - "443:443"
+    links:
+    - hub_registry_1:registry
+    - hub_gitblit_1:gitblit
+    volumes:
+    - /docker/certs/:/etc/nginx/conf.d

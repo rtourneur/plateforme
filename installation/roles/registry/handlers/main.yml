@@ -1,0 +1,34 @@
+---
+# handlers file for registry
+
+- name: stop registry container
+  docker:
+    name: hub_registry_1
+    image: "polymont/registry"
+    state: stopped
+    ports:
+    - "127.0.0.1:5000:5000"
+    volumes:
+    - /docker/registry_data:/var/lib/registry
+    env:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
+  notify: restart registry container
+
+- name: check or build registry image
+  docker_image: 
+    path: "{{registry_dir}}"
+    name: "polymont/registry" 
+    state: build
+
+- name: restart registry container
+  docker:
+    name: hub_registry_1
+    image: "polymont/registry"
+    state: restarted
+    ports:
+    - "127.0.0.1:5000:5000"
+    volumes:
+    - /docker/registry_data:/var/lib/registry
+    env:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
+  notify: restart nginx container

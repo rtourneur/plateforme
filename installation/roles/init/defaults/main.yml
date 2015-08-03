@@ -1,0 +1,6 @@
+---
+# defaults file for init
+#docker_path: /media/sf_docker
+#home: "{{ansible_env.HOME}}/docker"
+#home: "/home/debian/docker"
+

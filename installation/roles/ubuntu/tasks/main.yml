@@ -1,0 +1,20 @@
+---
+# tasks file for ubuntu
+
+- name: create ubuntu direcory
+  file:
+    path: "{{ubuntu_dir}}"
+    state: directory
+
+- name: copy ubuntu dockerfile
+  copy: 
+    src: Dockerfile
+    dest: "{{ubuntu_dir}}/Dockerfile"
+  notify: 
+  - check or build ubuntu image
+
+- name: check ubuntu image
+  docker_image: 
+    path: "{{ubuntu_dir}}"
+    name: "polymont/ubuntu"
+    state: present

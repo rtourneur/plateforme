@@ -1,0 +1,10 @@
+#*** vars for docker-machines node ***
+
+home_:        "{{lookup('env','HOME')}}"
+docker_home:  "{{home_}}/docker"
+repo_dir:     "{{docker_home}}/repo"
+ubuntu_dir:   "{{repo_dir}}/ubuntu"
+java_dir:     "{{repo_dir}}/java"
+gitblit_dir:  "{{repo_dir}}/gitblit"
+nginx_dir:    "{{repo_dir}}/nginx"
+registry_dir: "{{repo_dir}}/registry"

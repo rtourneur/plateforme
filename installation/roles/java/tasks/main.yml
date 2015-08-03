@@ -1,0 +1,21 @@
+---
+# tasks file for roles/java
+
+- name: create java direcory
+  file:
+    path: "{{java_dir}}"
+    state: directory
+
+- name: copy java dockerfile
+  copy: 
+    src: Dockerfile
+    dest: "{{java_dir}}/Dockerfile"
+  notify: 
+  - check or build java image
+
+- name: check java image
+  docker_image: 
+    path: "{{java_dir}}"
+    name: "polymont/java"
+    tag: jdk7
+    state: present

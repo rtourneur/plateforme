@@ -1,0 +1,43 @@
+---
+# tasks file for registry
+
+- name: create registry direcory
+  file:
+    path: "{{registry_dir}}"
+    state: directory
+
+- name: copy registry exec file
+  copy: 
+    src: registry.sh
+    dest: "{{registry_dir}}/registry.sh"
+    mode: a+x
+  notify:
+  - stop registry container 
+  - check or build registry image
+
+
+- name: copy registry dockerfile
+  copy: 
+    src: Dockerfile
+    dest: "{{registry_dir}}/Dockerfile"
+  notify:
+  - stop registry container 
+  - check or build registry image
+
+- name: check registry image
+  docker_image: 
+    path: "{{registry_dir}}"
+    name: "polymont/registry" 
+    state: present
+
+- name: registry container
+  docker:
+    name: hub_registry_1
+    image: "polymont/registry"
+    state: started
+    ports:
+    - "127.0.0.1:5000:5000"
+    volumes:
+    - /docker/registry_data:/var/lib/registry
+    env:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry

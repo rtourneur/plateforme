@@ -1,0 +1,54 @@
+---
+# handlers file for init
+
+- name: check or build java image
+  docker_image:
+    path: "{{java_dir}}"
+    name: "polymont/java"
+    tag: jdk8
+    state: build
+  notify:
+  - stop gitblit container
+  - check or build gitblit image
+
+- name: stop gitblit container
+  docker:
+    name: hub_gitblit_1
+    image: "polymont/gitblit"
+    state: stopped
+    ports:
+    - "127.0.0.1:8080:8080"
+    - "9418:9418"
+    - "29418:29418"
+  notify: restart gitblit container
+
+- name: check or build gitblit image
+  docker_image:
+    path: "{{gitblit_dir}}"
+    name: "polymont/gitblit"
+    state: build
+
+- name: restart gitblit container
+  docker:
+    name: hub_gitblit_1
+    image: "polymont/gitblit"
+    state: restarted
+    ports:
+    - "127.0.0.1:8080:8080"
+    - "9418:9418"
+    - "29418:29418"
+  notify: restart nginx container
+
+- name: restart nginx container
+  docker:
+    name: hub_nginx_1
+    image: "polymont/nginx"
+    state: restarted
+    ports:
+    - "80:80"
+    - "443:443"
+    links:
+    - hub_registry_1:registry
+    - hub_gitblit_1:gitblit
+    volumes:
+    - /docker/certs/:/etc/nginx/conf.d

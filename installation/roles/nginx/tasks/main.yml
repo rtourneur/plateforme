@@ -1,0 +1,35 @@
+---
+# tasks file for nginx
+
+- name: create nginx direcory
+  file:
+    path: "{{nginx_dir}}"
+    state: directory
+
+- name: copy nginx dockerfile
+  copy: 
+    src: Dockerfile
+    dest: "{{nginx_dir}}/Dockerfile"
+  notify:
+  - stop nginx container 
+  - check or build nginx image
+
+- name: check nginx image
+  docker_image: 
+    path: "{{nginx_dir}}"
+    name: "polymont/nginx" 
+    state: present
+
+- name: nginx container
+  docker:
+    name: hub_nginx_1
+    image: "polymont/nginx"
+    state: started
+    ports:
+    - "80:80"
+    - "443:443"
+    links:
+    - hub_registry_1:registry
+    - hub_gitblit_1:gitblit
+    volumes:
+    - /docker/certs/:/etc/nginx/conf.d

@@ -1,0 +1,39 @@
+---
+# tasks file for gitblit
+
+- name: create gitblit direcory
+  file:
+    path: "{{gitblit_dir}}"
+    state: directory
+
+- name: copy add users exec file
+  copy:
+    src: add_users.sh
+    dest: "{{gitblit_dir}}/add_users.sh"
+    mode: a+x
+
+- name: copy gitblit dockerfile
+  copy:
+    src: Dockerfile
+    dest: "{{gitblit_dir}}/Dockerfile"
+  notify:
+    - stop gitblit container
+    - check or build gitblit image
+
+- name: check gitblit image
+  docker_image:
+    path: "{{gitblit_dir}}"
+    name: "polymont/gitblit"
+    state: present
+
+- name: gitblit container
+  docker:
+    name: hub_gitblit_1
+    image: "polymont/gitblit"
+    state: started
+    ports:
+#    - "127.0.0.1:8080:8080"
+    - "80:80"
+    - "443:443"
+    - "9418:9418"
+    - "29418:29418"
