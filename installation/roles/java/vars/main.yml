@@ -1,3 +1,2 @@
 ---
 # vars file for roles/java
-#java_dir: "{{ansible_env.HOME}}/repo/java"

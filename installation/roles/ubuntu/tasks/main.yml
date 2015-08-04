@@ -18,3 +18,4 @@
     path: "{{ubuntu_dir}}"
     name: "polymont/ubuntu"
     state: present
+  tags: [ubuntu]

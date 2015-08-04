@@ -35,7 +35,6 @@
 # Copy the config files
 - name: copy certs
   copy: 
-#   src: "{{docker_path}}/certs/{{item}}"
     src: "{{item}}"
     dest: "{{docker_home}}/certs/{{item}}"
   with_items:

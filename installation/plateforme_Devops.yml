@@ -5,6 +5,7 @@
   hosts: docker-machines
   roles:
 #  apply for all roles
+   - {role: common}
    - {role: init}
 #  deploy gitblit
    - {role: ubuntu}

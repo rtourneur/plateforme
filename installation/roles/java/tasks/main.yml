@@ -1,6 +1,5 @@
 ---
 # tasks file for roles/java
-
 - name: create java direcory
   file:
     path: "{{java_dir}}"
@@ -17,5 +16,6 @@
   docker_image: 
     path: "{{java_dir}}"
     name: "polymont/java"
-    tag: jdk7
+    tag: jdk8
     state: present
+  tags: [java]
