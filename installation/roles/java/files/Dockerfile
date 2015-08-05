@@ -1,5 +1,6 @@
 #Image JDK 8
-FROM polymont/ubuntu:latest
+#FROM polymont/ubuntu:latest
+from polymont/ubuntu
 
 MAINTAINER Abdallah BENBRAHIM
 

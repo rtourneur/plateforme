@@ -15,4 +15,6 @@
    - {role: registry}
 #  deploy nginx
    - {role: nginx}
+#  start containers
+   - {role: hub}
 

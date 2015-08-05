@@ -19,17 +19,3 @@
     path: "{{nginx_dir}}"
     name: "polymont/nginx" 
     state: present
-
-- name: nginx container
-  docker:
-    name: hub_nginx_1
-    image: "polymont/nginx"
-    state: started
-    ports:
-    - "80:80"
-    - "443:443"
-    links:
-    - hub_registry_1:registry
-    - hub_gitblit_1:gitblit
-    volumes:
-    - "{{docker_home}}/certs/:/etc/nginx/conf.d"

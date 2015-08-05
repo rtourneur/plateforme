@@ -1,4 +1,5 @@
-FROM registry:2
+#FROM registry:2
+from registry:2
 
 MAINTAINER Raphael Tourneur
 
