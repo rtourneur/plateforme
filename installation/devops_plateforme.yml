@@ -1,20 +1,23 @@
 ---
 # master playbook for Devops
-
-- name: master playbook
-  hosts: docker-machines
+- hosts: docker-machines
   roles:
 #  apply for all roles
    - {role: common}
    - {role: init}
-#  deploy gitblit
    - {role: ubuntu}
    - {role: java}
+   - {role: tomcat}
+#  deploy ansible
+   - {role: ansible}
+#  deploy jenkins
+   - {role: jenkins}
+#  deploy gitblit
    - {role: gitblit}
 #  deploy registry
    - {role: registry}
 #  deploy nginx
    - {role: nginx}
-#  start containers
+#  start hub containers
    - {role: hub}
 

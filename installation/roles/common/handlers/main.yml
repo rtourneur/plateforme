@@ -1,6 +1,5 @@
 ---
 # handlers file for common
-
 - name: check or build java image
   docker_image:
     path: "{{java_dir}}"
@@ -10,15 +9,27 @@
   tags: [java]
   notify:
   - stop gitblit container
+  - stop jenkins container
   - check or build gitblit image
+  - check or build tomcat image
 
 - name: stop gitblit container
   docker:
     name: hub_gitblit_1
     image: "polymont/gitblit"
     state: stopped
+    docker_api_version: 1.18
   tags: [hub]
   notify: restart gitblit container
+
+- name: stop jenkins container
+  docker:
+    name: jenkins
+    image: "polymont/jenkins"
+    state: stopped
+    docker_api_version: 1.18
+  tags: [hub]
+  notify: restart jenkins container
 
 - name: check or build gitblit image
   docker_image:
@@ -26,6 +37,24 @@
     name: "polymont/gitblit"
     state: build
   tags: [hub]
+
+- name: check or build tomcat image
+  docker_image:
+    path: "{{tomcat_dir}}"
+    name: "polymont/tomcat"
+    tag: "8"
+    state: build
+  tags: [tomcat]
+  notify:
+  - stop jenkins container
+  - check or build jenkins image
+
+- name: check or build jenkins image
+  docker_image:
+    path: "{{jenkins_dir}}"
+    name: "polymont/jenkins"
+    state: build
+  tags: [jenkins]
 
 - name: restart gitblit container
   docker:
@@ -36,6 +65,7 @@
     - "127.0.0.1:8080:8080"
     - "9418:9418"
     - "29418:29418"
+    docker_api_version: 1.18 
   tags: [hub]
   notify: restart nginx container
 
@@ -52,4 +82,5 @@
     - hub_gitblit_1:gitblit
     volumes:
     - /docker/certs/:/etc/nginx/conf.d
+    docker_api_version: 1.18 
   tags: [hub]

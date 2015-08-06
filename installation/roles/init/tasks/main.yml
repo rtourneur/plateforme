@@ -1,9 +1,9 @@
 ---
 # tasks file for init
+- debug: var="{{home_}}"
 
 # Directory for docker
-- name: create repo directory
-#  
+- name: create docker directory
   file:
     path: "{{docker_home}}"
     state: directory
@@ -19,19 +19,15 @@
   file:
     path: "{{docker_home}}/registry_data"
     state: directory
+  tags: [hub]
 
 # Directory for config files
 - name: create certs directory
   file:
     path: "{{docker_home}}/certs"
     state: directory
+  tags: [hub]
 
-# test
-- name: copy certs - test
-  copy:
-    src: "registry.crt"
-    dest: "{{docker_home}}/certs/registry.crt"
-                     
 # Copy the config files
 - name: copy certs
   copy: 
@@ -42,4 +38,5 @@
   - registry.conf
   - registry.key
   - registry.password
+  tags: [hub]
 #  notify: restart nginx container

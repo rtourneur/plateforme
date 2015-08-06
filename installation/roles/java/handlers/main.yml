@@ -1,13 +1,2 @@
 ---
 # handlers file for roles/java
-
-- name: check or build java image
-  docker_image: 
-    path: "{{java_dir}}"
-    name: "polymont/java"
-    tag: jdk8
-    state: build
-  tags: [java]
-  notify: 
-  - stop gitblit container 
-  - check or build gitblit image
