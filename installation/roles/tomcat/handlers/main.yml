@@ -1,0 +1,9 @@
+---
+# handlers file for tomcat
+- name: check or build tomcat image
+  docker_image: 
+    path: "{{tomcat_dir}}"
+    name: "polymont/tomcat"
+    tag: 8
+    state: build
+  tags: [tomcat]

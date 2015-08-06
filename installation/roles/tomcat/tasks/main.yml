@@ -1,0 +1,21 @@
+---
+# tasks file for tomcat
+- name: create tomcat direcory
+  file:
+    path: "{{tomcat_dir}}"
+    state: directory
+
+- name: copy tomcat dockerfile
+  copy: 
+    src: Dockerfile
+    dest: "{{tomcat_dir}}/Dockerfile"
+  notify: 
+  - check or build tomcat image
+
+- name: check tomcat image
+  docker_image: 
+    path: "{{tomcat_dir}}"
+    name: "polymont/tomcat"
+    tag: "8"
+    state: present
+  tags: [tomcat]

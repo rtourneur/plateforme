@@ -1,15 +1,61 @@
-- name: create jenkins image
-  docker_image: 
-    path: "./roles/jenkins/files" 
-    name: "devops/jenkins" 
-    state: build
+---
+# tasks file for jenkins
+- name: create jenkins direcory
+  file:
+    path: "{{jenkins_dir}}"
+    state: directory
+
+- name: create jenkins home
+  file:
+    path: "{{docker_home}}/jenkins_home"
+    state: directory
+    mode: a+wx
   tags: [jenkins]
 
-- name: run jenkins container
+- name: copy jenkins dockerfile
+  copy: 
+    src: Dockerfile
+    dest: "{{jenkins_dir}}/Dockerfile"
+  notify: 
+  - check or build jenkins image
+
+- name: copy jenkins files
+  copy: 
+    src: "{{item}}"
+    dest: "{{jenkins_dir}}/{{item}}"
+  with_items:
+  - active.txt
+  - init.groovy
+  - plugins.txt
+  notify: 
+  - check or build jenkins image
+
+- name: copy jenkins sh files
+  copy: 
+    src: "{{item}}"
+    dest: "{{jenkins_dir}}/{{item}}"
+    mode: a+x
+  with_items:
+  - jenkins.sh
+  - plugins.sh
+  notify: 
+  - check or build jenkins image
+
+- name: check jenkins image
+  docker_image: 
+    path: "{{jenkins_dir}}"
+    name: "polymont/jenkins"
+    state: present
+  tags: [jenkins]
+
+- name: start jenkins container
   docker:
     name: jenkins
-    image: "devops/jenkins"
-    state: restarted 
-    stdin_open: yes
-    ports: "{{ jenkins_host_port }}:{{ jenkins_container_port }}"
+    image: "polymont/jenkins"
+    state: started
+    ports:
+    - "9080:8080"
+    volumes:
+    - "{{docker_home}}/jenkins_home:/var/jenkins_home:rw"
+    docker_api_version: 1.18
   tags: [jenkins]
