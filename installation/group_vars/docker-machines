@@ -1,10 +1,14 @@
 #*** vars for docker-machines node ***
+ansible_version: 1.9.2 
 
-home_:        "{{lookup('env','HOME')}}"
+home_:        "{{ansible_env.HOME}}"
 docker_home:  "{{home_}}/docker"
 repo_dir:     "{{docker_home}}/repo"
+recettes_dir: "/opt/recettes"
 ubuntu_dir:   "{{repo_dir}}/ubuntu"
 java_dir:     "{{repo_dir}}/java"
 gitblit_dir:  "{{repo_dir}}/gitblit"
 nginx_dir:    "{{repo_dir}}/nginx"
 registry_dir: "{{repo_dir}}/registry"
+tomcat_dir:   "{{repo_dir}}/tomcat"
+jenkins_dir:  "{{repo_dir}}/jenkins"

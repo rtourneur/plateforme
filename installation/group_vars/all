@@ -1,3 +1,2 @@
-ansible_version: 1.9.2 
-jenkins_host_port: 9001
-jenkins_container_port: 8080
+#*** vars for all nodes ***
+ansible_dir:  "/opt/ansible"
