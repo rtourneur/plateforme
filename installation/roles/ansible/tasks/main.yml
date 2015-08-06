@@ -1,21 +1,35 @@
+# tasks file for ansible
+
+- name: copy ansible dockerfile
+  copy: 
+    src: Dockerfile
+    dest: "{{ansible_dir}}/Dockerfile"
+  notify: 
+  - stop ansible container
+  - check or build ansible image
+
 - name: create ansible on centos 7 image
   docker_image: 
-    path: "./roles/ansible/files" 
-    name: "devops/ansible-on-centos7" 
-    state: build
+    path: "{{ansible_dir}}"
+    name: "polymont/ansible"
+    tag: "centos7"
+    state: present
   tags: [ansible]
 
 - name: create recettes directory
-  file: path=/recettes state=directory
+  file: 
+    path: "{{recettes_dir}}" 
+    state: directory
   tags: [ansible]
   # TODO: add all ansible project/playbooks...
 
 - name: run ansible on centos7 container
   docker:
     name: ansible
-    image: "devops/ansible-on-centos7"
+    image: "polymont/ansible:centos7"
     state: restarted 
     stdin_open: yes
     volumes: 
-    - /recettes:/recettes
+    - "{{recettes_dir}}:/recettes"
+    docker_api_version: 1.18
   tags: [ansible]

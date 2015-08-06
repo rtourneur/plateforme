@@ -1,24 +1,34 @@
-# if system is old, we need to update all yum packages
-- name: update yum
-  yum: name=* state=latest
-  tags: [docker,update_all]
-
-- name: install docker
-  yum: name=https://get.docker.com/rpm/1.7.0/centos-7/RPMS/x86_64/docker-engine-1.7.0-1.el7.centos.x86_64.rpm
-  tags: [docker]
+# tasks file for docker
+- include: centos.yml
+- include: debian.yml
 
 - name: make sure docker starts on boot
-  service: name=docker enabled=yes state=started
+  service: 
+    name: docker 
+    enabled: yes 
+    state: started
   tags: [docker]
 
-- name: install pip
-  yum: name=python-pip
+- name: add docker group
+  group :
+    name: docker
+    state: present
   tags: [docker]
 
-- name: upgrade/install pip module six (pre-req)
-  pip: name=six version=1.9.0
+- name: add ansible user to docker group
+  user: 
+    name: ansible
+    groups: docker
+    append: yes
+  tags: [docker]
+
+- name: install pip module six (pre-req)
+  pip: 
+    name: six 
+    version: "1.9.0"
   tags: [docker]
 
 - name: install docker-py
-  pip: name=docker-py version=1.2.3
+  pip:
+    name: docker-py
   tags: [docker]

@@ -1,0 +1,41 @@
+# tasks file for docker / centos
+
+- name: uninstall old docker on centos
+  yum: 
+    name: docker
+    state: absent
+  when: ansible_distribution == "CentOS" and
+          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  tags: [docker]
+
+
+- name: install docker on centos
+  yum: name=https://get.docker.com/rpm/1.7.0/centos-7/RPMS/x86_64/docker-engine-1.7.0-1.el7.centos.x86_64.rpm
+  when: ansible_distribution == "CentOS" and
+          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  tags: [docker]
+
+- name: Install EPEL repo
+  yum: 
+    name: "{{ epel_repo_url }}"
+    state: present
+  when: ansible_distribution == "CentOS" and
+          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  tags: [docker]
+
+- name: Import EPEL GPG key
+  rpm_key:
+    key: "{{ epel_repo_gpg_key_url }}"
+    state: present
+  when: ansible_distribution == "CentOS" and
+          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  tags: [docker]
+
+- name: install python-pip
+  yum:
+    name: python-pip
+    state: present
+  when: ansible_distribution == "CentOS" and
+          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  tags: [docker]
+

@@ -1,0 +1,29 @@
+---
+# handlers file for ansible
+- name: check or build ansible image
+  docker_image: 
+    path: "{{ansible_dir}}"
+    name: "polymont/ansible"
+    tag: "centos7"
+    state: build
+  tags: [ansible]
+
+- name: stop ansible container
+  docker:
+    name: ansible
+    image: "polymont/ansible:centos7"
+    state: stopped
+    docker_api_version: 1.18
+  tags: [ansible]
+  notify: restart ansible container
+
+- name: restart ansible container
+  docker:
+    name: ansible
+    image: "polymont/ansible:centos7"
+    state: restarted 
+    stdin_open: yes
+    volumes: 
+    - "{{recettes_dir}}:/recettes"
+    docker_api_version: 1.18
+  tags: [ansible]
