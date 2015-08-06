@@ -1,0 +1,50 @@
+---
+# tasks file for install
+# if system is old, we need to update all yum packages
+- name: update yum
+  yum: 
+    name: "*"
+    state: latest
+  when: ansible_distribution == "CentOS" and
+          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  tags: [install, update_all]
+
+- name: update apt
+  apt: upgrade=yes
+  when: ansible_distribution == "Debian" 
+  tags: [install, update_all]
+
+
+- name: create ansible user
+  user:
+    name: ansible
+    shell: /bin/bash
+    password: "{{ upassword |password_hash('sha512') }}"
+  tags: [install]
+
+- name: add ssh key to ansible
+  authorized_key: 
+    user: ansible 
+    key: "{{ lookup('file', '/home/debian/.ssh/id_rsa.pub') }}"
+  tags: [install]
+
+- name: create ansible direcory
+  file:
+    path: "{{ansible_dir}}"
+    state: directory
+    mode: a+rwx
+  tags: [install]
+
+#- name: create jenkins home
+#  file:
+#    path: "{{jenkins_home}}"
+#    state: directory
+#    mode: a+wx
+#  tags: [jenkins]
+
+- name: remove ssh key to root
+  authorized_key: 
+    user: root 
+    key: "{{ lookup('file', '/home/debian/.ssh/id_rsa.pub') }}"
+    state: absent
+  tags: [install, ssh-remove]
