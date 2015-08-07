@@ -24,10 +24,10 @@ RUN mkdir -p /opt/gitblit-data \
 
 # Note: we are writing to a different file here because sed doesn't like to the same file it
 # is streaming.  This is why the original properties file was renamed earlier.
-run sed -e "s/server\.httpPort\s=\s0/server\.httpPort=8080/" \
-        -e "s/server\.redirectToHttpsPort\s=\sfalse/server\.redirectToHttpsPort=true/" \
+RUN sed -e "s/server\.httpPort\s=\s0/server\.httpPort=8080/" \
         -e "s/web\.enableRpcManagement\s=\sfalse/web\.enableRpcManagement=true/" \
         -e "s/web\.enableRpcAdministration\s=\sfalse/web.enableRpcAdministration=true/" \
+        -e "s/server\.contextPath\s=\s\//server.contextPath=\/gitblit\//" \
         /opt/gitblit-data/default.properties > /opt/gitblit-data/gitblit.properties
 
 # Administering Users - AB
