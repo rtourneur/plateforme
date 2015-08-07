@@ -33,3 +33,11 @@
     state: directory
     mode: a+rwx
   tags: [install]
+
+- name: remove ssh key to root
+  authorized_key: 
+    user: root 
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    state: absent
+  tags: [install, ssh-remove]
+  

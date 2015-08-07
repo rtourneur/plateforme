@@ -71,6 +71,7 @@ sudo yum install -y ansible
 #create ssh key
 printf "**************************** CREATE SSH KEY  ****************************\n"
 ssh-keygen -t rsa -b 2048
+ssh-copy-id -i ~/.ssh/id_rsa root@$host
 
 # set ansible/hosts file
 printf "**************************** SET HOSTS FOR ANSIBLE ****************************\n"
@@ -78,5 +79,5 @@ echo '[install-machines]' > ~/hosts-install && echo $host '  ansible_ssh_user=ro
 echo '[docker-machines]' > ~/hosts-docker && echo $host '  ansible_ssh_user=ansible' >> ~/hosts-docker
 
 printf "**************************** DEPLOY THE PLATFORM ****************************\n"
-ansible-playbook plateforme/installation/install_platforme.yml --skip-tags "update_all" -i ~/hosts-install --ask-pass
+ansible-playbook plateforme/installation/install_platforme.yml --skip-tags "update_all" -i ~/hosts-install
 ansible-playbook plateforme/installation/devops_plateforme.yml -i ~/hosts-docker
