@@ -14,7 +14,6 @@
   when: ansible_distribution == "Debian" 
   tags: [install, update_all]
 
-
 - name: create ansible user
   user:
     name: ansible
@@ -25,7 +24,7 @@
 - name: add ssh key to ansible
   authorized_key: 
     user: ansible 
-    key: "{{ lookup('file', '/home/debian/.ssh/id_rsa.pub') }}"
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
   tags: [install]
 
 - name: create ansible direcory
@@ -34,17 +33,3 @@
     state: directory
     mode: a+rwx
   tags: [install]
-
-#- name: create jenkins home
-#  file:
-#    path: "{{jenkins_home}}"
-#    state: directory
-#    mode: a+wx
-#  tags: [jenkins]
-
-- name: remove ssh key to root
-  authorized_key: 
-    user: root 
-    key: "{{ lookup('file', '/home/debian/.ssh/id_rsa.pub') }}"
-    state: absent
-  tags: [install, ssh-remove]
