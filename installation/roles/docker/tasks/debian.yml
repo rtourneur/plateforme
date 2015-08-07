@@ -8,8 +8,7 @@
           (ansible_distribution_release == "jessie" or ansible_distribution_release == "wheezy")
   tags: [docker]
 
-
-- name: install docker on centos
+- name: install docker on debian
   apt: 
     name: docker.io
     state: present
@@ -17,12 +16,14 @@
           (ansible_distribution_release == "jessie" or ansible_distribution_release == "wheezy")
   tags: [docker]
 
-- name: easy install python-pip
+- name: easy install python-pip on debian
   easy_install: 
     name: pip
+  when: ansible_distribution == "Debian" and
+          (ansible_distribution_release == "jessie" or ansible_distribution_release == "wheezy")
   tags: [docker]
 
-- name: install python-pip
+- name: install python-pip on debian
   apt:
     name: python-pip
     state: present

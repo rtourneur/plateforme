@@ -10,7 +10,6 @@ function usage
     echo "  -i HOST, --inventory HOST"
     echo "                        Hostname for install (or ip adress)"
     echo "  -h, --help            show this help message and exit"
-    exit 0
 }
  
 
@@ -20,12 +19,19 @@ echo "Vérification des paramètres"
 user=
 host=
 
+if [ $# -eq 0 ]; then
+  echo "test"
+  usage
+  exit
+fi
+
 while [ "$1" != "" ]; do
     case $1 in
         -u | --user )           shift
                                 user=$1
                                 ;;
-        -i | --inventory )      host=$1
+        -i | --inventory )      shift
+                                host=$1
                                 ;;
         -h | --help )           usage
                                 exit
@@ -44,11 +50,11 @@ echo '$host = ' $host
 
 #First add the EPEL repository:
 printf "**************************** ADDING EPEL REPOSITORY ****************************\n"
-rpm -iUvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo rpm -iUvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
 # install git
 printf "**************************** INSTALLING GIT ****************************\n"
-yum install -y git
+sudo yum install -y git
 
 # pull platforme source code
 printf "**************************** PULL PLATFORME SOURCE CODE ****************************\n"
@@ -56,20 +62,21 @@ git clone ssh://$user@git.polymont-itservices.fr:29418/Interne/4SASL00004-Devops
 
 # verify ssh installed
 printf "**************************** INSTALL SSH (ANSIBLE PRE-REQ) ****************************\n"
-yum install -y openssh-clients
+sudo yum install -y openssh-clients sshpass
 
 #then run
 printf "**************************** INSTALL ANSIBLE ****************************\n"
-yum install -y ansible
+sudo yum install -y ansible
 
 #create ssh key
-printf "**************************** CREATE SSH KEY AND DEPLOY IT ****************************\n"
+printf "**************************** CREATE SSH KEY  ****************************\n"
+ssh-keygen -t rsa -b 2048
 
 # set ansible/hosts file
 printf "**************************** SET HOSTS FOR ANSIBLE ****************************\n"
-printf "[install-machines]\$host  ansible_ssh_user=root" > /etc/ansible/hosts-install
-printf "[docker-machines]\$host  ansible_ssh_user=ansible" > /etc/ansible/hosts-docker
+echo '[install-machines]' > ~/hosts-install && echo $host '  ansible_ssh_user=root' >> ~/hosts-install
+echo '[docker-machines]' > ~/hosts-docker && echo $host '  ansible_ssh_user=ansible' >> ~/hosts-docker
 
 printf "**************************** DEPLOY THE PLATFORM ****************************\n"
-ansible-playbook plateforme/installation/install_platforme.yml --skip-tags "update_all" -i /etc/ansible/hosts-install
-ansible-playbook plateforme/installation/devops_plateforme.yml -i /etc/ansible/hosts-docker
+ansible-playbook plateforme/installation/install_platforme.yml --skip-tags "update_all" -i ~/hosts-install --ask-pass
+ansible-playbook plateforme/installation/devops_plateforme.yml -i ~/hosts-docker

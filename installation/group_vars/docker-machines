@@ -4,7 +4,7 @@ ansible_version: 1.9.2
 home_:        "{{ansible_env.HOME}}"
 docker_home:  "{{home_}}/docker"
 repo_dir:     "{{docker_home}}/repo"
-recettes_dir: "/opt/recettes"
+recettes_dir: "{{docker_home}}/recettes"
 ubuntu_dir:   "{{repo_dir}}/ubuntu"
 java_dir:     "{{repo_dir}}/java"
 gitblit_dir:  "{{repo_dir}}/gitblit"
