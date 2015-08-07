@@ -69,6 +69,19 @@
   tags: [hub]
   notify: restart nginx container
 
+- name: restart jenkins container
+  docker:
+    name: jenkins
+    image: "polymont/jenkins"
+    state: started
+    ports:
+    - "9080:8080"
+    volumes:
+    - "{{docker_home}}/jenkins_home:/var/jenkins_home:rw"
+    docker_api_version: 1.18
+  tags: [jenkins]
+  notify: restart nginx container
+
 - name: restart nginx container
   docker:
     name: hub_nginx_1
