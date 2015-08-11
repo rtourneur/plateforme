@@ -15,7 +15,7 @@
   tags: [jenkins]
 
 - name: copy jenkins dockerfile
-  copy: 
+  template: 
     src: Dockerfile
     dest: "{{jenkins_dir}}/Dockerfile"
   notify: 
