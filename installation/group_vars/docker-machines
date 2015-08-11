@@ -23,7 +23,7 @@ maven_dir:    "/usr/lib/maven"
 
 
 #SSH
-ansible_ssh_port:   "2022"
+ansible_container_ssh_port:   "2022"
 jenkins_ssh_port:   "3022"
 gitblit_ssh_port:   "4022"
 registry_ssh_port:  "5022"
