@@ -7,12 +7,6 @@
     state: directory
   tags: [jenkins]
 
-- name: copy ssh keys to jenkins role
-  command: "cp {{item}} {{jenkins_dir}}"
-  with_items:
-    - ~/.ssh/id_rsa.pub
-  tags: [jenkins]
-
 - name: create jenkins home
   file:
     path: "{{docker_home}}/jenkins_home"

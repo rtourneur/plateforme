@@ -7,12 +7,6 @@
     state: directory
   tags: [gitblit]
 
-- name: copy ssh keys to gitblit role
-  command: "cp {{item}} {{gitblit_dir}}"
-  with_items:
-    - ~/.ssh/id_rsa.pub
-  tags: [gitblit]
-
 - name: copy add users exec file
   copy:
     src: add_users.sh

@@ -30,9 +30,6 @@ RUN sed -e "s/server\.httpPort\s=\s0/server\.httpPort=8080/" \
         -e "s/server\.contextPath\s=\s\//server.contextPath=\/gitblit\//" \
         /opt/gitblit-data/default.properties > /opt/gitblit-data/gitblit.properties
 
-# Add rsa public key
-ADD id_rsa.pub  /home/sshuser/.ssh/authorized_keys
-
 # Administering Users - AB
 RUN echo '[user "user1"]'            >> /opt/gitblit-data/users.conf \
 && echo '        password = user1'  >> /opt/gitblit-data/users.conf \

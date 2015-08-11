@@ -7,6 +7,10 @@ RUN apt-get update && apt-get install -q -y git-core redis-server wget curl zip 
 
 # Configure SSH and ssh user
 RUN mkdir /home/sshuser && useradd -p $(openssl passwd -1 'novia69') -G sudo  sshuser && chown sshuser:sshuser /home/sshuser
+
+# Add rsa public key
+ADD id_rsa.pub  /home/sshuser/.ssh/authorized_keys
+
 EXPOSE 22
 
 # Start the service

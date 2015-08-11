@@ -5,6 +5,13 @@
   file:
     path: "{{ubuntu_dir}}"
     state: directory
+  tags: [ubuntu]
+
+- name: copy ssh keys to ubuntu role
+  command: "cp {{item}} {{ubuntu_dir}}"
+  with_items:
+    - ~/.ssh/id_rsa.pub
+  tags: [ubuntu]
 
 - name: copy ubuntu dockerfile
   copy: 
@@ -12,6 +19,7 @@
     dest: "{{ubuntu_dir}}/Dockerfile"
   notify: 
   - check or build ubuntu image
+  tags: [ubuntu]
 
 - name: check ubuntu image
   docker_image: 
