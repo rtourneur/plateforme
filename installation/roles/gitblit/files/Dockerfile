@@ -49,7 +49,7 @@ WORKDIR /opt/gitblit
 #COPY add_users.sh /opt/gitblit/add_users.sh
 #RUN add_users.sh
 
-EXPOSE 8080 8443 9418 29418 
+EXPOSE 8080 8443 9418 29418
 
 cmd service ssh start
 cmd ["java", "-server", "-Xmx1024M", "-Djava.awt.headless=true", "-jar", "/opt/gitblit/gitblit.jar", "--baseFolder", "/opt/gitblit-data"]
