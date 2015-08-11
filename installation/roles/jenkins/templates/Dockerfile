@@ -42,11 +42,11 @@ RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true 
 RUN apt-get install -y oracle-java7-installer
 
 # Add Maven
-RUN mkdir -p /usr/lib/maven && chmod a+w /usr/lib/maven
+RUN mkdir -p {{ maven_dir }} && chmod a+w {{ maven_dir }}
 RUN curl -fL http://apache.mirrors.ovh.net/ftp.apache.org/dist/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz -o /tmp/apache-maven-3.3.3-bin.tar.gz \
-&& tar -C /usr/lib/maven -zxf /tmp/apache-maven-3.3.3-bin.tar.gz
+&& tar -C {{ maven_dir }} -zxf /tmp/apache-maven-3.3.3-bin.tar.gz
 RUN curl -fL http://apache.mirrors.ovh.net/ftp.apache.org/dist/maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.tar.gz -o /tmp/apache-maven-3.2.5-bin.tar.gz \
-&& tar -C /usr/lib/maven -zxf /tmp/apache-maven-3.2.5-bin.tar.gz
+&& tar -C {{ maven_dir }} -zxf /tmp/apache-maven-3.2.5-bin.tar.gz
 
 USER jenkins
 

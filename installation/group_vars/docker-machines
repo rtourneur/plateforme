@@ -2,9 +2,10 @@
 ansible_version: 1.9.2 
 
 home_:        "{{ansible_env.HOME}}"
+
+#Docker
 docker_home:  "{{home_}}/docker"
 repo_dir:     "{{docker_home}}/repo"
-recettes_dir: "{{docker_home}}/recettes"
 ubuntu_dir:   "{{repo_dir}}/ubuntu"
 java_dir:     "{{repo_dir}}/java"
 gitblit_dir:  "{{repo_dir}}/gitblit"
@@ -13,3 +14,17 @@ registry_dir: "{{repo_dir}}/registry"
 tomcat_dir:   "{{repo_dir}}/tomcat"
 jenkins_dir:  "{{repo_dir}}/jenkins"
 ansible_dir:  "{{repo_dir}}/ansible"
+
+#Ansible
+recettes_dir: "{{docker_home}}/recettes"
+
+#Jenkins
+maven_dir:    "/usr/lib/maven"
+
+
+#SSH
+ansible_ssh_port:   "2022"
+jenkins_ssh_port:   "3022"
+gitblit_ssh_port:   "4022"
+registry_ssh_port:  "5022"
+nginx_ssh_port:     "6022"
