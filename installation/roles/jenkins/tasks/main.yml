@@ -71,9 +71,10 @@
     dest: "~/{{item}}"
   with_items:
   - maven.groovy
+  - git.groovy
   tags: [jenkins]
 
-- name : add Maven to Jenkins
-  script: maven.sh
+- name : configure Jenkins
+  script: configure.sh
   tags: [jenkins]
   
