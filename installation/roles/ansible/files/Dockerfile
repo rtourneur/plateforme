@@ -6,7 +6,7 @@ MAINTAINER Abdallah BENBRAHIM <abdallah.benbrahim@polymont.fr>
 RUN yum clean all && \
     yum -y update && \
     yum -y install epel-release && \
-    yum -y install PyYAML python-jinja2 python-httplib2 python-keyczar python-paramiko python-setuptools git python-pip openssl && \
+    yum -y install PyYAML python-jinja2 python-httplib2 python-keyczar python-paramiko python-setuptools git python-pip openssl openssh-clients openssh-server && \
     yum -y install ansible
 
 # Static environment variables
@@ -24,8 +24,6 @@ RUN useradd --create-home -G wheel -s/bin/bash sshuser -p $(openssl passwd -1 'n
 ADD  id_rsa.pub  /home/sshuser/.ssh/authorized_keys
 COPY id_rsa      /home/sshuser/.ssh/
 
-# configure SSH and ssh user
-# RUN mkdir /home/sshuser && useradd -p $(openssl passwd -1 'novia69') -G sudo  sshuser && chown sshuser:sshuser /home/sshuser
 EXPOSE 22
 
 CMD ["/usr/sbin/sshd", "-D"]
