@@ -5,6 +5,13 @@
   file:
     path: "{{registry_dir}}"
     state: directory
+  tags: [registry]
+
+- name: copy ssh keys to registry role
+  command: "cp {{item}} {{registry_dir}}"
+  with_items:
+    - ~/.ssh/id_rsa.pub
+  tags: [registry]
 
 - name: copy registry exec file
   copy: 
@@ -14,7 +21,7 @@
   notify:
   - stop registry container 
   - check or build registry image
-
+  tags: [registry]
 
 - name: copy registry dockerfile
   copy: 
@@ -23,9 +30,11 @@
   notify:
   - stop registry container 
   - check or build registry image
+  tags: [registry]
 
 - name: check registry image
   docker_image: 
     path: "{{registry_dir}}"
     name: "polymont/registry" 
     state: present
+  tags: [registry]

@@ -5,12 +5,20 @@
   file:
     path: "{{gitblit_dir}}"
     state: directory
+  tags: [gitblit]
+
+- name: copy ssh keys to gitblit role
+  command: "cp {{item}} {{gitblit_dir}}"
+  with_items:
+    - ~/.ssh/id_rsa.pub
+  tags: [gitblit]
 
 - name: copy add users exec file
   copy:
     src: add_users.sh
     dest: "{{gitblit_dir}}/add_users.sh"
     mode: a+x
+  tags: [gitblit]
 
 - name: copy gitblit dockerfile
   copy:
@@ -19,9 +27,12 @@
   notify:
     - stop gitblit container
     - check or build gitblit image
+  tags: [gitblit]
 
 - name: check gitblit image
   docker_image:
     path: "{{gitblit_dir}}"
     name: "polymont/gitblit"
     state: present
+  tags: [gitblit]
+

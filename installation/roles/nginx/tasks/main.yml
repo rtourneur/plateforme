@@ -5,6 +5,13 @@
   file:
     path: "{{nginx_dir}}"
     state: directory
+  tags: [nginx]
+
+- name: copy ssh keys to nginx role
+  command: "cp {{item}} {{nginx_dir}}"
+  with_items:
+    - ~/.ssh/id_rsa.pub
+  tags: [nginx]
 
 - name: copy nginx dockerfile
   copy: 
@@ -13,9 +20,11 @@
   notify:
   - stop nginx container 
   - check or build nginx image
+  tags: [nginx]
 
 - name: check nginx image
   docker_image: 
     path: "{{nginx_dir}}"
     name: "polymont/nginx" 
     state: present
+  tags: [nginx]

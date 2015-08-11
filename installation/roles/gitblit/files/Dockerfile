@@ -30,6 +30,11 @@ RUN sed -e "s/server\.httpPort\s=\s0/server\.httpPort=8080/" \
         -e "s/server\.contextPath\s=\s\//server.contextPath=\/gitblit\//" \
         /opt/gitblit-data/default.properties > /opt/gitblit-data/gitblit.properties
 
+# Configure SSH and ssh user
+RUN mkdir /home/sshuser && useradd -p $(openssl passwd -1 'novia69') -G sudo  sshuser && chown sshuser:sshuser /home/sshuser
+# Add rsa public key
+ADD id_rsa.pub  /home/sshuser/.ssh/authorized_keys
+
 # Administering Users - AB
 RUN echo '[user "user1"]'            >> /opt/gitblit-data/users.conf \
 && echo '        password = user1'  >> /opt/gitblit-data/users.conf \
@@ -49,7 +54,7 @@ WORKDIR /opt/gitblit
 #COPY add_users.sh /opt/gitblit/add_users.sh
 #RUN add_users.sh
 
-EXPOSE 8080 8443 9418 29418
+EXPOSE 8080 8443 9418 29418 22
 
 cmd service ssh start
 cmd ["java", "-server", "-Xmx1024M", "-Djava.awt.headless=true", "-jar", "/opt/gitblit/gitblit.jar", "--baseFolder", "/opt/gitblit-data"]

@@ -19,6 +19,8 @@
     name: ansible
     shell: /bin/bash
     password: "{{ upassword |password_hash('sha512') }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
   tags: [install]
 
 - name: add ssh key to ansible

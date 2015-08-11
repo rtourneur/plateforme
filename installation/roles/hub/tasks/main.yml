@@ -39,3 +39,14 @@
     volumes:
     - "{{docker_home}}/certs/:/etc/nginx/conf.d"
     docker_api_version: 1.18
+
+- name: ansible container
+  docker:
+    name: ansible
+    image: "polymont/ansible"
+    state: started
+    stdin_open: yes
+    ports:
+    - "22:22"
+    volumes:
+    - /recettes:/recettes

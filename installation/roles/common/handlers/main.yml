@@ -97,3 +97,29 @@
     - /docker/certs/:/etc/nginx/conf.d
     docker_api_version: 1.18 
   tags: [hub]
+
+- name: stop iansible container
+  docker:
+    name: ansible
+    image: "polymont/ansible"
+    state: stopped
+  tags: [hub]
+  notify: restart ansible container
+
+- name: check or build ansible image
+  docker_image:
+    path: "{{ansible_dir}}"
+    name: "polymont/ansible"
+    state: build
+  tags: [hub]
+
+- name: restart ansible container
+  docker:
+    name: ansible
+    image: "polymont/ansible"
+    state: restarted
+    ports:
+    - "22:22"
+    volumes:
+    - /recettes:/recettes
+  tags: [hub]

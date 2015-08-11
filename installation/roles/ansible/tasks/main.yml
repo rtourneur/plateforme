@@ -1,19 +1,33 @@
-# tasks file for ansible
+---
+# ansible playbook for ansible role
+
+- name: create ansible direcory
+  file:
+    path: "{{ansible_dir}}"
+    state: directory
+  tags: [ansible]
+
+- name: copy ssh keys to ansible role
+  command: "cp {{item}} {{ansible_dir}}"
+  with_items:
+    - ~/.ssh/id_rsa.pub
+    - ~/.ssh/id_rsa   
+  tags: [ansible]
 
 - name: copy ansible dockerfile
-  copy: 
+  copy:
     src: Dockerfile
     dest: "{{ansible_dir}}/Dockerfile"
-  notify: 
-  - stop ansible container
-  - check or build ansible image
+  notify:
+    - stop ansible container
+    - check or build ansible image
+  tags: [ansible]
 
 - name: create ansible on centos 7 image
   docker_image: 
-    path: "{{ansible_dir}}"
-    name: "polymont/ansible"
-    tag: "centos7"
-    state: present
+    path: "{{ansible_dir}}" 
+    name: "polymont/ansible" 
+    state: build
   tags: [ansible]
 
 - name: create recettes directory
@@ -22,14 +36,3 @@
     state: directory
   tags: [ansible]
   # TODO: add all ansible project/playbooks...
-
-- name: run ansible on centos7 container
-  docker:
-    name: ansible
-    image: "polymont/ansible:centos7"
-    state: restarted 
-    stdin_open: yes
-    volumes: 
-    - "{{recettes_dir}}:/recettes"
-    docker_api_version: 1.18
-  tags: [ansible]
