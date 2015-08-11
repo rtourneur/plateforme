@@ -59,8 +59,21 @@
     image: "polymont/jenkins"
     state: started
     ports:
-    - "9080:8080"
+    - "127.0.0.1:9080:8080"
     volumes:
     - "{{docker_home}}/jenkins_home:/var/jenkins_home:rw"
     docker_api_version: 1.18
   tags: [jenkins]
+
+- name : copy groovy scripts
+  copy: 
+    src: "{{item}}"
+    dest: "~/{{item}}"
+  with_items:
+  - maven.groovy
+  tags: [jenkins]
+
+- name : add Maven to Jenkins
+  script: maven.sh
+  tags: [jenkins]
+  
