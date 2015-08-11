@@ -39,4 +39,4 @@
   - registry.key
   - registry.password
   tags: [hub]
-#  notify: restart nginx container
+  notify: restart nginx container

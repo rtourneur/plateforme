@@ -75,7 +75,7 @@
     image: "polymont/jenkins"
     state: started
     ports:
-    - "9080:8080"
+    - "127.0.0.1:9080:8080"
     volumes:
     - "{{docker_home}}/jenkins_home:/var/jenkins_home:rw"
     docker_api_version: 1.18
@@ -93,15 +93,16 @@
     links:
     - hub_registry_1:registry
     - hub_gitblit_1:gitblit
+    - jenkins:jenkins
     volumes:
     - /docker/certs/:/etc/nginx/conf.d
     docker_api_version: 1.18 
   tags: [hub]
 
-- name: stop iansible container
+- name: stop ansible container
   docker:
     name: ansible
-    image: "polymont/ansible"
+    image: "polymont/ansible:centos7"
     state: stopped
   tags: [hub]
   notify: restart ansible container
@@ -110,16 +111,17 @@
   docker_image:
     path: "{{ansible_dir}}"
     name: "polymont/ansible"
+    tag: centos7
     state: build
   tags: [hub]
 
 - name: restart ansible container
   docker:
     name: ansible
-    image: "polymont/ansible"
+    image: "polymont/ansible:centos7"
     state: restarted
     ports:
-    - "22:22"
+    - "22"
     volumes:
     - /recettes:/recettes
   tags: [hub]

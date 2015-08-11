@@ -36,17 +36,7 @@
     links:
     - hub_registry_1:registry
     - hub_gitblit_1:gitblit
+    - jenkins:jenkins
     volumes:
     - "{{docker_home}}/certs/:/etc/nginx/conf.d"
     docker_api_version: 1.18
-
-- name: ansible container
-  docker:
-    name: ansible
-    image: "polymont/ansible"
-    state: started
-    stdin_open: yes
-    volumes:
-    - "{{recettes_dir}}:{{recettes_dir}}"
-    docker_api_version: 1.18
-
