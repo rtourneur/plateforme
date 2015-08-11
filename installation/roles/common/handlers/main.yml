@@ -1,17 +1,13 @@
 ---
 # handlers file for common
-- name: check or build java image
-  docker_image:
-    path: "{{java_dir}}"
-    name: "polymont/java"
-    tag: jdk8
-    state: build
-  tags: [java]
-  notify:
-  - stop gitblit container
-  - stop jenkins container
-  - check or build gitblit image
-  - check or build tomcat image
+- name: stop ansible container
+  docker:
+    name: ansible
+    image: "polymont/ansible:centos7"
+    state: stopped
+    docker_api_version: 1.18
+  tags: [ansible]
+  notify: restart ansible container
 
 - name: stop gitblit container
   docker:
@@ -30,6 +26,50 @@
     docker_api_version: 1.18
   tags: [hub]
   notify: restart jenkins container
+
+- name: stop registry container
+  docker:
+    name: hub_registry_1
+    image: "polymont/registry"
+    state: stopped
+  notify: restart registry container
+
+- name: stop nginx container
+  docker:
+    name: hub_nginx_1
+    image: "polymont/nginx"
+    state: stopped
+  notify: restart nginx container
+
+- name: check or build ansible image
+  docker_image: 
+    path: "{{ansible_dir}}"
+    name: "polymont/ansible"
+    tag: "centos7"
+    state: build
+  tags: [ansible]
+
+- name: check or build ubuntu image
+  docker_image: 
+    path: "{{ubuntu_dir}}"
+    name: "polymont/ubuntu"
+    state: build
+  tags: [ubuntu]
+  notify: 
+  - check or build java image
+
+- name: check or build java image
+  docker_image:
+    path: "{{java_dir}}"
+    name: "polymont/java"
+    tag: jdk8
+    state: build
+  tags: [java]
+  notify:
+  - stop gitblit container
+  - stop jenkins container
+  - check or build gitblit image
+  - check or build tomcat image
 
 - name: check or build gitblit image
   docker_image:
@@ -56,6 +96,29 @@
     state: build
   tags: [jenkins]
 
+- name: check or build registry image
+  docker_image: 
+    path: "{{registry_dir}}"
+    name: "polymont/registry" 
+    state: build
+
+- name: check or build nginx image
+  docker_image: 
+    path: "{{nginx_dir}}"
+    name: "polymont/nginx" 
+    state: build
+
+- name: restart ansible container
+  docker:
+    name: ansible
+    image: "polymont/ansible:centos7"
+    state: restarted 
+    stdin_open: yes
+    volumes: 
+    - "{{recettes_dir}}:/recettes"
+    docker_api_version: 1.18
+  tags: [ansible]
+
 - name: restart gitblit container
   docker:
     name: hub_gitblit_1
@@ -80,6 +143,20 @@
     - "{{docker_home}}/jenkins_home:/var/jenkins_home:rw"
     docker_api_version: 1.18
   tags: [jenkins]
+  notify: restart nginx container
+
+- name: restart registry container
+  docker:
+    name: hub_registry_1
+    image: "polymont/registry"
+    state: restarted
+    ports:
+    - "127.0.0.1:5000:5000"
+    volumes:
+    - /docker/registry_data:/var/lib/registry
+    env:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
+    docker_api_version: 1.18
   notify: restart nginx container
 
 - name: restart nginx container
