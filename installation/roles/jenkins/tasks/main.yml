@@ -66,12 +66,13 @@
   tags: [jenkins]
 
 - name : copy groovy scripts
-  copy: 
+  template: 
     src: "{{item}}"
     dest: "~/{{item}}"
   with_items:
   - maven.groovy
   - git.groovy
+  - jdk.groovy
   tags: [jenkins]
 
 - name : configure Jenkins
