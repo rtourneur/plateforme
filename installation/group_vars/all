@@ -1,2 +1,0 @@
-#*** vars for all nodes ***
-ansible_dir:  "/opt/ansible"

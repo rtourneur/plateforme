@@ -27,7 +27,8 @@
   docker_image: 
     path: "{{ansible_dir}}" 
     name: "polymont/ansible" 
-    state: build
+    tag: "centos7"
+    state: present
   tags: [ansible]
 
 - name: create recettes directory
@@ -36,3 +37,14 @@
     state: directory
   tags: [ansible]
   # TODO: add all ansible project/playbooks...
+
+- name: run ansible on centos7 container
+  docker:
+    name: ansible
+    image: "polymont/ansible:centos7"
+    state: started 
+    stdin_open: yes
+    volumes: 
+    - "{{recettes_dir}}:/recettes"
+    docker_api_version: 1.18
+  tags: [ansible]

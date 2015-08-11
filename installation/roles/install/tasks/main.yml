@@ -29,13 +29,6 @@
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
   tags: [install]
 
-- name: create ansible direcory
-  file:
-    path: "{{ansible_dir}}"
-    state: directory
-    mode: a+rwx
-  tags: [install]
-
 - name: remove ssh key to root
   authorized_key: 
     user: root 
