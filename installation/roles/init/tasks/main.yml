@@ -7,7 +7,7 @@
   file:
     path: "{{docker_home}}"
     state: directory
-           
+
 # Base directory for image repository
 - name: create repo directory
   file:

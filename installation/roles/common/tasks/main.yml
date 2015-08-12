@@ -1,2 +1,6 @@
 ---
 # tasks file for common
+
+- name: Recovery status of the ssh keys regeneration
+  shell: 'cat {{ssh_keys_generate_dir}}/status'
+  register: generated

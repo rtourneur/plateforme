@@ -1,0 +1,8 @@
+
+# ssh keys management
+# playbook install
+#   |___ echo "true"  to status generated file
+# playbook deploiement
+#   |___ echo "false" to status generated file
+ssh_keys_generate_dir: "/home/ansible/.ssh_keys_generate"
+

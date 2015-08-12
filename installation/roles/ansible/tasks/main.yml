@@ -8,11 +8,12 @@
   tags: [ansible]
 
 - name: copy ssh keys to ansible role
-  command: "cp {{item}} {{ansible_dir}}"
+  command: "cp -u {{item}} {{ansible_dir}}"
   with_items:
     - ~/.ssh/id_rsa.pub
     - ~/.ssh/id_rsa   
   tags: [ansible]
+  when: generated.stdout == "true"
 
 - name: copy ansible dockerfile
   copy:

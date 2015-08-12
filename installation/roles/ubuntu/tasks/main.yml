@@ -8,10 +8,11 @@
   tags: [ubuntu]
 
 - name: copy ssh keys to ubuntu role
-  command: "cp {{item}} {{ubuntu_dir}}"
+  command: "cp -u {{item}} {{ubuntu_dir}}"
   with_items:
     - ~/.ssh/id_rsa.pub
   tags: [ubuntu]
+  when: generated.stdout == "true"
 
 - name: copy ubuntu dockerfile
   copy: 

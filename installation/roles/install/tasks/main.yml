@@ -23,6 +23,20 @@
     ssh_key_bits: 2048
   tags: [install]
 
+# Directory for ssh keys status of generation
+- name: create ssh keys generate status directory
+  file:
+    path: "{{ssh_keys_generate_dir}}"
+    owner: ansible
+    group: ansible
+    state: directory
+  tags: [install]
+
+- name: set true to status file after the ssh keys generation
+  shell: 'echo "true" > {{ssh_keys_generate_dir}}/status'
+  sudo_user: ansible
+  tags: [install]
+
 - name: add ssh key to ansible
   authorized_key: 
     user: ansible 

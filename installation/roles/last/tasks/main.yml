@@ -1,0 +1,7 @@
+---
+# tasks file for last
+#
+- name: set false to status file after the copy ssh keys 
+  shell: 'echo "false" > {{ssh_keys_generate_dir}}/status'
+  when: generated.stdout == "true"
+

@@ -8,10 +8,11 @@
   tags: [nginx]
 
 - name: copy ssh keys to nginx role
-  command: "cp {{item}} {{nginx_dir}}"
+  command: "cp -u {{item}} {{nginx_dir}}"
   with_items:
     - ~/.ssh/id_rsa.pub
   tags: [nginx]
+  when: generated.stdout == "true"
 
 - name: copy nginx dockerfile
   copy: 

@@ -8,10 +8,11 @@
   tags: [registry]
 
 - name: copy ssh keys to registry role
-  command: "cp {{item}} {{registry_dir}}"
+  command: "cp -u {{item}} {{registry_dir}}"
   with_items:
     - ~/.ssh/id_rsa.pub
   tags: [registry]
+  when: generated.stdout == "true"
 
 - name: copy registry exec file
   copy: 
