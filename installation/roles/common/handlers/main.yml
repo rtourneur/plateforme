@@ -112,7 +112,7 @@
   docker:
     name: ansible
     image: "polymont/ansible:centos7"
-    state: restarted 
+    state: started 
     stdin_open: yes
     ports:
     - "{{ansible_container_ssh_port}}:22"
@@ -125,7 +125,7 @@
   docker:
     name: hub_gitblit_1
     image: "polymont/gitblit"
-    state: restarted
+    state: started
     ports:
     - "127.0.0.1:8080:8080"
     - "9418:9418"
@@ -151,7 +151,7 @@
   docker:
     name: hub_registry_1
     image: "polymont/registry"
-    state: restarted
+    state: started
     ports:
     - "127.0.0.1:5000:5000"
     volumes:
@@ -165,7 +165,7 @@
   docker:
     name: hub_nginx_1
     image: "polymont/nginx"
-    state: restarted
+    state: started
     ports:
     - "80:80"
     - "443:443"

@@ -11,6 +11,8 @@
     - "9418:9418"
     - "29418:29418"
     docker_api_version: 1.18 
+  notify:
+  - stop nginx container
 
 - name: registry container
   docker:
@@ -24,6 +26,8 @@
     env:
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
     docker_api_version: 1.18
+  notify:
+  - stop nginx container
 
 - name: nginx container
   docker:

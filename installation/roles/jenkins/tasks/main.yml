@@ -19,6 +19,7 @@
     src: Dockerfile
     dest: "{{jenkins_dir}}/Dockerfile"
   notify: 
+  - stop jenkins container
   - check or build jenkins image
   tags: [jenkins]
 
@@ -31,6 +32,7 @@
   - init.groovy
   - plugins.txt
   notify: 
+  - stop jenkins container
   - check or build jenkins image
   tags: [jenkins]
 
@@ -43,6 +45,7 @@
   - jenkins.sh
   - plugins.sh
   notify: 
+  - stop jenkins container
   - check or build jenkins image
   tags: [jenkins]
 
@@ -63,6 +66,8 @@
     volumes:
     - "{{docker_home}}/jenkins_home:/var/jenkins_home:rw"
     docker_api_version: 1.18
+  notify:
+  - stop nginx container
   tags: [jenkins]
 
 - name : copy groovy scripts
