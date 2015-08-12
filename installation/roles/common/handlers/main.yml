@@ -112,8 +112,10 @@
   docker:
     name: ansible
     image: "polymont/ansible:centos7"
-    state: restarted 
+    state: reloaded
     stdin_open: yes
+    ports:
+    - "{{ansible_container_ssh_port}}:22"
     volumes: 
     - "{{recettes_dir}}:/recettes"
     docker_api_version: 1.18
@@ -123,33 +125,37 @@
   docker:
     name: hub_gitblit_1
     image: "polymont/gitblit"
-    state: restarted
+    state: reloaded
     ports:
     - "127.0.0.1:8080:8080"
     - "9418:9418"
     - "29418:29418"
     docker_api_version: 1.18 
   tags: [hub]
-  notify: restart nginx container
+  notify:
+  - stop nginx container
+  - restart nginx container
 
 - name: restart jenkins container
   docker:
     name: jenkins
     image: "polymont/jenkins"
-    state: started
+    state: reloaded
     ports:
     - "127.0.0.1:9080:8080"
     volumes:
     - "{{docker_home}}/jenkins_home:/var/jenkins_home:rw"
     docker_api_version: 1.18
   tags: [jenkins]
-  notify: restart nginx container
+  notify:
+  - stop nginx container
+  - restart nginx container
 
 - name: restart registry container
   docker:
     name: hub_registry_1
     image: "polymont/registry"
-    state: restarted
+    state: reloaded
     ports:
     - "127.0.0.1:5000:5000"
     volumes:
@@ -157,13 +163,15 @@
     env:
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
     docker_api_version: 1.18
-  notify: restart nginx container
+  notify:
+  - stop nginx container
+  - restart nginx container
 
 - name: restart nginx container
   docker:
     name: hub_nginx_1
     image: "polymont/nginx"
-    state: restarted
+    state: reloaded
     ports:
     - "80:80"
     - "443:443"

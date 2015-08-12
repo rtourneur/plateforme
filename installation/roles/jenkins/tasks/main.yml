@@ -19,6 +19,7 @@
     src: Dockerfile
     dest: "{{jenkins_dir}}/Dockerfile"
   notify: 
+  - stop jenkins container
   - check or build jenkins image
   tags: [jenkins]
 
@@ -29,8 +30,8 @@
   with_items:
   - active.txt
   - init.groovy
-  - plugins.txt
   notify: 
+  - stop jenkins container
   - check or build jenkins image
   tags: [jenkins]
 
@@ -43,6 +44,7 @@
   - jenkins.sh
   - plugins.sh
   notify: 
+  - stop jenkins container
   - check or build jenkins image
   tags: [jenkins]
 
@@ -63,6 +65,8 @@
     volumes:
     - "{{docker_home}}/jenkins_home:/var/jenkins_home:rw"
     docker_api_version: 1.18
+  notify:
+  - stop nginx container
   tags: [jenkins]
 
 - name : copy groovy scripts
@@ -70,12 +74,18 @@
     src: "{{item}}"
     dest: "~/{{item}}"
   with_items:
+  - admin.groovy
   - maven.groovy
   - git.groovy
   - jdk.groovy
   tags: [jenkins]
 
+- name : wait jenkins initialisation
+  pause:
+    seconds: "30"
+  tags: [jenkins]
+
 - name : configure Jenkins
-  script: configure.sh
+  script: "configure.sh {{jenkins_admin_password}}"
   tags: [jenkins]
   
