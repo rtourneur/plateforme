@@ -24,8 +24,8 @@ curl -d "script=$script" http://127.0.0.1:9080/jenkins/scriptText
 # Configure Maven
 call maven.groovy
 
-# Configure Git
-call git.groovy
+# Configure Git -- pas besoin, git est dans le path par défaut
+#call git.groovy
 
 # Configure Java
 call jdk.groovy
