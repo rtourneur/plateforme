@@ -44,6 +44,8 @@
     image: "polymont/ansible:centos7"
     state: started 
     stdin_open: yes
+    ports:
+    - "{{ansible_container_ssh_port}}:22"
     volumes: 
     - "{{recettes_dir}}:/recettes"
     docker_api_version: 1.18
