@@ -20,7 +20,7 @@ recettes_dir: "{{docker_home}}/recettes"
 
 #Jenkins
 maven_dir:    "/usr/lib/maven"
-
+jenkins_admin_password: "admin"
 
 #SSH
 ansible_container_ssh_port:   "2022"

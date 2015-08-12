@@ -75,12 +75,18 @@
     src: "{{item}}"
     dest: "~/{{item}}"
   with_items:
+  - admin.groovy
   - maven.groovy
   - git.groovy
   - jdk.groovy
   tags: [jenkins]
 
+- name : wait jenkins initialisation
+  pause:
+    seconds: "30"
+  tags: [jenkins]
+
 - name : configure Jenkins
-  script: configure.sh
+  script: "configure.sh {{jenkins_admin_password}}"
   tags: [jenkins]
   
