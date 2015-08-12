@@ -30,7 +30,6 @@
   with_items:
   - active.txt
   - init.groovy
-  - plugins.txt
   notify: 
   - stop jenkins container
   - check or build jenkins image
