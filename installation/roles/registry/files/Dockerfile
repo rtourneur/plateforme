@@ -1,5 +1,4 @@
-#FROM registry:2
-from registry:2
+FROM registry:2
 
 MAINTAINER Raphael Tourneur
 
@@ -7,9 +6,12 @@ MAINTAINER Raphael Tourneur
 RUN apt-get update && apt-get install -y openssh-server openssh-client && rm -rf /var/lib/apt/lists/*
 
 # Configure SSH and ssh user
-RUN mkdir /home/sshuser && useradd -p $(openssl passwd -1 'novia69') -G sudo  sshuser && chown sshuser:sshuser /home/sshuser
+RUN useradd -p $(openssl passwd -1 'novia69') -G sudo -s /bin/bash -m sshuser
+
 # Add rsa public key
 ADD id_rsa.pub  /home/sshuser/.ssh/authorized_keys
+RUN chown sshuser:sshuser /home/sshuser/.ssh && chown sshuser:sshuser /home/sshuser/.ssh/* 
+
 EXPOSE 22
 
 # Add launch script
@@ -18,3 +20,4 @@ WORKDIR $DISTRIBUTION_DIR
 COPY registry.sh $DISTRIBUTION_DIR/registry.sh
 
 ENTRYPOINT exec ./registry.sh
+

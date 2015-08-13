@@ -23,6 +23,7 @@ RUN useradd --create-home -G wheel -s/bin/bash sshuser -p $(openssl passwd -1 'n
 #  |___ id_rsa.pub
 ADD  id_rsa.pub  /home/sshuser/.ssh/authorized_keys
 COPY id_rsa      /home/sshuser/.ssh/
+RUN chown sshuser:sshuser /home/sshuser/.ssh && chown sshuser:sshuser /home/sshuser/.ssh/* 
 
 EXPOSE 22
 
