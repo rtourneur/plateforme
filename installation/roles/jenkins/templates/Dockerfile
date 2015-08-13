@@ -56,8 +56,10 @@ COPY active.txt /usr/local/bin/active.txt
 RUN plugins.sh /usr/local/bin/active.txt
 
 COPY jenkins.sh /usr/local/bin/jenkins.sh
-ENTRYPOINT ["/usr/local/bin/jenkins.sh"]
-#ENTRYPOINT ["catalina.sh", "run"]
 
+USER root
+COPY start.sh /usr/local/bin/start.sh
+ENTRYPOINT ["/usr/local/bin/start.sh"]
+#ENTRYPOINT ["catalina.sh", "run"]
 
 

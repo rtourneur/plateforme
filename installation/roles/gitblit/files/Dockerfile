@@ -51,5 +51,4 @@ WORKDIR /opt/gitblit
 
 EXPOSE 8080 8443 9418 29418
 
-cmd service ssh start
-cmd ["java", "-server", "-Xmx1024M", "-Djava.awt.headless=true", "-jar", "/opt/gitblit/gitblit.jar", "--baseFolder", "/opt/gitblit-data"]
+CMD service ssh start && java -server -Xmx1024M -Djava.awt.headless=true -jar /opt/gitblit/gitblit.jar --baseFolder /opt/gitblit-data

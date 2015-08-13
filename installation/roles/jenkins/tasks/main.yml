@@ -43,6 +43,7 @@
   with_items:
   - jenkins.sh
   - plugins.sh
+  - start.sh
   notify: 
   - stop jenkins container
   - check or build jenkins image
