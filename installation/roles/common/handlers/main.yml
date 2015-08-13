@@ -186,6 +186,6 @@
     - hub_gitblit_1:gitblit
     - jenkins:jenkins
     volumes:
-    - /docker/certs/:/etc/nginx/conf.d
+    - "{{docker_home}}/certs/:/etc/nginx/conf.d"
     docker_api_version: 1.18 
   tags: [nginx, hub]
