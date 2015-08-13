@@ -15,7 +15,7 @@
     image: "polymont/gitblit"
     state: stopped
     docker_api_version: 1.18
-  tags: [hub]
+  tags: [gitblit, hub]
   notify: restart gitblit container
 
 - name: stop jenkins container
@@ -24,7 +24,7 @@
     image: "polymont/jenkins"
     state: stopped
     docker_api_version: 1.18
-  tags: [hub]
+  tags: [jenkins, hub]
   notify: restart jenkins container
 
 - name: stop registry container
@@ -32,14 +32,16 @@
     name: hub_registry_1
     image: "polymont/registry"
     state: stopped
+  tags: [registry, hub]
   notify: restart registry container
 
 - name: stop nginx container
   docker:
     name: hub_nginx_1
     image: "polymont/nginx"
-    state: stopped
+    state: absent
   notify: restart nginx container
+  tags: [nginx, hub]
 
 - name: check or build ansible image
   docker_image: 
@@ -76,7 +78,7 @@
     path: "{{gitblit_dir}}"
     name: "polymont/gitblit"
     state: build
-  tags: [hub]
+  tags: [gitblit, hub]
 
 - name: check or build tomcat image
   docker_image:
@@ -94,19 +96,21 @@
     path: "{{jenkins_dir}}"
     name: "polymont/jenkins"
     state: build
-  tags: [jenkins]
+  tags: [jenkins, hub]
 
 - name: check or build registry image
   docker_image: 
     path: "{{registry_dir}}"
     name: "polymont/registry" 
     state: build
+  tags: [registry, hub]
 
 - name: check or build nginx image
   docker_image: 
     path: "{{nginx_dir}}"
     name: "polymont/nginx" 
     state: build
+  tags: [nginx, hub]
 
 - name: restart ansible container
   docker:
@@ -130,11 +134,11 @@
     - "127.0.0.1:8080:8080"
     - "9418:9418"
     - "29418:29418"
+    - "{{gitblit_ssh_port}}:22"
     docker_api_version: 1.18 
-  tags: [hub]
+  tags: [gitblit, hub]
   notify:
   - stop nginx container
-  - restart nginx container
 
 - name: restart jenkins container
   docker:
@@ -143,13 +147,13 @@
     state: reloaded
     ports:
     - "127.0.0.1:9080:8080"
+    - "{{jenkins_ssh_port}}:22"
     volumes:
     - "{{docker_home}}/jenkins_home:/var/jenkins_home:rw"
     docker_api_version: 1.18
-  tags: [jenkins]
+  tags: [jenkins, hub]
   notify:
   - stop nginx container
-  - restart nginx container
 
 - name: restart registry container
   docker:
@@ -158,14 +162,15 @@
     state: reloaded
     ports:
     - "127.0.0.1:5000:5000"
+    - "{{registry_ssh_port}}:22"
     volumes:
     - /docker/registry_data:/var/lib/registry
     env:
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
     docker_api_version: 1.18
+  tags: [registry, hub]
   notify:
   - stop nginx container
-  - restart nginx container
 
 - name: restart nginx container
   docker:
@@ -175,6 +180,7 @@
     ports:
     - "80:80"
     - "443:443"
+    - "{{nginx_ssh_port}}:22"
     links:
     - hub_registry_1:registry
     - hub_gitblit_1:gitblit
@@ -182,4 +188,4 @@
     volumes:
     - /docker/certs/:/etc/nginx/conf.d
     docker_api_version: 1.18 
-  tags: [hub]
+  tags: [nginx, hub]
