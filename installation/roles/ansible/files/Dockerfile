@@ -3,17 +3,19 @@ FROM centos:centos7
 
 MAINTAINER Abdallah BENBRAHIM <abdallah.benbrahim@polymont.fr>
 
-RUN yum clean all && \
-    yum -y update && \
-    yum -y install epel-release && \
-    yum -y install PyYAML python-jinja2 python-httplib2 python-keyczar python-paramiko python-setuptools git python-pip openssl openssh-clients openssh-server && \
-    yum -y install ansible
+RUN yum -y update && \
+    yum -y install epel-release PyYAML python-jinja2 python-httplib2 python-keyczar python-paramiko \
+         python-setuptools git python-pip openssl openssh-clients openssh-server ansible && \
+    rm -f /etc/ssh/ssh_host_ecdsa_key /etc/ssh/ssh_host_rsa_key && \
+    ssh-keygen -q -N "" -t dsa -f /etc/ssh/ssh_host_ecdsa_key && \
+    ssh-keygen -q -N "" -t rsa -f /etc/ssh/ssh_host_rsa_key && \
+    ssh-keygen -q -N "" -t ed25519 -f /etc/ssh/ssh_host_ed25519_key
 
 # Static environment variables
 ENV ANSIBLE_HOSTS=/etc/ansible/hosts
-ENV PATH=/opt/ansible/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-ENV PYTHONPATH=/opt/ansible/lib:
-ENV MANPATH=/opt/ansible/docs/man:
+    PATH=/opt/ansible/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    PYTHONPATH=/opt/ansible/lib:
+    MANPATH=/opt/ansible/docs/man:
 
 # configure SSH and ssh user
 RUN useradd --create-home -G wheel -s/bin/bash sshuser -p $(openssl passwd -1 'novia69')
