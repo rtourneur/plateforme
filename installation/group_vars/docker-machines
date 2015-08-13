@@ -19,9 +19,9 @@ ansible_dir:  "{{repo_dir}}/ansible"
 recettes_dir: "{{docker_home}}/recettes"
 
 #Jenkins
-maven_dir:    "/usr/lib/maven"
-jenkins_version "1.609.2"
-jenkins_admin_password: "admin"
+maven_dir:                "/usr/lib/maven"
+jenkins_version:          "1.609.2"
+jenkins_admin_password:   "admin"
 
 #SSH
 ansible_container_ssh_port:   "2022"
