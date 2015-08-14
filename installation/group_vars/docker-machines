@@ -23,10 +23,3 @@ maven_dir:                "/usr/lib/maven"
 jenkins_version:          "1.609.2"
 jenkins_admin_password:   "admin"
 
-#SSH
-ansible_container_ssh_port:   "2022"
-jenkins_ssh_port:   "3022"
-gitblit_ssh_port:   "4022"
-registry_ssh_port:  "5022"
-nginx_ssh_port:     "6022"
-

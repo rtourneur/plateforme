@@ -43,6 +43,22 @@
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
   tags: [install]
 
+- name: open ssh port in firewall
+  firewalld:
+    zone: public
+    permanent: true
+    immediate: true 
+    state: enabled
+    port: "{{item}}/tcp"
+  with_items:
+  - "{{ansible_container_ssh_port}}"
+  - "{{jenkins_ssh_port}}"
+  - "{{gitblit_ssh_port}}"
+  - "{{registry_ssh_port}}"
+  - "{{nginx_ssh_port}}"
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+  tags: [install]
+ 
 - name: remove ssh key to root
   authorized_key: 
     user: root 
