@@ -12,10 +12,7 @@ RUN yum -y update && \
     ssh-keygen -q -N "" -t ed25519 -f /etc/ssh/ssh_host_ed25519_key
 
 # Static environment variables
-ENV ANSIBLE_HOSTS=/etc/ansible/hosts
-    PATH=/opt/ansible/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-    PYTHONPATH=/opt/ansible/lib:
-    MANPATH=/opt/ansible/docs/man:
+ENV ANSIBLE_HOSTS=/etc/ansible/hosts 
 
 # configure SSH and ssh user
 RUN useradd --create-home -G wheel -s/bin/bash sshuser -p $(openssl passwd -1 'novia69')
