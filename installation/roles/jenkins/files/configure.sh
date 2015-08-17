@@ -28,6 +28,9 @@ rm admin.groovy
 # Add users
 call users.groovy
 
+# Strategy manager
+call strategys.groovy
+
 # Configure Maven
 call maven.groovy
 
