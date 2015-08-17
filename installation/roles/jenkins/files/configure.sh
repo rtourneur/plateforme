@@ -25,6 +25,9 @@ script=`cat admin.groovy`
 curl -d "script=$script" http://127.0.0.1:9080/jenkins/scriptText
 rm admin.groovy
 
+# Add users
+call users.groovy
+
 # Configure Maven
 call maven.groovy
 
