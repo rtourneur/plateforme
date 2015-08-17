@@ -4,10 +4,10 @@ MAINTAINER Raphaël TOURNEUR <raphael.tourneur@polymont.fr>
 
 ENV JENKINS_HOME /var/jenkins_home
 
-# Jenkins is ran with user `jenkins`, uid = 999
+# Jenkins is ran with user `jenkins`, uid = variable
 # If you bind mount a volume from host/vloume from a data container, 
 # ensure you use same uid
-RUN useradd -d "$JENKINS_HOME" -u 999 -m -s /bin/bash jenkins
+RUN useradd -d "$JENKINS_HOME" -u {{ansible_user_uid}} -m -s /bin/bash jenkins
 
 # Jenkins home directoy is a volume, so configuration and build history 
 # can be persisted and survive image upgrades

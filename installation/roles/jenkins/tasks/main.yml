@@ -85,7 +85,7 @@
 
 - name : wait jenkins initialisation
   pause:
-    seconds: "30"
+    seconds: "60"
   tags: [jenkins]
 
 - name : configure Jenkins
