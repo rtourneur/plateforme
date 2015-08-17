@@ -6,7 +6,6 @@ MAINTAINER Abdallah BENBRAHIM <abdallah.benbrahim@polymont.fr>
 RUN yum -y update && \
     yum -y install epel-release PyYAML python-jinja2 python-httplib2 python-keyczar python-paramiko \
          python-setuptools git python-pip openssl openssh-clients openssh-server ansible && \
-    rm -f /etc/ssh/ssh_host_ecdsa_key /etc/ssh/ssh_host_rsa_key && \
     ssh-keygen -q -N "" -t dsa -f /etc/ssh/ssh_host_ecdsa_key && \
     ssh-keygen -q -N "" -t rsa -f /etc/ssh/ssh_host_rsa_key && \
     ssh-keygen -q -N "" -t ed25519 -f /etc/ssh/ssh_host_ed25519_key
