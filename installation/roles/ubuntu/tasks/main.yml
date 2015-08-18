@@ -11,6 +11,8 @@
   command: "cp -u {{item}} {{ubuntu_dir}}"
   with_items:
     - ~/.ssh/id_rsa.pub
+  notify: 
+  - check or build ubuntu image
   tags: [ubuntu]
   when: generated.stdout == "true"
 

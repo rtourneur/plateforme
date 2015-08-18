@@ -12,6 +12,9 @@
   with_items:
     - ~/.ssh/id_rsa.pub
     - ~/.ssh/id_rsa   
+  notify:
+    - stop ansible container
+    - check or build ansible image
   tags: [ansible]
   when: generated.stdout == "true"
 

@@ -11,6 +11,9 @@
   command: "cp -u {{item}} {{registry_dir}}"
   with_items:
     - ~/.ssh/id_rsa.pub
+  notify:
+  - stop registry container 
+  - check or build registry image
   tags: [registry]
   when: generated.stdout == "true"
 

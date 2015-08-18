@@ -11,6 +11,9 @@
   command: "cp -u {{item}} {{nginx_dir}}"
   with_items:
     - ~/.ssh/id_rsa.pub
+  notify:
+  - stop nginx container 
+  - check or build nginx image
   tags: [nginx]
   when: generated.stdout == "true"
 
