@@ -17,7 +17,7 @@
 - name: create ansible user
   user:
     name: ansible
-    uid: {{ansible_uid}}
+    uid: "{{ansible_uid}}"
     shell: /bin/bash
     password: "{{ upassword |password_hash('sha512') }}"
     generate_ssh_key: yes
