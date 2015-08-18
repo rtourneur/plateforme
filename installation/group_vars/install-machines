@@ -1,4 +1,4 @@
 #*** vars for install-machines node ***
 upassword: ansiblePA$$poly
-
+ansible_uid: "2000"
 
