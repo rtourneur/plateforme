@@ -10,10 +10,9 @@ def hudsonRealm = new HudsonPrivateSecurityRealm(false)
 instance.setSecurityRealm(hudsonRealm)
 
 // Create user admin
-hudsonRealm.createAccount("admin", "{{jenkins_admin_password}}")
-
+hudsonRealm.createAccount("admin", "admin")
 def strategy = new GlobalMatrixAuthorizationStrategy()
 strategy.add(Jenkins.ADMINISTER, "admin")
-instance.setAuthorizationStrategy(strategy)
 
+instance.setAuthorizationStrategy(strategy)
 instance.save()

@@ -10,7 +10,6 @@ def instance = Jenkins.getInstance()
 def extensions = instance.getExtensionList(hudson.plugins.git.GitTool.DescriptorImpl.class)[0]
 def installations = (extensions.installations as List)
 
-
 // Reset installations
 installations.clear()
 

@@ -13,10 +13,10 @@ def installations = (extensions.installations as List)
 // Reset installations
 installations.clear()
 
-// Add Maven 3
-installations.add(new hudson.tasks.Maven.MavenInstallation("MAVEN 3.3", "/usr/lib/maven/apache-maven-3.3.3", []))
-// Add Maven 2
-installations.add(new hudson.tasks.Maven.MavenInstallation("MAVEN 3.2", "/usr/lib/maven/apache-maven-3.2.5", []))
+// Add Maven 3.3
+installations.add(new hudson.tasks.Maven.MavenInstallation("MAVEN 3.3", "{{ maven_dir }}/apache-maven-3.3.3", []))
+// Add Maven 3.2
+installations.add(new hudson.tasks.Maven.MavenInstallation("MAVEN 3.2", "{{ maven_dir }}/apache-maven-3.2.5", []))
 
 // Save
 extensions.installations=installations
