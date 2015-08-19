@@ -1,0 +1,49 @@
+---
+# tasks file for reset
+
+- name: stop docker
+  service: 
+    name: docker 
+    enabled: no 
+    state: stopped
+  tags: [docker]
+
+- name: remove docker-py
+  pip:
+    name: docker-py
+    state: absent
+  tags: [docker]
+
+- name: close ssh port in firewall
+  firewalld:
+    zone: public
+    permanent: true
+    immediate: true 
+    state: disabled
+    port: "{{item}}/tcp"
+  with_items:
+  - "{{ansible_container_ssh_port}}"
+  - "{{jenkins_ssh_port}}"
+  - "{{gitblit_ssh_port}}"
+  - "{{registry_ssh_port}}"
+  - "{{nginx_ssh_port}}"
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+  tags: [install]
+ 
+- include: centos.yml
+- include: debian.yml
+
+- name: remove ansible user
+  user:
+    name: ansible
+    state: absent
+    remove: yes
+  tags: [install]
+
+- name: remove docker group
+  group :
+    name: docker
+    state: absent
+  tags: [docker]
+
+ 

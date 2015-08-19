@@ -1,0 +1,4 @@
+# execute: ansible-playbook reset_platforme.yml 
+- hosts: install-machines
+  roles:
+    - {role: reset}
