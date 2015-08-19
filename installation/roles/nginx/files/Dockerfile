@@ -2,6 +2,9 @@ FROM nginx
 
 MAINTAINER Raphael Tourneur
 
+RUN echo "deb http://mirrors.ircam.fr/pub/debian jessie main" >> /etc/apt/sources.list && \
+    echo "deb http://mirrors.ircam.fr/pub/debian jessie-updates main" >> /etc/apt/sources.list 
+
 # Add SSH
 RUN apt-get update && apt-get install -y openssh-server openssh-client && rm -rf /var/lib/apt/lists/*
 
