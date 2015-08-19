@@ -2,17 +2,17 @@
 - include: centos.yml
 - include: debian.yml
 
+- name: add docker group
+  group :
+    name: docker
+    state: present
+  tags: [docker]
+
 - name: make sure docker starts on boot
   service: 
     name: docker 
     enabled: yes 
     state: started
-  tags: [docker]
-
-- name: add docker group
-  group :
-    name: docker
-    state: present
   tags: [docker]
 
 - name: add ansible user to docker group
