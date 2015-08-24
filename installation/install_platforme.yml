@@ -1,5 +1,7 @@
-# execute: ansible-playbook install_platforme.yml --ask-sudo-pass
+# execute: ansible-playbook install_platforme.yml
 - hosts: install-machines
+  vars_files:
+  - "group_vars/{{ansible_distribution}}.yml"
   roles:
     - {role: install}
     - {role: docker}

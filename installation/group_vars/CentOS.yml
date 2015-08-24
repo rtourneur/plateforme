@@ -1,0 +1,4 @@
+#*** vars for CentOS hosts ***
+
+# Docker
+dockerpy_version: "1.3.1"

@@ -31,4 +31,5 @@
 - name: install docker-py
   pip:
     name: docker-py
+    version: "{{dockerpy_version}}"
   tags: [docker]
