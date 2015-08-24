@@ -32,3 +32,21 @@
     name: "polymont/nginx" 
     state: present
   tags: [nginx]
+
+- name: nginx container
+  docker:
+    name: nginx
+    image: "polymont/nginx"
+    state: started
+    ports:
+    - "80:80"
+    - "443:443"
+    - "{{nginx_ssh_port}}:22"
+    links:
+    - registry:registry
+    - gitblit:gitblit
+    - jenkins:jenkins
+    volumes:
+    - "{{docker_home}}/certs/:/etc/nginx/conf.d"
+    docker_api_version: 1.18
+  tags: [nginx, hub]

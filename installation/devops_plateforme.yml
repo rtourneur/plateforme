@@ -18,7 +18,5 @@
    - {role: registry}
 #  deploy nginx
    - {role: nginx}
-#  start hub containers
-   - {role: hub}
 #  start the last role
    - {role: last}
