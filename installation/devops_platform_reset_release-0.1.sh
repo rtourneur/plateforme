@@ -79,3 +79,8 @@ echo '[install-machines]' > ~/hosts-install && echo $host '  ansible_ssh_user=ro
 
 printf "**************************** DEPLOY THE PLATFORM ****************************\n"
 ansible-playbook plateforme/installation/reset_platforme.yml  -i ~/hosts-install
+OUT=$?
+if [ $OUT -ne 0 ]; then
+  echo " Erreur de désinstallation"
+  exit 1
+fi

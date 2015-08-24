@@ -80,4 +80,15 @@ echo '[docker-machines]' > ~/hosts-docker && echo $host '  ansible_ssh_user=ansi
 
 printf "**************************** DEPLOY THE PLATFORM ****************************\n"
 ansible-playbook plateforme/installation/install_platforme.yml --skip-tags "update_all" -i ~/hosts-install
+OUT=$?
+if [ $OUT -ne 0 ]; then
+  echo " Erreur d'installation phase 1"
+  exit 1
+fi
+
 ansible-playbook plateforme/installation/devops_plateforme.yml -i ~/hosts-docker
+OUT=$?
+if [ $OUT -ne 0 ]; then
+  echo " Erreur d'installation phase 2"
+  exit 1
+fi
