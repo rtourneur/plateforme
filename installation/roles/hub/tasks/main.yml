@@ -3,7 +3,7 @@
 
 - name: gitblit container
   docker:
-    name: hub_gitblit_1
+    name: gitblit
     image: "polymont/gitblit"
     state: started
     ports:
@@ -18,7 +18,7 @@
 
 - name: registry container
   docker:
-    name: hub_registry_1
+    name: registry
     image: "polymont/registry"
     state: started
     ports:
@@ -35,7 +35,7 @@
 
 - name: nginx container
   docker:
-    name: hub_nginx_1
+    name: nginx
     image: "polymont/nginx"
     state: started
     ports:
@@ -43,8 +43,8 @@
     - "443:443"
     - "{{nginx_ssh_port}}:22"
     links:
-    - hub_registry_1:registry
-    - hub_gitblit_1:gitblit
+    - registry:registry
+    - gitblit:gitblit
     - jenkins:jenkins
     volumes:
     - "{{docker_home}}/certs/:/etc/nginx/conf.d"
