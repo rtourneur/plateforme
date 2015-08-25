@@ -13,4 +13,4 @@ RUN useradd -p $(openssl passwd -1 '{{remote_user_password}}') -s /bin/bash -m r
 VOLUME /opt/scripts
 
 #Set gitblit hostname
-ENV GITBLIT_HOST {{inventory_hostname}}
+RUN echo {{inventory_hostname}} > /home/remote/gitblit_host && chown remote /home/remote/gitblit_host
