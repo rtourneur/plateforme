@@ -14,5 +14,6 @@ gitblit_ssh_port:   "4022"
 registry_ssh_port:  "5022"
 nginx_ssh_port:     "6022"
 
-#
+#Gitblit
+gitblit_port:       "29418"
 scripts_dir:        "/opt/scripts"
