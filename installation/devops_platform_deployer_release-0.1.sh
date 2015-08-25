@@ -79,7 +79,7 @@ echo '[install-machines]' > ~/hosts-install && echo $host '  ansible_ssh_user=ro
 echo '[docker-machines]' > ~/hosts-docker && echo $host '  ansible_ssh_user=ansible' >> ~/hosts-docker
 
 printf "**************************** DEPLOY THE PLATFORM ****************************\n"
-ansible-playbook plateforme/installation/install_platforme.yml --skip-tags "update_all" -i ~/hosts-install
+ansible-playbook plateforme/installation/install_platforme.yml --skip-tags "update_all" -i ~/hosts-install --extra-vars "host-fqdn=$host"
 OUT=$?
 if [ $OUT -ne 0 ]; then
   echo " Erreur d'installation phase 1"
@@ -92,3 +92,6 @@ if [ $OUT -ne 0 ]; then
   echo " Erreur d'installation phase 2"
   exit 1
 fi
+
+printf "**************************** REMOVE PLATFORME SOURCE CODE ****************************\n"
+rm -rf platforme

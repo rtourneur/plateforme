@@ -84,3 +84,6 @@ if [ $OUT -ne 0 ]; then
   echo " Erreur de désinstallation"
   exit 1
 fi
+
+printf "**************************** REMOVE PLATFORME SOURCE CODE ****************************\n"
+rm -rf platforme
