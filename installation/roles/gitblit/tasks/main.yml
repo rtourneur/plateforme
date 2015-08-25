@@ -7,15 +7,29 @@
     state: directory
   tags: [gitblit]
 
-- name: copy add users exec file
+- name: create gitblit data
+  file:
+    path: "{{docker_home}}/gitblit_data"
+    state: directory
+    mode: a+wx
+  tags: [gitblit]
+
+- name: copy gitblit files
   copy:
-    src: add_users.sh
-    dest: "{{gitblit_dir}}/add_users.sh"
+    src: "{{item}}"
+    dest: "{{gitblit_dir}}/{{item}}"
     mode: a+x
+  with_items:
+  - add_users.sh
+  - start.sh
+  - gitblit.sh
+  notify:
+    - stop gitblit container
+    - check or build gitblit image
   tags: [gitblit]
 
 - name: copy gitblit dockerfile
-  copy:
+  template:
     src: Dockerfile
     dest: "{{gitblit_dir}}/Dockerfile"
   notify:
@@ -35,6 +49,8 @@
     name: gitblit
     image: "polymont/gitblit"
     state: started
+    volumes:
+    - "{{docker_home}}/gitblit_data:/var/gitblit_home:rw"
     ports:
     - "127.0.0.1:8080:8080"
     - "9418:9418"

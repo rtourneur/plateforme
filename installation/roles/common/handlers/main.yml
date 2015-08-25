@@ -135,6 +135,8 @@
     - "9418:9418"
     - "29418:29418"
     - "{{gitblit_ssh_port}}:22"
+    volumes:
+    - "{{docker_home}}/gitblit_data:/var/gitblit_home:rw"
     docker_api_version: 1.18 
   tags: [gitblit, hub]
   notify:
