@@ -8,7 +8,7 @@ ENV GITBLIT_HOME /var/gitblit_home
 # Gitblit is ran with user `gitblit`, uid = variable
 # If you bind mount a volume from host/vloume from a data container,
 # ensure you use same uid
-RUN useradd -d "$GITBLIT_HOME" -u 2000 -m -s /bin/bash gitblit
+RUN useradd -d "$GITBLIT_HOME" -u {{ansible_user_uid}} -m -s /bin/bash gitblit
 
 # Gitblit home directoy is a volume, so configuration and build history
 # can be persisted and survive image upgrades
