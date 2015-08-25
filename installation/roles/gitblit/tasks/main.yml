@@ -61,3 +61,11 @@
   - stop nginx container
   tags: [gitblit, hub]
 
+- name : wait gitblit initialisation
+  pause:
+    seconds: "60"
+  tags: [gitblit]
+
+- name : configure gitblit
+  script: "configure.sh {{gitblit_admin_password}}"
+  tags: [gitblit]
