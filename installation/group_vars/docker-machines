@@ -14,6 +14,7 @@ registry_dir: "{{repo_dir}}/registry"
 tomcat_dir:   "{{repo_dir}}/tomcat"
 jenkins_dir:  "{{repo_dir}}/jenkins"
 ansible_dir:  "{{repo_dir}}/ansible"
+remote_dir:   "{{repo_dir}}/remote"
 
 #Ansible
 recettes_dir: "{{docker_home}}/recettes"
@@ -27,3 +28,6 @@ jenkins_user2_password:   "user2"
 
 #Gitblit
 gitblit_admin_password:   "admin"
+
+#Remote
+remote_user_password:   "userPA$$poly"

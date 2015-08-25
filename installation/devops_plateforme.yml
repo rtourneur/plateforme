@@ -10,6 +10,8 @@
    - {role: tomcat}
 #  deploy ansible
    - {role: ansible}
+#  deploy remote
+   - {role: remote}
 #  deploy jenkins
    - {role: jenkins}
 #  deploy gitblit

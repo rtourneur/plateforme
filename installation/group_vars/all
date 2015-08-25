@@ -7,9 +7,12 @@
 ssh_keys_generate_dir: "/home/ansible/.ssh_keys_generate"
 
 #SSH
+remote_ssh_port:    "1022"
 ansible_container_ssh_port:   "2022"
 jenkins_ssh_port:   "3022"
 gitblit_ssh_port:   "4022"
 registry_ssh_port:  "5022"
 nginx_ssh_port:     "6022"
 
+#
+scripts_dir:        "/opt/scripts"

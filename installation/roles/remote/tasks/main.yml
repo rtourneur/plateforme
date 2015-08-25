@@ -1,0 +1,53 @@
+---
+# tasks file for remote
+- name: create remote direcory
+  file:
+    path: "{{remote_dir}}"
+    state: directory
+  tags: [remote]
+
+- name: copy ssh keys to remote role
+  command: "cp -u {{item}} {{remote_dir}}"
+  with_items:
+    - ~/.ssh/id_rsa.pub
+  notify:
+    - stop remote container
+    - check or build remote image
+  tags: [remote]
+  when: generated.stdout == "true"
+
+- name: copy remote dockerfile
+  template:
+    src: Dockerfile
+    dest: "{{remote_dir}}/Dockerfile"
+  notify:
+    - stop remote container
+    - check or build remote image
+  tags: [remote]
+
+- name: create remote image
+  docker_image: 
+    path: "{{remote_dir}}" 
+    name: "polymont/remote" 
+    state: present
+  tags: [remote]
+
+- name: copy scripts 
+  copy:
+    src: ~/plateforme/logitheque/scripts/
+    dest: "{{scripts_dir}}/" 
+    mode: "0755"
+  tags: [remote]
+
+- name: run remote container
+  docker:
+    name: remote
+    image: "polymont/remote"
+    state: started 
+    stdin_open: yes
+    ports:
+    - "{{remote_ssh_port}}:22"
+    volumes: 
+    - "{{scripts_dir}}:/opt/scripts"
+    docker_api_version: 1.18
+  tags: [remote]
