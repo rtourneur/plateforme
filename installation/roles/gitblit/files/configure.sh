@@ -9,7 +9,7 @@ sshpass -p admin ssh admin@localhost -p 29418 -oStrictHostKeyChecking=no -oUserK
 
 # Verify plugins lists
 sshpass -p $password ssh admin@localhost -p 29418 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null plugin list > plugins.log
-if grep -q "powertools" gitblit.log; then
+if grep -q "powertools" plugins.log; then
    rm plugins.log
  fi
 
