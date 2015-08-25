@@ -42,6 +42,10 @@ while [ "$1" != "" ]; do
     shift
 done
 
+if [[ -z "$user" || -z "$host" ]]; then
+  usage
+  exit
+fi
 
 echo '$user = ' $user
 echo '$host = ' $host
