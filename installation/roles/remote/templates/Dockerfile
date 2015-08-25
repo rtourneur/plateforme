@@ -8,3 +8,6 @@ RUN useradd -p $(openssl passwd -1 '{{remote_user_password}}') -s /bin/bash -m r
 
 #add volume
 VOLUME /opt/scripts
+
+#Set gitblit hostname
+ENV GITBLIT_HOST {{inventory_hostname}}
