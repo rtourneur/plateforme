@@ -52,6 +52,7 @@
     state: enabled
     port: "{{item}}/tcp"
   with_items:
+  - "{{remote_ssh_port}}"
   - "{{ansible_container_ssh_port}}"
   - "{{jenkins_ssh_port}}"
   - "{{gitblit_ssh_port}}"

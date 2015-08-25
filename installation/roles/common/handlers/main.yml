@@ -148,7 +148,7 @@
     state: reloaded 
     stdin_open: yes
     ports:
-    - "{{remote_container_ssh_port}}:22"
+    - "{{remote_ssh_port}}:22"
     volumes: 
     - "{{scripts_dir}}:/opt/scripts"
     docker_api_version: 1.18
