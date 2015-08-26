@@ -6,16 +6,6 @@
     state: directory
   tags: [remote]
 
-- name: copy ssh keys to remote role
-  command: "cp -u {{item}} {{remote_dir}}"
-  with_items:
-    - ~/.ssh/id_rsa.pub
-  notify:
-    - stop remote container
-    - check or build remote image
-  tags: [remote]
-  when: generated.stdout == "true"
-
 - name: copy remote dockerfile
   template:
     src: Dockerfile
