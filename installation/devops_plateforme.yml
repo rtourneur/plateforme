@@ -1,24 +1,29 @@
 ---
-# master playbook for Devops
+# master playbook for Devops platform
 - hosts: docker-machines
+
   roles:
-#  apply for all roles
+#	get handlers for docker images construction and manipulating containers
    - {role: common}
+#	initialize common directories and configuration files
    - {role: init}
+#	initialize the base Docker image for all images of the platform (includes SSH capabilities)
    - {role: ubuntu}
+#	initialize the base Docker image for Java
    - {role: java}
+#	initialize the base Docker image for Tomcat
    - {role: tomcat}
 #  deploy ansible
    - {role: ansible}
 #  deploy remote
    - {role: remote}
-#  deploy jenkins
+   #  deploy jenkins
    - {role: jenkins}
 #  deploy gitblit
    - {role: gitblit}
 #  deploy registry
    - {role: registry}
-#  deploy nginx
+#  deploy nginx (reverse proxy for entrypoint unification)
    - {role: nginx}
-#  start the last role
+#  start the last role, performing post-install cleanup operations
    - {role: last}

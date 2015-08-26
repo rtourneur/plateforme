@@ -1,7 +1,7 @@
-Role Name
+ansible
 =========
-
-A brief description of the role goes here.
+This roles creates a Docker Image polymont/ansible
+The image holds the main rsa key of the platform, enabling ssh connection to all containers configured with this key (see polymont/ubuntu image for example).
 
 Requirements
 ------------
@@ -30,9 +30,10 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-BSD
+(c) Polymont IT Services
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+- Raphael Tourneur <raphael.tourneur@polymont.fr>
+- Abdallah BENBRAHIM <abdallah.benbrahim@polymont.fr>

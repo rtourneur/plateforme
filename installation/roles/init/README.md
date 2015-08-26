@@ -1,19 +1,18 @@
-Role Name
+init
 =========
 
-Ce rôle initialise les répertoires utilisés et copie des fichiers de configuration.
+This role initializes some common directories for the platform a copies configuration files, as a preparation for de platform deployment process.
 
 Role Variables
 --------------
 
-Les variables utilisées sont :
-
-- les répertoires principaux
+Les variables utilis�es sont :
+- les r�pertoires principaux
 
 Dependencies
 ------------
 
-Ce rôle dépend du rôle common
+Ce role dépend du role common
 
 License
 -------

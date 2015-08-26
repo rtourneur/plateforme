@@ -1,7 +1,8 @@
-Role Name
+last
 =========
 
-A brief description of the role goes here.
+Last role to be executed in the installation process. Used for cleanup operations :
+- disconnects the rsa key injection mechanism (not needed anymore, as all containers are already configured with the key)
 
 Requirements
 ------------
@@ -30,9 +31,10 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-BSD
+(c) Polymont IT Services
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+- Raphael Tourneur <raphael.tourneur@polymont.fr>
+- Abdallah BENBRAHIM <abdallah.benbrahim@polymont.fr>

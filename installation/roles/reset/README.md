@@ -1,7 +1,7 @@
-Role Name
+reset
 =========
 
-A brief description of the role goes here.
+This role is used to uninstall the Devops Platform components
 
 Requirements
 ------------
@@ -30,9 +30,10 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-BSD
+(c) Polymont IT Services
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+- Raphael Tourneur <raphael.tourneur@polymont.fr>
+- Abdallah BENBRAHIM <abdallah.benbrahim@polymont.fr>

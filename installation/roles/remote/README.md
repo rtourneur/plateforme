@@ -1,7 +1,7 @@
-Role Name
+remote
 =========
 
-A brief description of the role goes here.
+This role constructs the 'Remote' docker image for the Devops Platform. The 'Remote' is used to provide a central point to trigger non-web actions in the platform (web actions are centralized threw nginx reverse proxy) 
 
 Requirements
 ------------
@@ -30,9 +30,10 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-BSD
+(c) Polymont IT Services
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+- Raphael Tourneur <raphael.tourneur@polymont.fr>
+- Abdallah BENBRAHIM <abdallah.benbrahim@polymont.fr>

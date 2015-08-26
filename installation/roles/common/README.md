@@ -1,7 +1,7 @@
-Role Name
+common
 =========
 
-Ce rôle apporte la gestion des handlers pour la reconstruction des images docker et la relance des conteneurs.
+Ce role apporte la gestion des handlers pour la reconstruction des images docker et la relance des conteneurs.
 
 Requirements
 ------------

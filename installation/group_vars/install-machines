@@ -1,4 +1,5 @@
 #*** vars for install-machines node ***
 upassword: ansiblePA$$poly
-ansible_uid: "2000"
 
+# ansible_uid is a trick to set the same userID for different users in ansible, in gitblit and in Jenkins, so that they work together as if it was the same user. 
+ansible_uid: "2000"

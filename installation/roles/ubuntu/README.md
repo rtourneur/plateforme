@@ -1,12 +1,14 @@
-Role Name
+ubuntu
 =========
 
-A brief description of the role goes here.
+This role constructs the base Ubuntu Docker Image for the Devops platform. It includes a standard Ubuntu distribution, plus some basic tools and SSH capabilities.
+This docker Image accepts SSH connections from owner of the id_rsa.pub key
+It is intended to be used as the first layer for all docker images used in the Devops platform
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+none
 
 Role Variables
 --------------
@@ -30,9 +32,10 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-BSD
+(c) Polymont IT Services
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+- Raphael Tourneur <raphael.tourneur@polymont.fr>
+- Abdallah BENBRAHIM <abdallah.benbrahim@polymont.fr>
