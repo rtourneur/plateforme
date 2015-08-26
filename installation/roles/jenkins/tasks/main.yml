@@ -16,8 +16,8 @@
 
 - name: copy ssh public key to jenkins home
   copy:
-  src:  ~/.ssh/id_rsa.pub
-  dest:  "{{jenkins_home_dir}}/.ssh/authorized_keys" 
+    src:  ~/.ssh/id_rsa.pub
+    dest:  "{{jenkins_home_dir}}/.ssh/authorized_keys" 
   notify:
     - stop jenkins container
     - check or build jenkins image
@@ -26,8 +26,8 @@
 
 - name: copy ssh private key to jenkins home
   copy:
-  src:  ~/.ssh/id_rsa
-  dest:  "{{jenkins_home_dir}}/.ssh/id_rsa" 
+    src:  ~/.ssh/id_rsa
+    dest:  "{{jenkins_home_dir}}/.ssh/id_rsa" 
   notify:
     - stop jenkins container
     - check or build jenkins image
