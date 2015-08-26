@@ -87,8 +87,8 @@ echo '[install-machines]' > ~/hosts-install && echo $host '  ansible_ssh_user=ro
 
 printf "**************************** UNDEPLOY THE PLATFORM ****************************\n"
 skip_tags=
-if [[ $full -eq "true" ]]; then
-  skip_tags="--skip-tags \"remove-all\""
+if [ "$full" == "false" ]; then
+  skip_tags="--skip-tags remove-all"
 fi
 
 ansible-playbook plateforme/installation/reset_platforme.yml $skip_tags  -i ~/hosts-install 
