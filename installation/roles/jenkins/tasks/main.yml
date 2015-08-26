@@ -14,11 +14,20 @@
     mode: a+wx
   tags: [jenkins]
 
-- name: copy ssh keys to jenkins role
-  command: "cp -u {{item}} {{jenkins_dir}}"
-  with_items:
-    - ~/.ssh/id_rsa.pub
-    - ~/.ssh/id_rsa   
+- name: copy ssh public key to jenkins home
+  copy:
+  src:  ~/.ssh/id_rsa.pub
+  dest:  "{{jenkins_home_dir}}/.ssh/authorized_keys" 
+  notify:
+    - stop jenkins container
+    - check or build jenkins image
+  tags: [jenkins]
+  when: generated.stdout == "true"
+
+- name: copy ssh private key to jenkins home
+  copy:
+  src:  ~/.ssh/id_rsa
+  dest:  "{{jenkins_home_dir}}/.ssh/id_rsa" 
   notify:
     - stop jenkins container
     - check or build jenkins image
