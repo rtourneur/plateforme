@@ -3,5 +3,5 @@
 # Launch ssh service
 service ssh start
 
-# launch nginx
-registry cmd/registry/config.yml
+# launch registry
+registry /etc/docker/registry/config.yml
