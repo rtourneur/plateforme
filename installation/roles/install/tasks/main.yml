@@ -1,18 +1,7 @@
 ---
 # tasks file for install
-# if system is old, we need to update all yum packages
-- name: update yum
-  yum: 
-    name: "*"
-    state: latest
-  when: ansible_distribution == "CentOS" and
-          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
-  tags: [install, update_all]
-
-- name: update apt
-  apt: upgrade=yes
-  when: ansible_distribution == "Debian" 
-  tags: [install, update_all]
+- include: centos.yml
+- include: debian.yml
 
 - name: create ansible user
   user:
@@ -44,27 +33,9 @@
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
   tags: [install]
 
-- name: open ssh port in firewall
-  firewalld:
-    zone: public
-    permanent: true
-    immediate: true 
-    state: enabled
-    port: "{{item}}/tcp"
-  with_items:
-  - "{{remote_ssh_port}}"
-  - "{{ansible_container_ssh_port}}"
-  - "{{jenkins_ssh_port}}"
-  - "{{gitblit_ssh_port}}"
-  - "{{registry_ssh_port}}"
-  - "{{nginx_ssh_port}}"
-  - "{{gitblit_port}}"
-  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
-  tags: [install]
-
-- name: create script directory
+- name: create base directory
   file: 
-    path: "{{scripts_dir}}" 
+    path: "{{base_dir}}" 
     state: directory
     mode: "0777"
   tags: [install]

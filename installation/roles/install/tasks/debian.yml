@@ -1,0 +1,15 @@
+# tasks file for install / debian
+# if system is old, we need to update all apt packages
+- name: update apt
+  apt: upgrade=yes
+  when: ansible_distribution == "Debian" 
+  tags: [install, update_all]
+
+- name: install apt sshpass
+  yum: 
+    name: sshpass
+    state: latest
+  when: ansible_distribution == "Debian" 
+  tags: [install]
+
+  

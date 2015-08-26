@@ -6,6 +6,9 @@
 #   |___ echo "false" to status generated file
 ssh_keys_generate_dir: "/home/ansible/.ssh_keys_generate"
 
+# Base folder for datas
+base_dir:           "/opt/data"
+
 #SSH
 remote_ssh_port:    "1022"
 ansible_container_ssh_port:   "2022"
@@ -16,4 +19,3 @@ nginx_ssh_port:     "6022"
 
 #Gitblit
 gitblit_port:       "29418"
-scripts_dir:        "/opt/scripts"

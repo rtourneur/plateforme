@@ -17,9 +17,10 @@ ansible_dir:  "{{repo_dir}}/ansible"
 remote_dir:   "{{repo_dir}}/remote"
 
 #Ansible
-recettes_dir: "{{docker_home}}/recettes"
+recettes_dir: "{{base_dir}}/recettes"
 
 #Jenkins
+jenkins_home_dir:         "{{base_dir}}/jenkins_home"
 maven_dir:                "/usr/lib/maven"
 jenkins_version:          "1.609.2"
 jenkins_admin_password:   "admin"
@@ -27,7 +28,12 @@ jenkins_user1_password:   "user1"
 jenkins_user2_password:   "user2" 
 
 #Gitblit
+gitblit_home_dir:         "{{base_dir}}/gitblit_home"
 gitblit_admin_password:   "admin"
 
 #Remote
-remote_user_password:   "userPA$$poly"
+remote_user_password:     "userPA$$poly"
+scripts_dir:              "{{base_dir}}/scripts"
+
+#Registry
+registry_data:            "{{base_dir}}/registry_data"
