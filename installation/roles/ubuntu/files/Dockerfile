@@ -3,7 +3,7 @@ FROM ubuntu:latest
 MAINTAINER Abdallah BENBRAHIM
 
 # Add Redis, Git Curl, Zip and SSH
-RUN apt-get update && apt-get install -q -y git-core redis-server wget curl zip openssh-server openssh-client && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -q -y git-core redis-server wget curl zip openssh-server openssh-client sshpass && rm -rf /var/lib/apt/lists/*
 
 # Configure SSH and ssh user
 RUN useradd -p $(openssl passwd -1 'novia69') -G sudo -s /bin/bash -m sshuser
