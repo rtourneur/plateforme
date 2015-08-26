@@ -52,7 +52,7 @@
   file:
     path: "/var/lib/docker"
     state: absent
-  tags: [install]
+  tags: [install, remove-all]
 
 - name: remove ssh key to root
   authorized_key: 

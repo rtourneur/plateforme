@@ -3,12 +3,13 @@
 
 function usage
 {
-    echo "Usage : devops_platform_deployer_release-0.1.sh [[[-u user ] [-i host]] | [-h]]"
+    echo "Usage : devops_platform_deployer_release-0.1.sh [[[-u user ] [-i host] [[-f]]] | [-h]]"
     echo ""
     echo "Options :"
     echo "  -u USER, --user USER  Gitblit valid user"
     echo "  -i HOST, --inventory HOST"
     echo "                        Hostname for install (or ip adress)"
+    echo "  -f, --full            full suppression"
     echo "  -h, --help            show this help message and exit"
 }
  
@@ -18,6 +19,7 @@ echo "Vérification des paramètres"
 
 user=
 host=
+full=false
 
 if [ $# -eq 0 ]; then
   echo "test"
@@ -35,6 +37,8 @@ while [ "$1" != "" ]; do
                                 ;;
         -h | --help )           usage
                                 exit
+                                ;;
+        -f | --full )           full=true
                                 ;;
         * )                     usage
                                 exit 1
@@ -82,7 +86,12 @@ printf "**************************** SET HOSTS FOR ANSIBLE *********************
 echo '[install-machines]' > ~/hosts-install && echo $host '  ansible_ssh_user=root' >> ~/hosts-install
 
 printf "**************************** UNDEPLOY THE PLATFORM ****************************\n"
-ansible-playbook plateforme/installation/reset_platforme.yml  -i ~/hosts-install
+skip_tags=
+if [[ $full -eq "true" ]]; then
+  skip_tags="--skip-tags \"remove-all\""
+fi
+
+ansible-playbook plateforme/installation/reset_platforme.yml $skip_tags  -i ~/hosts-install 
 OUT=$?
 if [ $OUT -ne 0 ]; then
   echo " Erreur de désinstallation"
