@@ -98,4 +98,4 @@ if [ $OUT -ne 0 ]; then
 fi
 
 printf "**************************** REMOVE PLATFORME SOURCE CODE ****************************\n"
-rm -rf platforme
+rm -rf plateforme

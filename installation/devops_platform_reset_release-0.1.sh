@@ -81,7 +81,7 @@ ssh-copy-id -i ~/.ssh/id_rsa root@$host
 printf "**************************** SET HOSTS FOR ANSIBLE ****************************\n"
 echo '[install-machines]' > ~/hosts-install && echo $host '  ansible_ssh_user=root' >> ~/hosts-install
 
-printf "**************************** DEPLOY THE PLATFORM ****************************\n"
+printf "**************************** UNDEPLOY THE PLATFORM ****************************\n"
 ansible-playbook plateforme/installation/reset_platforme.yml  -i ~/hosts-install
 OUT=$?
 if [ $OUT -ne 0 ]; then
@@ -90,4 +90,4 @@ if [ $OUT -ne 0 ]; then
 fi
 
 printf "**************************** REMOVE PLATFORME SOURCE CODE ****************************\n"
-rm -rf platforme
+rm -rf plateforme
