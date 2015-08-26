@@ -7,9 +7,9 @@
     state: directory
   tags: [gitblit]
 
-- name: create gitblit data
+- name: create gitblit home
   file:
-    path: "{{docker_home}}/gitblit_data"
+    path: "{{gitblit_home_dir}}"
     state: directory
     mode: a+wx
   tags: [gitblit]

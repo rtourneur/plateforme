@@ -9,7 +9,7 @@
 
 - name: create jenkins home
   file:
-    path: "{{docker_home}}/jenkins_home"
+    path: "{{jenkins_home_dir}}"
     state: directory
     mode: a+wx
   tags: [jenkins]
