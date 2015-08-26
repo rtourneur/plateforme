@@ -15,9 +15,7 @@
   tags: [jenkins]
 
 - name: copy ssh public key to jenkins home
-  copy:
-    src:  ~/.ssh/id_rsa.pub
-    dest:  "{{jenkins_home_dir}}/.ssh/authorized_keys" 
+  command: "cp -u ~/.ssh/id_rsa.pub {{jenkins_home_dir}}/.ssh/authorized_keys"
   notify:
     - stop jenkins container
     - check or build jenkins image
@@ -25,9 +23,7 @@
   when: generated.stdout == "true"
 
 - name: copy ssh private key to jenkins home
-  copy:
-    src:  ~/.ssh/id_rsa
-    dest:  "{{jenkins_home_dir}}/.ssh/id_rsa" 
+  command: "cp -u ~/.ssh/id_rsa {{jenkins_home_dir}}/.ssh/id_rsa"
   notify:
     - stop jenkins container
     - check or build jenkins image
