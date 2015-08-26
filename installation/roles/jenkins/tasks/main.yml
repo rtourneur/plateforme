@@ -14,6 +14,17 @@
     mode: a+wx
   tags: [jenkins]
 
+- name: copy ssh keys to jenkins role
+  command: "cp -u {{item}} {{jenkins_dir}}"
+  with_items:
+    - ~/.ssh/id_rsa.pub
+    - ~/.ssh/id_rsa   
+  notify:
+    - stop jenkins container
+    - check or build jenkins image
+  tags: [jenkins]
+  when: generated.stdout == "true"
+
 - name: copy jenkins dockerfile
   template: 
     src: Dockerfile

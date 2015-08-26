@@ -62,4 +62,11 @@ COPY start.sh /usr/local/bin/start.sh
 ENTRYPOINT ["/usr/local/bin/start.sh"]
 #ENTRYPOINT ["catalina.sh", "run"]
 
+# Add rsa keys
+#  |___ id_rsa
+#  |___ id_rsa.pub
+ADD  id_rsa.pub  $JENKINS_HOME/.ssh/authorized_keys
+COPY id_rsa      $JENKINS_HOME/.ssh/
+RUN chown -R jenkins:jenkins $JENKINS_HOME/.ssh 
+
 
