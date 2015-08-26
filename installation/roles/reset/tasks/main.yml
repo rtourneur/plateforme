@@ -48,6 +48,12 @@
     state: absent
   tags: [docker]
 
+- name: remove docker directory
+  file:
+    path: "/var/lib/docker"
+    state: absent
+  tags: [install]
+
 - name: remove ssh key to root
   authorized_key: 
     user: root 
@@ -55,4 +61,3 @@
     state: absent
   tags: [install, ssh-remove]
   
- 
