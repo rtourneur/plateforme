@@ -7,6 +7,7 @@
     state: directory
   tags: [nginx]
 
+# when 'generated' flag is present, copy rsa keys for enabling ssh connections
 - name: copy ssh keys to nginx role
   command: "cp -u {{item}} {{nginx_dir}}"
   with_items:

@@ -30,6 +30,7 @@ RUN useradd --create-home -G wheel -s/bin/bash sshuser -p $(openssl passwd -1 'n
 # polymont/ubuntu image)
 ADD  id_rsa.pub  /home/sshuser/.ssh/authorized_keys
 COPY id_rsa      /home/sshuser/.ssh/
+#set the appropriate rights to the files
 RUN chown sshuser:sshuser /home/sshuser/.ssh && chown sshuser:sshuser /home/sshuser/.ssh/* 
 
 EXPOSE 22

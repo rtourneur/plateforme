@@ -1,7 +1,7 @@
 remote
 =========
 
-This role constructs the 'Remote' docker image for the Devops Platform. The 'Remote' is used to provide a central point to trigger non-web actions in the platform (web actions are centralized threw nginx reverse proxy) 
+This role constructs the 'Remote' docker image for the Devops Platform. The 'Remote' is used to provide a central point to trigger non-web actions in the platform (web actions are centralized threw nginx reverse proxy) . Kind of 'command proxy' for scripting from one place across the platform. May become the place for a platform API.
 
 Requirements
 ------------

@@ -1,4 +1,7 @@
 #*** vars for install-machines node ***
+# Install-machines is the template file defining some parameters for the machine used to perform the installation of the Devops platform.
+# The contents of this file will be used in the Ansible inventory definition 'hosts-install'
+
 upassword: ansiblePA$$poly
 
 # ansible_uid is a trick to set the same userID for different users in ansible, in gitblit and in Jenkins, so that they work together as if it was the same user. 

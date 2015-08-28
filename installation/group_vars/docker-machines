@@ -1,4 +1,8 @@
 #*** vars for docker-machines node ***
+# docker-machines is the template file defining some parameters for the machine used to run the Docker containers that are the components of the Devops platform.
+# Here we define some parameters for this machine, for the tools it has, and for the containers it hosts 
+# The contents of this file will be used in the Ansible inventory definition 'hosts-docker'
+
 ansible_version: 1.9.2 
 
 home_:        "{{ansible_env.HOME}}"

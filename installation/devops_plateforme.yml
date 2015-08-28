@@ -15,7 +15,7 @@
    - {role: tomcat}
 #  deploy ansible
    - {role: ansible}
-#  deploy remote
+#  deploy remote (command proxy for scripting from one place across the platform)
    - {role: remote}
    #  deploy jenkins
    - {role: jenkins}

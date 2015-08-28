@@ -1,4 +1,4 @@
 #*** vars for Debian hosts ***
 
-# Define Docker-py version to use (used by ansible, depends on Operating system)
+# Define Docker-py version to use (used by ansible for manipulating Docker, depends on Operating system)
 dockerpy_version: "1.2.3"

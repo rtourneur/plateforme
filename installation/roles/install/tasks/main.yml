@@ -3,7 +3,7 @@
 - include: centos.yml
 - include: debian.yml
 
-- name: create ansible user
+- name: create ansible user and the platform key
   user:
     name: ansible
     uid: "{{ansible_uid}}"
@@ -22,12 +22,13 @@
     state: directory
   tags: [install]
 
+# set the key copying status flag (this flag later automates copying of the key in every container, during installation)
 - name: set true to status file after the ssh keys generation
   shell: 'echo "true" > {{ssh_keys_generate_dir}}/status'
   sudo_user: ansible
   tags: [install]
 
-- name: add ssh key to ansible
+- name: add ssh deployer key to ansible
   authorized_key: 
     user: ansible 
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
@@ -40,7 +41,7 @@
     mode: "0777"
   tags: [install]
 
-- name: remove ssh key to root
+- name: remove ssh deployer key to root
   authorized_key: 
     user: root 
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

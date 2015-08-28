@@ -86,12 +86,14 @@ ssh-copy-id -i ~/.ssh/id_rsa root@$host
 # set ansible/hosts file
 printf "**************************** SET HOSTS FOR ANSIBLE ****************************\n"
 # create Ansible inventory file and configure the installer Host
+# Here we create the inventory file 'hosts-install', based on the predefined variables from the file 'install-machines', and appending the inventory definition for the Ansible host (the platform-deployer Ansible) 
 echo '[install-machines]' > ~/hosts-install && echo $host '  ansible_ssh_user=root' >> ~/hosts-install
 # create Ansible inventory file and configure the docker Host
+# Here we create the inventory file 'hosts-docker', based on the predefined variables from the file 'docker-machines', and appending the inventory definition for the Docker host (the platform-holder Docker) 
 echo '[docker-machines]' > ~/hosts-docker && echo $host '  ansible_ssh_user=ansible' >> ~/hosts-docker
 
 printf "**************************** DEPLOY THE PLATFORM ****************************\n"
-# using the installation playbook and the installer inventory file, run the install process
+# using the installation playbook and the installer inventory file, run the phase 1 of the install process
 ansible-playbook plateforme/installation/install_platforme.yml --skip-tags "update_all" -i ~/hosts-install --extra-vars "host-fqdn=$host"
 OUT=$?
 if [ $OUT -ne 0 ]; then
@@ -99,6 +101,7 @@ if [ $OUT -ne 0 ]; then
   exit 1
 fi
 
+# using the installation playbook and the docker inventory file, run the phase 2 of the install process
 ansible-playbook plateforme/installation/devops_plateforme.yml -i ~/hosts-docker
 OUT=$?
 if [ $OUT -ne 0 ]; then
@@ -107,4 +110,5 @@ if [ $OUT -ne 0 ]; then
 fi
 
 printf "**************************** REMOVE PLATFORM SOURCE CODE ****************************\n"
+# Cleanup
 rm -rf plateforme

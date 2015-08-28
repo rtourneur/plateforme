@@ -7,6 +7,7 @@
     state: directory
   tags: [ubuntu]
 
+# when 'generated' flag is present, copy rsa keys for enabling ssh connections
 - name: copy ssh keys to ubuntu role
   command: "cp -u {{item}} {{ubuntu_dir}}"
   with_items:

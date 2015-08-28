@@ -10,6 +10,7 @@ ssh_keys_generate_dir: "/home/ansible/.ssh_keys_generate"
 base_dir:           "/opt/data"
 
 #SSH
+# Each container of the platform has it own SSH port, ending with '22'. All ssh servers are reachable from Ansible without password, thanks to the RSA key configuration.
 remote_ssh_port:    "1022"
 ansible_container_ssh_port:   "2022"
 jenkins_ssh_port:   "3022"
