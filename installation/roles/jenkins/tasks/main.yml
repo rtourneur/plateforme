@@ -15,6 +15,12 @@
   tags: [jenkins]
 
 # when 'generated' flag is present, copy rsa keys for enabling ssh connections
+- name: create jenkins ssh
+  file:
+    path: "{{jenkins_home_dir}}/.ssh"
+    state: directory
+  tags: [jenkins]
+
 - name: copy ssh public key to jenkins home
   command: "cp -u ~/.ssh/id_rsa.pub {{jenkins_home_dir}}/.ssh/authorized_keys"
   tags: [jenkins]
