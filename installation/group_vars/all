@@ -20,3 +20,4 @@ nginx_ssh_port:     "6022"
 
 #Gitblit
 gitblit_port:       "29418"
+git_port:           "9418"

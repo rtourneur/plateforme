@@ -161,7 +161,7 @@
     state: reloaded
     ports:
     - "127.0.0.1:8080:8080"
-    - "9418:9418"
+    - "{{git_port}}:9418"
     - "{{gitblit_port}}:29418"
     - "{{gitblit_ssh_port}}:22"
     volumes:

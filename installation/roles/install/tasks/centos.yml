@@ -31,6 +31,7 @@
   - "{{registry_ssh_port}}"
   - "{{nginx_ssh_port}}"
   - "{{gitblit_port}}"
+  - "{{git_port}}"
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   tags: [install]
 
