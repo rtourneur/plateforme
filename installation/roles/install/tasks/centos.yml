@@ -8,6 +8,22 @@
           (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
   tags: [install, update_all]
 
+- name: Install EPEL repo
+  yum: 
+    name: "{{ epel_repo_url }}"
+    state: present
+  when: ansible_distribution == "CentOS" and
+          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  tags: [docker]
+
+- name: Import EPEL GPG key
+  rpm_key:
+    key: "{{ epel_repo_gpg_key_url }}"
+    state: present
+  when: ansible_distribution == "CentOS" and
+          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  tags: [docker]
+
 - name: install yum sshpass
   yum: 
     name: sshpass
