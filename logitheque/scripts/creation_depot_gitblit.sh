@@ -55,7 +55,7 @@ if [[ -z "$user" || -z "$appname" || -z "$projectname" ]]; then
   exit
 fi
 
-GITBLIT_HOST=`cat ~/gitblit_host`
+GITBLIT_HOST=`cat ~/plateforme_host`
 
 repository=$projectname/$appname
 if [ "$basefolder" ]; then
