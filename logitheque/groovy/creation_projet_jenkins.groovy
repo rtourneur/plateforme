@@ -25,22 +25,13 @@ credentials_store = SystemCredentialsProvider.getInstance().getStore();
 
 list = credentials_store.getCredentials(global_domain)
 
-def credentials=null 
-for (item in list){	
-	if (item instanceof UsernamePasswordCredentialsImpl && "admin".equals(((UsernamePasswordCredentialsImpl)item).getUsername())) {
-		credentials = item	
-	}	 
-}
-
-if (credentials == null) {  
-	credentials = new UsernamePasswordCredentialsImpl(
-			CredentialsScope.GLOBAL,
-			null,
-			"Utilisateur pour GitBlit",
-			"admin",
-			"{password}",
-			)
-	credentials_store.addCredentials(global_domain, credentials)
+def credentials=null
+for (item in list){
+  if (item instanceof UsernamePasswordCredentialsImpl ) {
+    if( "admin".equals(((UsernamePasswordCredentialsImpl)item).getUsername())) {
+      credentials = item
+    }
+  }
 }
 
 def scm = new hudson.plugins.git.GitSCM("{giturl}")
