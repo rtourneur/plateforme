@@ -19,5 +19,8 @@ def credentials = new UsernamePasswordCredentialsImpl(
     "admin",
     "{{gitblit_admin_password}}",
     )
-credentialsStore.addCredentials(globalDomain, credentials)
+def result = credentialsStore.addCredentials(globalDomain, credentials)
+if (!result) {
+  println("Echec de création du crédential")
+}
 
