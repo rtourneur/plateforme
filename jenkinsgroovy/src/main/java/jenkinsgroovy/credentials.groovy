@@ -5,15 +5,25 @@ import com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl
 
 def globalDomain = Domain.global()
 def credentialsStore = SystemCredentialsProvider.getInstance().getStore();
+def credentials=null
 
-def credentials = new UsernamePasswordCredentialsImpl(
-    CredentialsScope.GLOBAL,
-    null,
-    "Utilisateur pour GitBlit",
-    "admin",
-    "admin",
-    )
-def result = credentialsStore.addCredentials(globalDomain, credentials)
-if (!result) {
-  println("Echec de création du crédential")
+def list = credentialsStore.getCredentials(globalDomain)
+for (item in list){
+  if (item instanceof UsernamePasswordCredentialsImpl && "admin".equals(((UsernamePasswordCredentialsImpl)item).getUsername())) {
+    credentials = item
+  }
 }
+if (credentials == null) {
+  credentials = new UsernamePasswordCredentialsImpl(
+      CredentialsScope.GLOBAL,
+      null,
+      "Utilisateur pour GitBlit",
+      "admin",
+      "admin",
+      )
+  def result = credentialsStore.addCredentials(globalDomain, credentials)
+  if (!result) {
+    println("Echec de création du crédential")
+  }
+}
+
