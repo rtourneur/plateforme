@@ -39,3 +39,6 @@ call maven.groovy
 
 # Configure Java
 call jdk.groovy
+
+# Crée le "credentials" d'accès à GitBlit
+call credentials.groovy

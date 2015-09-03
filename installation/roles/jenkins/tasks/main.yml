@@ -99,6 +99,7 @@
   - maven.groovy
 #  - git.groovy
   - jdk.groovy
+  - credentials.groovy
   tags: [jenkins]
 
 - name : wait jenkins initialisation
@@ -121,6 +122,7 @@
   - maven.groovy
 #  - git.groovy
   - jdk.groovy
+  - credentials.groovy
   tags: [jenkins]
 
   
