@@ -36,6 +36,13 @@
     mode: "0755"
   tags: [remote]
 
+- name: copy groovy scripts 
+  copy:
+    src: ~/plateforme/logitheque/groovy/
+    dest: "{{scripts_dir}}/" 
+    mode: "0644"
+  tags: [remote]
+
 - name: run remote container
   docker:
     name: remote
