@@ -32,17 +32,6 @@ for (item in list){
 	}	 
 }
 
-if (credentials == null) {  
-	credentials = new UsernamePasswordCredentialsImpl(
-			CredentialsScope.GLOBAL,
-			null,
-			"Utilisateur pour GitBlit",
-			"admin",
-			"{password}",
-			)
-	credentials_store.addCredentials(global_domain, credentials)
-}
-
 def scm = new hudson.plugins.git.GitSCM("{giturl}")
 scm.userRemoteConfigs[0].credentialsId = credentials.getId()
 
