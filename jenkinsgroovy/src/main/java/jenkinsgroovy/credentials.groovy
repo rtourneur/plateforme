@@ -9,8 +9,10 @@ def credentials=null
 
 def list = credentialsStore.getCredentials(globalDomain)
 for (item in list){
-  if (item instanceof UsernamePasswordCredentialsImpl && "admin".equals(((UsernamePasswordCredentialsImpl)item).getUsername())) {
-    credentials = item
+  if (item instanceof UsernamePasswordCredentialsImpl ) {
+    if( "admin".equals(((UsernamePasswordCredentialsImpl)item).getUsername())) {
+      credentials = item
+    }
   }
 }
 if (credentials == null) {
