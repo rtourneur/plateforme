@@ -98,22 +98,28 @@ read -s -p "Enter Password: " mypassword
 
 # Appelle curl en specifiant l'utilisateur et en verifiant la reponse de Jenkins
 # arg1 : le script groovy
-  file=creation_projet_jenkins.groovy
+file=creation_projet_jenkins.groovy
 
 # remplacer les parametres
-sed -e "s/\"{job}\"/\"$projectname\"/"  \
+sed -e "s/\"{job}\"/\"$appname\"/"  \
     -e "s/\"{giturl}\"/\"$giturl\"/"  \
     -e "s/\"{jdk}\"/\"$jdkversion\"/"  \
     -e "s/\"{maven}\"/\"$mavenversion\"/"  \
     -e "s/\"{goals}\"/\"$mavengoals\"/"  \
         /opt/scripts/$file > /tmp/file.tmp
+OUT=$?
+if [ $OUT -ne 0 ]; then
+  echo " Erreur de configuration du fichier groovy"
+  exit 1
+fi
 
 script=`cat /tmp/file.tmp`
 rm  $file.log
 curl -u $user:$mypassword -d "script=$script" -o $file.log https://$PLATEFORME_HOST/jenkins/scriptText -k
   
-if [ -s $file.log ];
-then
+if [ -s $file.log ]; then
   echo "erreur exécution script "$file
   exit 1
+else
+  rm /tmp/file.tmp
 fi
