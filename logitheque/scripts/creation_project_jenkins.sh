@@ -80,15 +80,14 @@ if [[ -z "$mavengoals" ]]; then
   mavengoals='clean install'
 fi
 
-PLATEFORME_HOST=`cat ~/plateforme_host`
+GITBLIT_HOST=`cat ~/gitblit_host`
 
-repository=$projectname"\/"$appname
+repository=$projectname/$appname
 if [ "$basefolder" ]; then
-  repository=$basefolder"\/"$repository
+  repository=$basefolder/$repository
 fi
 
-giturl="git:\/\/"$PLATEFORME_HOST"\/"$repository.git
-echo "giturl:"$giturl
+giturl=git://$GITBLIT_HOST/$repository.git
 
 read -s -p "Enter Password: " mypassword
 
@@ -98,16 +97,16 @@ read -s -p "Enter Password: " mypassword
   file=creation_projet_jenkins.groovy
 
 # remplacer les parametres
-sed -e "s/\"{job}\"/\"$projectname\"/"  \
-    -e "s/\"{giturl}\"/\"$giturl\"/"  \
-    -e "s/\"{jdk}\"/\"$jdkversion\"/"  \
-    -e "s/\"{maven}\"/\"$mavenversion\"/"  \
-    -e "s/\"{goals}\"/\"$mavengoals\"/"  \
-    /opt/scripts/$file > /tmp/file.tmp
+sed -e 's/${job}/$projectname/' \
+    -e 's/${jdk}/$jdkversion/'  \
+    -e 's/${maven}/$mavenversion/' \
+    -e 's/${goals}/$mavengoals/' \
+    -e 's/${giturl}/$giturl/' \
+        $file > /tmp/file.tmp
 
 script=`cat /tmp/file.tmp`
-rm  $file.log
-curl -u $user:$mypassword -d "script=$script" -o $file.log https://$PLATEFORME_HOST/jenkins/scriptText -k
+ 
+curl -u $user:$password -d "script=$script" -o $file.log https://$GITBLIT_HOST/jenkins/scriptText -k
   
 if [ -s $file.log ];
 then
