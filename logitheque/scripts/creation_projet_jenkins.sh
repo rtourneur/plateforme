@@ -5,17 +5,22 @@
 
 function usage
 {
-    echo "Usage : creation_projet_jenkins.sh [[[-u USER ] [-n PROJECT_NAME] [-j JDK_VERSION] [-m MAVEN_VERSION] [-g GOALS_VALUE] [] | [-h]]"
+    echo "Usage : creation_projet_jenkins.sh [[[-u USER ] [-a application_name] [-p project_name] [[-b base_folder] [-j JDK_VERSION] [-m MAVEN_VERSION] [-g GOALS_VALUE]] | [-h]]"
     echo ""
     echo "Options :"
-    echo "  -u USER,          --user USER                    Jenkins valid user"
-    echo "  -j JDK_VERSION,   --jdk-version JDK_VERSION      JDK version"
-    echo "  -m MAVEN_VERSION, --maven-version MAVEN_VERSION  Maven version"
-    echo "  -g GOALS_VALUE,   --goals-value GOALS_VALUE      goals value"
-    echo "  -a APP_NAME,      --application APP_NAME         Application name" 
-    echo "  -p PROJECT_NAME,  --project PROJECT_NAME         Project name" 
-    echo "  -b PATH,          --base PATH                    Base folder for project"
-    echo "  -h,               --help                         show this help message and exit"
+    echo "  -u USER, --user USER  Jenkins valid user"
+    echo "  -j JDK_VERSION, --jdk-version JDK_VERSION"
+    echo "                        JDK version"
+    echo "  -m MAVEN_VERSION, --maven-version MAVEN_VERSION"
+    echo "                        Maven version"
+    echo "  -g GOALS_VALUE, --goals-value GOALS_VALUE"
+    echo "                        goals value"
+    echo "  -a APP_NAME, --application APP_NAME"
+    echo "                        Application name"
+    echo "  -p PROJECT_NAME, --project PROJECT_NAME"
+    echo "                        Project name"
+    echo "  -b PATH, --base PATH  Base folder for project"
+    echo "  -h, --help            show this help message and exit"
 }
  
 
@@ -53,7 +58,7 @@ while [ "$1" != "" ]; do
                                 ;;
         -b | --base )           shift
                                 basefolder=$1
-                                ;;                              
+                                ;;
         -h | --help )           usage
                                 exit
                                 ;;
@@ -80,33 +85,32 @@ if [[ -z "$mavengoals" ]]; then
   mavengoals='clean install'
 fi
 
-GITBLIT_HOST=`cat ~/gitblit_host`
+PLATEFORME_HOST=`cat ~/plateforme_host`
 
-repository=$projectname/$appname
+repository=$projectname"\/"$appname
 if [ "$basefolder" ]; then
-  repository=$basefolder/$repository
+  repository=$basefolder"\/"$repository
 fi
 
-giturl=git://$GITBLIT_HOST/$repository.git
+giturl="git:\/\/"$PLATEFORME_HOST"\/"$repository.git
 
 read -s -p "Enter Password: " mypassword
 
-#################################################################################################################################################################
 # Appelle curl en specifiant l'utilisateur et en verifiant la reponse de Jenkins
 # arg1 : le script groovy
   file=creation_projet_jenkins.groovy
 
 # remplacer les parametres
-sed -e 's/${job}/$projectname/' \
-    -e 's/${jdk}/$jdkversion/'  \
-    -e 's/${maven}/$mavenversion/' \
-    -e 's/${goals}/$mavengoals/' \
-    -e 's/${giturl}/$giturl/' \
-        $file > /tmp/file.tmp
+sed -e "s/\"{job}\"/\"$projectname\"/"  \
+    -e "s/\"{giturl}\"/\"$giturl\"/"  \
+    -e "s/\"{jdk}\"/\"$jdkversion\"/"  \
+    -e "s/\"{maven}\"/\"$mavenversion\"/"  \
+    -e "s/\"{goals}\"/\"$mavengoals\"/"  \
+        /opt/scripts/$file > /tmp/file.tmp
 
 script=`cat /tmp/file.tmp`
- 
-curl -u $user:$password -d "script=$script" -o $file.log https://$GITBLIT_HOST/jenkins/scriptText -k
+rm  $file.log
+curl -u $user:$mypassword -d "script=$script" -o $file.log https://$PLATEFORME_HOST/jenkins/scriptText -k
   
 if [ -s $file.log ];
 then
