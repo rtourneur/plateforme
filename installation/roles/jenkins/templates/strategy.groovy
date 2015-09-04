@@ -40,7 +40,8 @@ if (instance.getAuthorizationStrategy() instanceof GlobalMatrixAuthorizationStra
 	"hudson.model.Item.Read",
 	"hudson.model.Item.Workspace",
 	"hudson.model.Item.Cancel",
-  "hudson.model.Hudson.RunScripts"
+  "hudson.model.Hudson.RunScripts",
+  "com.cloudbees.plugins.credentials.CredentialsProvider.View"
   ]
   
   usersAuthenticated = BuildPermission.buildNewAccessList("authenticated", usersPermissions)
