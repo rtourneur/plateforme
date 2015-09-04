@@ -95,7 +95,7 @@
   with_items:
   - admin.groovy
   - users.groovy
-  - strategys.groovy
+  - strategy.groovy
   - maven.groovy
 #  - git.groovy
   - jdk.groovy
@@ -118,7 +118,7 @@
   with_items:
   - admin.groovy
   - users.groovy
-  - strategys.groovy
+  - strategy.groovy
   - maven.groovy
 #  - git.groovy
   - jdk.groovy

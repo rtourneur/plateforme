@@ -29,7 +29,7 @@ rm admin.groovy
 call users.groovy
 
 # Strategy manager
-call strategys.groovy
+call strategy.groovy
 
 # Configure Maven
 call maven.groovy

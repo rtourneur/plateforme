@@ -39,7 +39,8 @@ if (instance.getAuthorizationStrategy() instanceof GlobalMatrixAuthorizationStra
 	"hudson.model.Item.Discover",
 	"hudson.model.Item.Read",
 	"hudson.model.Item.Workspace",
-	"hudson.model.Item.Cancel"
+	"hudson.model.Item.Cancel",
+  "hudson.model.Hudson.RunScripts"
   ]
   
   usersAuthenticated = BuildPermission.buildNewAccessList("authenticated", usersPermissions)
