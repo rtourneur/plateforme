@@ -66,4 +66,4 @@ read -s -p "Enter Password: " mypassword
 
 sshpass -p $mypassword ssh $user@$GITBLIT_HOST -p 29418 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null gitblit repositories new $repository
 
-sshpass -p $mypassword ssh $user@$GITBLIT_HOST -p 29418 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null gitblit teams perms developers  RW+:$repository
+sshpass -p $mypassword ssh $user@$GITBLIT_HOST -p 29418 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null gitblit teams perms developers  RW+:$repository.git
