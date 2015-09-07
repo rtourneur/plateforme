@@ -1,2 +1,8 @@
 ---
 # handlers file for install
+
+# set the key copying status flag (this flag later automates copying of the key in every container, during installation)
+- name: set true to status file after the ssh keys generation
+  shell: 'echo "true" > {{ssh_keys_generate_dir}}/status'
+  sudo_user: ansible
+  tags: [install]

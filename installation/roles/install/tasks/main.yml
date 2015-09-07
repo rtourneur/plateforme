@@ -11,7 +11,9 @@
     password: "{{ upassword |password_hash('sha512') }}"
     generate_ssh_key: yes
     ssh_key_bits: 2048
+    update_password: on_create
   tags: [install]
+  notify: set true to status file after the ssh keys generation
 
 # Directory for ssh keys status of generation
 - name: create ssh keys generate status directory
@@ -23,8 +25,8 @@
   tags: [install]
 
 # set the key copying status flag (this flag later automates copying of the key in every container, during installation)
-- name: set true to status file after the ssh keys generation
-  shell: 'echo "true" > {{ssh_keys_generate_dir}}/status'
+- name: set false to status file after the ssh keys generation
+  shell: 'echo "false" > {{ssh_keys_generate_dir}}/status'
   sudo_user: ansible
   tags: [install]
 
