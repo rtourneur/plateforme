@@ -83,6 +83,7 @@
     - "{{jenkins_ssh_port}}:22"
     volumes:
     - "{{jenkins_home_dir}}:/var/jenkins_home:rw"
+    - "{{scripts_dir}}:/opt/scripts"
     docker_api_version: 1.18
   notify:
   - stop nginx container

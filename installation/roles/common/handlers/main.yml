@@ -9,15 +9,6 @@
   tags: [ansible]
   notify: restart ansible container
 
-- name: stop remote container
-  docker:
-    name: remote
-    image: "polymont/remote"
-    state: stopped
-    docker_api_version: 1.18
-  tags: [remote]
-  notify: restart remote container
-
 - name: stop gitblit container
   docker:
     name: gitblit
@@ -60,13 +51,6 @@
     state: build
   tags: [ansible]
 
-- name: check or build remote image
-  docker_image: 
-    path: "{{remote_dir}}"
-    name: "polymont/remote"
-    state: build
-  tags: [remote]
-
 - name: check or build ubuntu image
   docker_image: 
     path: "{{ubuntu_dir}}"
@@ -75,6 +59,23 @@
   tags: [ubuntu]
   notify: 
   - check or build java image
+  - check or build remote image
+
+- name: stop remote container
+  docker:
+    name: remote
+    image: "polymont/remote"
+    state: stopped
+    docker_api_version: 1.18
+  tags: [remote]
+  notify: restart remote container
+
+- name: check or build remote image
+  docker_image: 
+    path: "{{remote_dir}}"
+    name: "polymont/remote"
+    state: build
+  tags: [remote]
 
 - name: check or build java image
   docker_image:
@@ -181,6 +182,7 @@
     - "{{jenkins_ssh_port}}:22"
     volumes:
     - "{{jenkins_home_dir}}:/var/jenkins_home:rw"
+    - "{{scripts_dir}}:/opt/scripts"
     docker_api_version: 1.18
   tags: [jenkins, hub]
   notify:

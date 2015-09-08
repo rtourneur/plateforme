@@ -13,6 +13,9 @@ RUN useradd -d "$JENKINS_HOME" -u {{ansible_user_uid}} -m -s /bin/bash jenkins
 # can be persisted and survive image upgrades
 VOLUME /var/jenkins_home
 
+#add volume for scripts
+VOLUME /opt/scripts
+
 # `/usr/share/jenkins/ref/` contains all reference configuration we want 
 # to set on a fresh new installation. Use it to bundle additional plugins 
 # or config file with your custom jenkins Docker image.

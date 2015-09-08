@@ -7,26 +7,28 @@
   file:
     path: "{{docker_home}}"
     state: directory
+  tags: [install]
 
 # Base directory for image repository
 - name: create repo directory
   file:
     path: "{{repo_dir}}"
     state: directory
+  tags: [install]
 
 # Base directory for registry datas
 - name: create registry data
   file:
     path: "{{docker_home}}/registry_data"
     state: directory
-  tags: [hub]
+  tags: [registry]
 
 # Directory for config files
 - name: create certs directory
   file:
     path: "{{docker_home}}/certs"
     state: directory
-  tags: [hub]
+  tags: [nginx]
 
 # Copy the config files
 - name: copy certs
@@ -38,5 +40,27 @@
   - registry.conf
   - registry.key
   - registry.password
-  tags: [hub]
+  tags: [nginx]
   notify: stop nginx container
+
+- name: create scripts directory
+  file: 
+    path: "{{scripts_dir}}" 
+    state: directory
+    mode: "0755"
+  tags: [install]
+
+- name: copy bash scripts 
+  copy:
+    src: ~/plateforme/logitheque/scripts/
+    dest: "{{scripts_dir}}/" 
+    mode: "0755"
+  tags: [install]
+
+- name: copy groovy scripts 
+  copy:
+    src: ~/plateforme/logitheque/groovy/
+    dest: "{{scripts_dir}}/" 
+    mode: "0644"
+  tags: [install]
+
