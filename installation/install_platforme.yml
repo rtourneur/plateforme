@@ -5,3 +5,14 @@
   roles:
     - {role: install}
     - {role: docker}
+    - {role: ssl}
+
+  tasks:
+  - name: remove ssh deployer key to root
+    authorized_key: 
+      user: root 
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      state: absent
+    tags: [install, ssh-remove]
+  
+  

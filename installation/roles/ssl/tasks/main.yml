@@ -1,0 +1,23 @@
+---
+# tasks file for ssl
+- name: create SSL cert directory
+  file:
+    path: certs
+    state: directory
+  sudo_user: ansible
+  tags: [ssl]
+
+- name: create self-signed SSL cert
+  command: openssl req -newkey rsa:4096 -nodes -x509 -sha256 -subj "/C=FR/ST=Rhone/L=Lyon/O=Polymont IT/CN={{inventory_hostname}}" -keyout certs/registry.key -days 365 -out certs/registry.crt creates=certs/registry.crt
+  sudo_user: ansible
+  tags: [ssl]
+
+- name: create SSL cert directory for docker
+  file:
+    path: "/etc/docker/certs.d/{{inventory_hostname}}"
+    state: directory
+  tags: [ssl]
+
+- name: install SSL cert for docker
+  command: cp /home/ansible/certs/registry.crt /etc/docker/certs.d/{{inventory_hostname}}/ca.crt
+  tags: [ssl]
