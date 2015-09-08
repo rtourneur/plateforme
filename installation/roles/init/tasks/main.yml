@@ -36,10 +36,16 @@
     src: "{{item}}"
     dest: "{{docker_home}}/certs/{{item}}"
   with_items:
-  - registry.crt
   - registry.conf
-  - registry.key
   - registry.password
+  tags: [nginx]
+  notify: stop nginx container
+
+- name: copy local certs
+  command: cp -u ~/certs/{{item}} {{docker_home}}/certs/ creates="{{docker_home}}/certs/{{item}}"
+  with_items:
+  - registry.crt
+  - registry.key
   tags: [nginx]
   notify: stop nginx container
 

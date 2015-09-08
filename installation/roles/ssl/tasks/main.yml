@@ -19,5 +19,5 @@
   tags: [ssl]
 
 - name: install SSL cert for docker
-  command: cp /home/ansible/certs/registry.crt /etc/docker/certs.d/{{inventory_hostname}}/ca.crt
+  command: cp -u /home/ansible/certs/registry.crt /etc/docker/certs.d/{{inventory_hostname}}/ca.crt creates="/etc/docker/certs.d/{{inventory_hostname}}/ca.crt"
   tags: [ssl]
