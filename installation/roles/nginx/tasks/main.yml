@@ -7,16 +7,17 @@
     state: directory
   tags: [nginx]
 
+- stat: path="{{nginx_dir}}/id_rsa.pub"
+  register: nginx_id_rsa
+
 # when 'generated' flag is present, copy rsa keys for enabling ssh connections
 - name: copy ssh keys to nginx role
-  command: "cp -u {{item}} {{nginx_dir}}"
-  with_items:
-    - ~/.ssh/id_rsa.pub
+  command: cp -u ~/.ssh/id_rsa.pub {{nginx_dir}}
   notify:
   - stop nginx container 
   - check or build nginx image
   tags: [nginx]
-  when: generated.stdout == "true"
+  when: generated.stdout == "true" or nginx_id_rsa.stat.exists == False
 
 - name: copy nginx dockerfile
   copy: 

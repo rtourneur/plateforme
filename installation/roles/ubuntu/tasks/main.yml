@@ -7,15 +7,16 @@
     state: directory
   tags: [ubuntu]
 
+- stat: path="{{ubuntu_dir}}/id_rsa.pub"
+  register: ubuntu_id_rsa
+
 # when 'generated' flag is present, copy rsa keys for enabling ssh connections
 - name: copy ssh keys to ubuntu role
-  command: "cp -u {{item}} {{ubuntu_dir}}"
-  with_items:
-    - ~/.ssh/id_rsa.pub
+  command: cp -u ~/.ssh/id_rsa.pub {{ubuntu_dir}}
   notify: 
   - check or build ubuntu image
   tags: [ubuntu]
-  when: generated.stdout == "true"
+  when: generated.stdout == "true" or ubuntu_id_rsa.stat.exists == False
 
 - name: copy ubuntu dockerfile
   copy: 
