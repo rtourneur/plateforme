@@ -1,7 +1,7 @@
 ---
-# ansible playbook for ansible role
+# ansible playbook for ansible role and image
 
-- name: create ansible direcory
+- name: create docker-image directory for ansible
   file:
     path: "{{ansible_dir}}"
     state: directory

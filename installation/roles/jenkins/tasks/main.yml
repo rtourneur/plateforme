@@ -1,7 +1,7 @@
 ---
-# tasks file for jenkins
+# tasks file for jenkins image
 
-- name: create jenkins direcory
+- name: create docker-image directory for jenkins
   file:
     path: "{{jenkins_dir}}"
     state: directory

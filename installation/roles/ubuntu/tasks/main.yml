@@ -1,7 +1,7 @@
 ---
-# tasks file for ubuntu
+# tasks file for ubuntu image
 
-- name: create ubuntu direcory
+- name: create ubuntu's docker-image directory
   file:
     path: "{{ubuntu_dir}}"
     state: directory
@@ -26,7 +26,7 @@
   - check or build ubuntu image
   tags: [ubuntu]
 
-- name: check ubuntu image
+- name: check/make ubuntu image
   docker_image: 
     path: "{{ubuntu_dir}}"
     name: "polymont/ubuntu"

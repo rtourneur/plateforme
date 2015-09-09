@@ -78,7 +78,7 @@ sudo yum install -y openssh-clients sshpass
 printf "**************************** INSTALL ANSIBLE ****************************\n"
 sudo yum install -y ansible
 
-#create rsa key used for SSH connection from Ansible to containers of the platform 
+#create rsa key used for SSH connection from Ansible to platform machine
 printf "**************************** CREATE SSH KEY  ****************************\n"
 ssh-keygen -t rsa -b 2048
 ssh-copy-id -i ~/.ssh/id_rsa root@$host

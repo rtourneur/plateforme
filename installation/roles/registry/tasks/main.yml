@@ -1,7 +1,7 @@
 ---
-# tasks file for registry
+# tasks file for registry image
 
-- name: create registry direcory
+- name: create docker-image directory for registry
   file:
     path: "{{registry_dir}}"
     state: directory
@@ -38,7 +38,7 @@
   - check or build registry image
   tags: [registry]
 
-- name: check registry image
+- name: check/make registry image
   docker_image: 
     path: "{{registry_dir}}"
     name: "polymont/registry" 

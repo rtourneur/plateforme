@@ -1,6 +1,6 @@
 ---
 # tasks file for last
-# remove the key coppiing status flag after the end of installation process
+# remove the key-copying status flag after the end of installation process
 - name: set false to status file after the copy ssh keys 
   shell: 'echo "false" > {{ssh_keys_generate_dir}}/status'
   when: generated.stdout == "true"

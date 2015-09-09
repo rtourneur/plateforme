@@ -1,6 +1,6 @@
 ---
-# tasks file for roles/java
-- name: create java direcory
+# tasks file for roles/java image
+- name: create docker-image directory for java base image
   file:
     path: "{{java_dir}}"
     state: directory
@@ -12,7 +12,7 @@
   notify: 
   - check or build java image
 
-- name: check java image
+- name: check/make java image
   docker_image: 
     path: "{{java_dir}}"
     name: "polymont/java"

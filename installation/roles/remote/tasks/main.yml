@@ -1,6 +1,6 @@
 ---
-# tasks file for remote
-- name: create remote direcory
+# tasks file for platform's remote component image
+- name: create docker-image directory for remote
   file:
     path: "{{remote_dir}}"
     state: directory

@@ -1,6 +1,6 @@
 ---
-# tasks file for tomcat
-- name: create tomcat direcory
+# tasks file for tomcat image
+- name: create docker-image directory for tomcat
   file:
     path: "{{tomcat_dir}}"
     state: directory
@@ -12,7 +12,7 @@
   notify: 
   - check or build tomcat image
 
-- name: check tomcat image
+- name: check/make tomcat image
   docker_image: 
     path: "{{tomcat_dir}}"
     name: "polymont/tomcat"

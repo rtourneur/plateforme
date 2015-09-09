@@ -1,7 +1,7 @@
 ---
 # tasks file for common
 
-# detect the existence of the key copying status flag. If existing, write the output of the command in 'generated' variable - for use by conditionals in tasks -
+# detect the existence of the key-copying status flag. If existing, write the output of the command in 'generated' variable - for use by conditionals in tasks -
 - name: Recover status flag of the ssh keys regeneration
   shell: 'cat {{ssh_keys_generate_dir}}/status'
   register: generated

@@ -1,7 +1,7 @@
 ---
-# tasks file for nginx
+# tasks file for nginx image
 
-- name: create nginx direcory
+- name: create docker-image directory for nginx
   file:
     path: "{{nginx_dir}}"
     state: directory
@@ -28,7 +28,7 @@
   - check or build nginx image
   tags: [nginx]
 
-- name: check nginx image
+- name: check/make nginx image
   docker_image: 
     path: "{{nginx_dir}}"
     name: "polymont/nginx" 

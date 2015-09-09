@@ -1,7 +1,7 @@
 ---
-# tasks file for gitblit
+# tasks file for gitblit image
 
-- name: create gitblit direcory
+- name: create docker-image directory for gitblit
   file:
     path: "{{gitblit_dir}}"
     state: directory
