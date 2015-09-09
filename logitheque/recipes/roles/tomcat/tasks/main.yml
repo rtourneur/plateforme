@@ -37,18 +37,11 @@
     docker_api_version: 1.18
   tags: [tomcatComponent]
  
-# create a new "tomcat" node in the hosts inventory, add Tomcat container to it in order to inject the war file
-  - name: add Tomcat container to inventory
-    add_host: hostname="{{inventory_hostname}}"
-      groups=tomcat
-      ansible_ssh_user="sshuser"
-      ansible_ssh_port="{{tomcat_ssh_port}}"
-
 - name: get application war file 
 # get the war file to inject, from Jenkins data
-fetch :
-	# aller chercher le war dans {{jenkins_home_dir}}
+  fetch :
+    # aller chercher le war dans {{jenkins_home_dir}}
     src: "{{jenkins_home_dir}}/workspace/{{application}}/{{war_path}}/{{war_name}}"
     #TODO use project/application in the name to make it more unique
-	dest: "/tmp/{{env}}/{{war_name}}"
+    dest: "/tmp/{{env}}/{{war_name}}"
   tags: [tomcatComponent]

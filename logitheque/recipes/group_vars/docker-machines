@@ -21,5 +21,3 @@ mysql_data_home_dir:          "{{base_dir}}/mysql_data"
 jenkins_home_dir:         "{{base_dir}}/jenkins_home"
 
 
-#Env
-env:          "dev"

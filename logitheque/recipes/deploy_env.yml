@@ -3,6 +3,15 @@
   roles:
     - {role: mysql}
     - {role: tomcat}
+
+  tasks:
+  # create a new "tomcat" node in the hosts inventory, add Tomcat container to it in order to inject the war file
+  - name: add Tomcat container to inventory
+    add_host: hostname="{{inventory_hostname}}"
+        groups=tomcat
+        ansible_ssh_user="sshuser"
+        ansible_ssh_port="{{tomcat_ssh_port}}"
+    
 - hosts: tomcat
   roles:
     - {role: tomcat_application_deployer}

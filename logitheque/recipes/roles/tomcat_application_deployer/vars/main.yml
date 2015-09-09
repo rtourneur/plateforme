@@ -1,2 +1,3 @@
 ---
-# vars file for tomcat
+# vars file for tomcat deployment
+war_name: "formation-tp3-web-0.0.1-SNAPSHOT.war"
