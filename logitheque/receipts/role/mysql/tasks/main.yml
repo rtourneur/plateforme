@@ -1,0 +1,69 @@
+---
+# tasks file for mysql
+
+#- name: create mysql direcory
+#  file:
+#    path: "{{mysql_dir}}"
+#    state: directory
+#  tags: [mysql]
+
+#- name: copy ssh keys to mysql role
+#  command: cp -u ~/.ssh/id_rsa.pub {{mysql_dir}} creates="{{mysql_dir}}/id_rsa.pub"
+#  notify:
+#  - check or build mysql image
+#  tags: [mysql]
+
+#- name: copy mysql dockerfile
+#  copy: 
+#    src: Dockerfile
+#    dest: "{{mysql_dir}}/Dockerfile"
+#  notify:
+#  - check or build mysql image
+#  tags: [mysql]
+
+#- name: check mysql image
+#  docker_image: 
+#    path: "{{mysql_dir}}"
+#    name: "polymont/mysql" 
+#    state: present
+#  tags: [mysql]
+
+- name: create mysql data direcory
+  file:
+    path: "{{mysql_data_home_dir}}/{{env}}"
+    state: directory
+  tags: [mysql]
+  notify:
+  - create mysql database
+  - create mysql user
+  - import mysql data
+
+- name: start mysql container
+  docker:
+    name: "mysql_{{env}}"
+    image: "mysql:5.6.26"
+    state: started
+    ports:
+    - "{{mysql_port}}:3306"
+    - "{{mysql_ssh_port}}:22"
+    env:
+      MYSQL_ROOT_PASSWORD: {{mysql_root_password}}
+    volumes:
+    - "{{mysql_data_home_dir}}/{{env}}:/var/lib/mysql"
+    docker_api_version: 1.18
+  tags: [mysql]
+
+- name: open firewall for mysql
+  firewalld:
+    zone: public
+    permanent: true
+    immediate: true 
+    state: enabled
+    port: "{{item}}/tcp"
+  with_items:
+  - "{{mysql_port}}"
+  - "{{mysql_ssh_port}}"
+  become: yes
+  become_method: sudo
+  tags: [mysql]
+

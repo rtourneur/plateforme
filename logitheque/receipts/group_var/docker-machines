@@ -1,0 +1,25 @@
+#*** vars for docker-machines node ***
+# docker-machines is the template file defining some parameters for the machine used to run the Docker containers that are the components of the Devops platform.
+# Here we define some parameters for this machine, for the tools it has, and for the containers it hosts 
+# The contents of this file will be used in the Ansible inventory definition 'hosts-docker'
+
+# Base folder for datas
+base_dir:           "/opt/data"
+
+home_:        "{{ansible_env.HOME}}"
+
+#Docker
+docker_home:  "{{home_}}/docker"
+repo_dir:     "{{docker_home}}/repo"
+mysql_dir:    "{{repo_dir}}/mysql"
+tomcat_dir:   "{{repo_dir}}/tomcat"
+
+#Mysql
+mysql_data_home_dir:          "{{base_dir}}/mysql_data"
+
+#Jenkins
+jenkins_home_dir:         "{{base_dir}}/jenkins_home"
+
+
+#Env
+env:          "dev"
