@@ -70,3 +70,9 @@
     mode: "0644"
   tags: [install]
 
+- name: create receipts directory
+  file: 
+    path: "{{receipts_dir}}" 
+    state: directory
+  tags: [ansible]
+

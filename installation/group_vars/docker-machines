@@ -21,7 +21,7 @@ ansible_dir:  "{{repo_dir}}/ansible"
 remote_dir:   "{{repo_dir}}/remote"
 
 #Ansible
-recettes_dir: "{{base_dir}}/recettes"
+receipts_dir: "{{base_dir}}/receipts"
 
 #Jenkins
 jenkins_home_dir:         "{{base_dir}}/jenkins_home"
