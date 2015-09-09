@@ -76,3 +76,15 @@
     state: directory
   tags: [ansible]
 
+- name: copy recipes scripts 
+  copy:
+    src: ~/plateforme/logitheque/recipes/
+    dest: "{{recipes_dir}}/" 
+    mode: "0644"
+  tags: [ansible]
+
+- name: copy inventory
+  template:
+    src: inventory
+    dest: "{{recipes_dir}}/"
+  tags: [ansible]
