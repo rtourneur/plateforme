@@ -6,6 +6,8 @@
 #   |___ echo "false" to status generated file
 ssh_keys_generate_dir: "/home/ansible/.ssh_keys_generate"
 
+upassword: ansiblePA$$poly
+
 # Base folder for datas
 base_dir:           "/opt/data"
 

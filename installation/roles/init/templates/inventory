@@ -1,2 +1,2 @@
 [docker-machines]
-{{inventory_hostname}}   ansible_ssh_user=ansible
+{{inventory_hostname}}   ansible_ssh_user=ansible ansible_become_pass={{upassword}}
