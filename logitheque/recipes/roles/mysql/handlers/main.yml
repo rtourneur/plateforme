@@ -6,6 +6,7 @@
     state: present
     login_user: root
     login_password: "{{mysql_root_password}}"
+    login_host: "{{inventory_hostname}}"
     login_port: "{{mysql_port}}"
     encoding: "utf8"
     collation: "utf8_general_ci"
@@ -17,6 +18,7 @@
     state: present
     login_user: root
     login_password: "{{mysql_root_password}}"
+    login_host: "{{inventory_hostname}}"
     login_port: "{{mysql_port}}"
     priv: "{{database_name}}.*:ALL"
 
@@ -26,5 +28,6 @@
     state: import
     login_user: "{{database_user}}"
     login_password: "{{database_password}}"
+    login_host: "{{inventory_hostname}}"
     login_port: "{{mysql_port}}"
     target: "{{jenkins_home_dir}}/workspace/{{application}}/{{database_script}}"

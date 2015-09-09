@@ -1,32 +1,30 @@
 ---
 # tasks file for mysql
 
-#- name: create mysql direcory
-#  file:
-#    path: "{{mysql_dir}}"
-#    state: directory
-#  tags: [mysql]
+- name: open firewall for mysql for CentOS
+  firewalld:
+    zone: public
+    permanent: true
+    immediate: true 
+    state: enabled
+    port: "{{item}}/tcp"
+  with_items:
+  - "{{mysql_port}}"
+  - "{{mysql_ssh_port}}"
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+  become: yes
+  become_method: sudo
+  tags: [mysql]
 
-#- name: copy ssh keys to mysql role
-#  command: cp -u ~/.ssh/id_rsa.pub {{mysql_dir}} creates="{{mysql_dir}}/id_rsa.pub"
-#  notify:
-#  - check or build mysql image
-#  tags: [mysql]
-
-#- name: copy mysql dockerfile
-#  copy: 
-#    src: Dockerfile
-#    dest: "{{mysql_dir}}/Dockerfile"
-#  notify:
-#  - check or build mysql image
-#  tags: [mysql]
-
-#- name: check mysql image
-#  docker_image: 
-#    path: "{{mysql_dir}}"
-#    name: "polymont/mysql"
-#    state: present
-#  tags: [mysql]
+- name: add mysql python module for CentOS
+  yum: 
+    name: MySQL-python
+    state: present
+  when: ansible_distribution == "CentOS" and
+          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  become: yes
+  become_method: sudo
+  tags: [mysql]
 
 - name: create mysql data direcory
   file:
@@ -53,17 +51,7 @@
     docker_api_version: 1.18
   tags: [mysql]
 
-- name: open firewall for mysql
-  firewalld:
-    zone: public
-    permanent: true
-    immediate: true 
-    state: enabled
-    port: "{{item}}/tcp"
-  with_items:
-  - "{{mysql_port}}"
-  - "{{mysql_ssh_port}}"
-  become: yes
-  become_method: sudo
+- name : wait mysql initialisation
+  pause:
+    seconds: "60"
   tags: [mysql]
-
