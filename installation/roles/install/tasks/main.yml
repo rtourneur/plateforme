@@ -15,6 +15,15 @@
   tags: [install]
   notify: set true to status file after the ssh keys generation
 
+- name: add ansible user to wheel group
+  user: 
+    name: ansible
+    groups: wheel
+    append: yes
+  when: ansible_distribution == "CentOS" and
+          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  tags: [install]
+
 - name: authorize platform key to ansible
   command: cp -p /home/ansible/.ssh/id_rsa.pub /home/ansible/.ssh/authorized_keys creates=/home/ansible/.ssh/authorized_key
   tags: [install]
