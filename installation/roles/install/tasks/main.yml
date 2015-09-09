@@ -15,6 +15,10 @@
   tags: [install]
   notify: set true to status file after the ssh keys generation
 
+- name: authorize platform key to ansible
+  command: cp -p /home/ansible/.ssh/id_rsa.pub /home/ansible/.ssh/authorized_keys creates=/home/ansible/.ssh/authorized_key
+  tags: [install]
+  
 # Directory for ssh keys status of generation
 - name: create ssh keys generate status directory
   file:
