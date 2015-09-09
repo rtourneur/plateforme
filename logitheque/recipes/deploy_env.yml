@@ -1,0 +1,4 @@
+# execute: ansible-playbook deploy_env.yml 
+- hosts: docker-machines
+  roles:
+    - {role: mysql}
