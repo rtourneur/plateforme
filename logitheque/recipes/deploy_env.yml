@@ -2,3 +2,7 @@
 - hosts: docker-machines
   roles:
     - {role: mysql}
+    - {role: tomcat}
+- hosts: tomcat
+  roles:
+    - {role: tomcat_application_deployer}
