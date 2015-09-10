@@ -14,6 +14,10 @@
     mode: a+wx
   tags: [jenkins]
 
+- name: set jenkins hostname
+  command: echo {{inventory_hostname}} > {{jenkins_home_dir}}/plateforme_host
+  tags: [jenkins]
+
 # when 'generated' flag is present, copy rsa keys for enabling ssh connections
 - name: create jenkins ssh
   file:
