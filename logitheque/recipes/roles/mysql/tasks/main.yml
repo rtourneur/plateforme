@@ -16,6 +16,16 @@
   become_method: sudo
   tags: [mysql]
 
+- name: install mysql client for CentOS
+  yum:
+    name: mysql
+    state: present
+  when: ansible_distribution == "CentOS" and
+          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  become: yes
+  become_method: sudo
+  tags: [mysql]
+
 - name: add mysql python module for CentOS
   yum: 
     name: MySQL-python
