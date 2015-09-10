@@ -1,3 +1,32 @@
 
 #Env
 env:          "dev"
+
+mysql:
+  image: "mysql:5.6.26"
+  ports:
+    mysql:
+      host: "10306"
+      container: "3306"
+  database:
+    password: "root"
+    path: "src/database"
+    scripts:
+    - "create_db_formation.sql"
+    - "create_table_catalogue_formation.sql"
+
+tomcat:
+  image: "polymont/tomcat:8"
+  ports:
+    tomcat:
+      host: "10080"
+      container: "8080"
+    ssh:
+      host: "10022"
+      container: "22"
+  link:
+    container:"mysql"
+    alias:"formation" 
+  appserver:
+    path: "formation-tp3-web/target"
+    war: "formation-tp3-web-0.0.1-SNAPSHOT.war"

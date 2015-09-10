@@ -1,17 +1,2 @@
 ---
 # vars file for mysql
-
-# Global vars for deployement
-application: "victime"
-
-# Mysql vars for deployement
-mysql_port: "10306"
-mysql_ssh_port: "10122"
-mysql_root_password: "root"
-database_name: "formation"
-database_user: "formation"
-database_password: "formation"
-#database_script: "src/database/create_table_catalogue_formation.sql"
-database_path_script: "src/database"
-database_creation_script: "create_db_formation.sql"
-database_data_script: "create_table_catalogue_formation.sql"

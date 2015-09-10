@@ -1,9 +1,9 @@
-# execute: ansible-playbook deploy_env.yml 
+# execute: ansible-playbook tomcat.yml -i inventory -e application=(applicationName) -e env=(environmentName)
 - hosts: docker-machines
   roles:
-    - {role: mysql}
     - {role: tomcat}
-
+    
+- hosts: docker-machines
   tasks:
   # create a new "tomcat" node in the hosts inventory, add Tomcat container to it in order to inject the war file
   - name: add Tomcat container to inventory

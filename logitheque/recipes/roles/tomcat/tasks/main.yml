@@ -1,17 +1,15 @@
 ---
 # tasks file for tomcat component
 
-# On CentOs, open the port in the firewall to allow accessing the service
-- name: open ssh port in firewall
+# On CentOs, open the ports in the firewall to allow accessing the service
+- name: open firewall for tomcat for CentOS
   firewalld:
     zone: public
     permanent: true
     immediate: true 
     state: enabled
-    port: "{{item}}/tcp"
-  with_items:
-  - "{{tomcat_http_port}}"
-  - "{{tomcat_ssh_port}}"    
+    port: "{{item.value.host}}/tcp"
+  with_dict: "{{tomcat.ports}}"
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   become: yes
   become_method: sudo
@@ -26,22 +24,23 @@
     state: started
     
     # ports will be mapped depending on target environment
+    #TODO faire une boucle
     ports:
-    - "{{tomcat_http_port}}:8080"
-    - "{{tomcat_ssh_port}}:22"
+    - "{{tomcat.ports.tomcat.host}}:{{tomcat.ports.tomcat.container}}"
+    - "{{tomcat.ports.ssh.host}}:{{tomcat.ports.ssh.container}}"
     
     # linking with database. 
-    # This won't be hardwired in the future (assembly depends on the project !)
+    #TODO faire une boucle
     links:
-    - "mysql_{{env}}:formation" 
+    - "{{tomcat.link.container}}_{{env}}:{{tomcat.link.alias}}"
     docker_api_version: 1.18
   tags: [tomcatComponent]
  
 - name: get application war file 
 # get the war file to inject, from Jenkins data
   fetch :
-    # aller chercher le war dans {{jenkins_home_dir}}
-    src: "{{jenkins_home_dir}}/workspace/{{application}}/{{war_path}}/{{war_name}}"
+    # Get the war file from {{jenkins_home_dir}}
+    src: "{{jenkins_home_dir}}/workspace/{{application}}/{{tomcat.appserver.path}}/{{tomcat.appserver.war}}"
     #TODO use project/application in the name to make it more unique
-    dest: "/tmp/{{env}}/{{war_name}}"
+    dest: "/tmp/{{env}}/{{tomcat.appserver.war}}"
   tags: [tomcatComponent]

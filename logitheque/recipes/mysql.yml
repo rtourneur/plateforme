@@ -1,0 +1,4 @@
+# execute: ansible-playbook mysql.yml -i inventory -e application=(applicationName) -e env=(environmentName)
+- hosts: docker-machines
+  roles:
+    - {role: mysql}
