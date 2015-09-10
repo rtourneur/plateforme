@@ -7,32 +7,25 @@
     permanent: true
     immediate: true 
     state: enabled
-    port: "{{item}}/tcp"
-  with_items:
-  - "{{mysql_port}}"
-  - "{{mysql_ssh_port}}"
+    port: "{{item.value.host}}/tcp"
+  with_dict: "{{mysql.ports}}"
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   become: yes
   become_method: sudo
   tags: [mysqlComponent]
 
-- name: create mysql data direcory
+- name: create mysql data directory
   file:
     path: "{{mysql_data_home_dir}}/{{env}}"
     state: directory
   tags: [mysqlComponent]
 
 - name: copy mysql database creation file
-  command: cp {{jenkins_home_dir}}/workspace/{{application}}/{{database_path_script}}/{{database_creation_script}} {{mysql_data_home_dir}}/{{env}}/ creates="{{mysql_data_home_dir}}/{{env}}/{{database_creation_script}}"
+  command: cp {{jenkins_home_dir}}/workspace/{{application}}/{{mysql.database.path}}/{{item}} {{mysql_data_home_dir}}/{{env}}/ creates="{{mysql_data_home_dir}}/{{env}}/{{item}}"
+  with_items: "{{mysql.database.scripts}}"
   tags: [mysqlComponent]
   notify:
   - create mysql database
-
-- name: copy mysql database data file
-  command: cp {{jenkins_home_dir}}/workspace/{{application}}/{{database_path_script}}/{{database_data_script}} {{mysql_data_home_dir}}/{{env}}/ creates="{{mysql_data_home_dir}}/{{env}}/{{database_data_script}}"
-  tags: [mysqlComponent]
-  notify:
-  - import mysql data
 
 - name: start mysql container
   docker:
@@ -40,16 +33,12 @@
     image: "mysql:5.6.26"
     state: started
     ports:
-    - "{{mysql_port}}:3306"
-    - "{{mysql_ssh_port}}:22"
+    - "{{mysql.ports.mysql.host}}:{{mysql.ports.mysql.container}}"
     env:
-      MYSQL_ROOT_PASSWORD: "{{mysql_root_password}}"
+      MYSQL_ROOT_PASSWORD: "{{mysql.database.password}}"
     volumes:
     - "{{mysql_data_home_dir}}/{{env}}:/var/lib/mysql"
     docker_api_version: 1.18
   tags: [mysqlComponent]
-
-- name : wait mysql initialisation
-  pause:
-    seconds: "60"
-  tags: [mysqlComponent]
+  notify:
+  - wait mysql initialisation

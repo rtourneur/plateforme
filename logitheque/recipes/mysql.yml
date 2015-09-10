@@ -1,0 +1,4 @@
+# execute: ansible-playbook mysql.yml 
+- hosts: docker-machines
+  roles:
+    - {role: mysql}
