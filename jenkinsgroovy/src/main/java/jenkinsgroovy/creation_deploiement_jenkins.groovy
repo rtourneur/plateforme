@@ -8,7 +8,9 @@ import jenkins.triggers.ReverseBuildTrigger
 
 def instance = Jenkins.getInstance()
 
-def job_ = "{job}"
+//def job_ = "{job}"
+def job_ = "app01"
+
 def depl_ = "_deploiement"
 def job_deploiement = "$job_$depl_"
 def freeStyleProject = instance.createProject(FreeStyleProject.class,job_deploiement)
