@@ -60,6 +60,9 @@ RUN plugins.sh /usr/local/bin/active.txt
 
 COPY jenkins.sh /usr/local/bin/jenkins.sh
 
+#Set jenkins hostname
+RUN echo {{inventory_hostname}} > /home/jenkins/plateforme_host && chown jenkins /home/jenkins/plateforme_host
+
 USER root
 COPY start.sh /usr/local/bin/start.sh
 ENTRYPOINT ["/usr/local/bin/start.sh"]

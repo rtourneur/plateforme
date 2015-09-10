@@ -40,7 +40,7 @@ if [[ -z "$appname" ]]; then
   exit
 fi
 
-#PLATEFORME_HOST=`cat ~/plateforme_host`
+PLATEFORME_HOST=`cat ~/plateforme_host`
 
 # Exemple de création du dossier de l'application dans le conteneur ansible tout en utilsant une commande ansible Ad-Hoc 
 ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible localhost -m file -a 'dest=/home/sshuser/$appname state=directory'"
