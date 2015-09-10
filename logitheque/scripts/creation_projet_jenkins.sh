@@ -123,3 +123,29 @@ if [ -s $file.log ]; then
 else
   rm /tmp/file.tmp
 fi
+
+#########################################################################################################
+
+# Appelle curl en specifiant l'utilisateur et en verifiant la reponse de Jenkins
+# arg1 : le script groovy
+file2=creation_deploiement_jenkins.groovy
+
+# remplacer les parametre
+sed -e "s/\"{job}\"/\"$appname\"/"  \
+        /opt/scripts/$file2 > /tmp/file2.tmp
+OUT=$?
+if [ $OUT -ne 0 ]; then
+  echo " Erreur de configuration du fichier groovy de deploiement"
+  exit 1
+fi
+
+script=`cat /tmp/file2.tmp`
+rm  $file2.log
+curl -u $user:$mypassword -d "script=$script" -o $file2.log https://$PLATEFORME_HOST/jenkins/scriptText -k
+
+if [ -s $file2.log ]; then
+  echo "erreur exécution script "$file2
+  exit 1
+else
+  rm /tmp/file2.tmp
+fi
