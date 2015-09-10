@@ -24,6 +24,9 @@ tomcat:
     ssh:
       host: "10022"
       container: "22"
+  link:
+    container:"mysql"
+    alias:"formation" 
   appserver:
     path: "formation-tp3-web/target"
     war: "formation-tp3-web-0.0.1-SNAPSHOT.war"
