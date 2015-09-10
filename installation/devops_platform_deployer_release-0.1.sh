@@ -67,7 +67,8 @@ printf "**************************** INSTALLING GIT ****************************
 sudo yum install -y git
 
 # pull platform source code from the repository
-printf "**************************** PULL PLATFORME SOURCE CODE ****************************\n"
+printf "**************************** PULL PLATFORM SOURCE CODE ****************************\n"
+printf "Pulling from git.polymont-itservices.fr with user $user\n"
 git clone ssh://$user@git.polymont-itservices.fr:29418/Interne/4SASL00004-Devops/plateforme.git
 
 # verify ssh is installed

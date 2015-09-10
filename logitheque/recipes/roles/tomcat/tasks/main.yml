@@ -1,8 +1,8 @@
 ---
 # tasks file for tomcat component
 
-# On CentOs, open the port in the firewall to allow accessing the service
-- name: open ssh port in firewall
+# On CentOs, open the ports in the firewall to allow accessing the service
+- name: open ports in firewall
   firewalld:
     zone: public
     permanent: true
@@ -40,7 +40,7 @@
 - name: get application war file 
 # get the war file to inject, from Jenkins data
   fetch :
-    # aller chercher le war dans {{jenkins_home_dir}}
+    # Get the war file from {{jenkins_home_dir}}
     src: "{{jenkins_home_dir}}/workspace/{{application}}/{{war_path}}/{{war_name}}"
     #TODO use project/application in the name to make it more unique
     dest: "/tmp/{{env}}/{{war_name}}"
