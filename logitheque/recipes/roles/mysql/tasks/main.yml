@@ -14,36 +14,24 @@
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   become: yes
   become_method: sudo
-  tags: [mysql]
-
-- name: install mysql client for CentOS
-  yum:
-    name: mysql
-    state: present
-  when: ansible_distribution == "CentOS" and
-          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
-  become: yes
-  become_method: sudo
-  tags: [mysql]
-
-- name: add mysql python module for CentOS
-  yum: 
-    name: MySQL-python
-    state: present
-  when: ansible_distribution == "CentOS" and
-          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
-  become: yes
-  become_method: sudo
-  tags: [mysql]
+  tags: [mysqlComponent]
 
 - name: create mysql data direcory
   file:
     path: "{{mysql_data_home_dir}}/{{env}}"
     state: directory
-  tags: [mysql]
+  tags: [mysqlComponent]
+
+- name: copy mysql database creation file
+  command: cp {{jenkins_home_dir}}/workspace/{{application}}/{{database_path_script}}/{{database_creation_script}} {{mysql_data_home_dir}}/{{env}}/ creates="{{mysql_data_home_dir}}/{{env}}/{{database_creation_script}}"
+  tags: [mysqlComponent]
   notify:
   - create mysql database
-  - create mysql user
+
+- name: copy mysql database data file
+  command: cp {{jenkins_home_dir}}/workspace/{{application}}/{{database_path_script}}/{{database_data_script}} {{mysql_data_home_dir}}/{{env}}/ creates="{{mysql_data_home_dir}}/{{env}}/{{database_data_script}}"
+  tags: [mysqlComponent]
+  notify:
   - import mysql data
 
 - name: start mysql container
@@ -59,9 +47,9 @@
     volumes:
     - "{{mysql_data_home_dir}}/{{env}}:/var/lib/mysql"
     docker_api_version: 1.18
-  tags: [mysql]
+  tags: [mysqlComponent]
 
 - name : wait mysql initialisation
   pause:
     seconds: "60"
-  tags: [mysql]
+  tags: [mysqlComponent]

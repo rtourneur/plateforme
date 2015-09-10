@@ -1,34 +1,9 @@
 ---
 # handlers file for mysql
 - name: create mysql database
-  mysql_db: 
-    name: "{{database_name}}"
-    state: present
-    login_user: root
-    login_password: "{{mysql_root_password}}"
-    login_host: "{{inventory_hostname}}"
-    login_port: "{{mysql_port}}"
-    encoding: "utf8"
-    collation: "utf8_general_ci"
-
-- name: create mysql user
-  mysql_user: 
-    name: "{{database_user}}"
-    password: "{{database_password}}"
-    host: "%"
-    state: present
-    login_user: root
-    login_password: "{{mysql_root_password}}"
-    login_host: "{{inventory_hostname}}"
-    login_port: "{{mysql_port}}"
-    priv: "{{database_name}}.*:ALL"
+  command: docker exec mysql_{{env}} sh -c 'mysql --user=root --password={{mysql_root_password}} mysql < /var/lib/mysql/{{database_creation_script}}'
+  tags: [mysqlComponent]
 
 - name: import mysql data
-  mysql_db: 
-    name: "{{database_name}}"
-    state: import
-    login_user: "{{database_user}}"
-    login_password: "{{database_password}}"
-    login_host: "{{inventory_hostname}}"
-    login_port: "{{mysql_port}}"
-    target: "{{jenkins_home_dir}}/workspace/{{application}}/{{database_script}}"
+  command: docker exec mysql_{{env}} sh -c 'mysql --user={{database_user}} --password={{database_password}} {{database_name}} < /var/lib/mysql/{{database_data_script}}'
+  tags: [mysqlComponent]
