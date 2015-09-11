@@ -2,3 +2,13 @@
 - hosts: docker-machines
   tasks:
   - debug: var="{{application}}_{{env}}"
+  
+  - name: create application directory for ansible container
+    file:
+      path: "/home/sshuser/{{application}}"
+      state: directory
+    tags: [init-infra]
+  
+  - name: copy the application directory from paltforme to ansible container
+    shell: scp -r -P {{ansible_container_ssh_port}} /opt/data/jenkins_home/workspace/{{application}}/* sshuser@{{inventory_hostname}}:/home/sshuser/{{application}}
+    tags: [init-infra]
