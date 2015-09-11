@@ -5,6 +5,6 @@
   # Inject the war file in the container, under /usr/local/tomcat/webapps
   copy:
     # Inject in tomcat autodeploy dir 
-    src: "/tmp/{{env}}/{{war_name}}"
+    src: "/tmp/{{env}}/{{tomcat.appserver.war}}"
     dest: "/usr/local/tomcat/webapps"
   tags: [tomcatDeployer]

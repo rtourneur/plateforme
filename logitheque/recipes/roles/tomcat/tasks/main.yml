@@ -37,10 +37,14 @@
   tags: [tomcatComponent]
  
 - name: get application war file 
-# get the war file to inject, from Jenkins data
+  # get the war file to inject, from Jenkins data
   fetch :
     # Get the war file from {{jenkins_home_dir}}
+    # TODO corriger cela. la source semble ne pas être la bonne, car dans le serveur tomcat, le war ne fait pas la bonne taille. 
+    # Le war se trouve sur /opt/data/jenkins_home/workspace/application1/formation-tp3-web/target/formation-tp3-web-0.0.1-SNAPSHOT.war
+    # ex : src=/opt/data/jenkins_home/workspace/application1/formation-tp3-web/target/formation-tp3-web-0.0.1-SNAPSHOT.war
     src: "{{jenkins_home_dir}}/workspace/{{application}}/{{tomcat.appserver.path}}/{{tomcat.appserver.war}}"
     #TODO use project/application in the name to make it more unique
-    dest: "/tmp/{{env}}/{{tomcat.appserver.war}}"
+    dest: "/tmp/{{env}}/"
+    flat: "yes"
   tags: [tomcatComponent]
