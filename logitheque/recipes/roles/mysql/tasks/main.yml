@@ -1,14 +1,21 @@
 ---
 # tasks file for mysql
 
+- name: erase mysql data directory
+  file:
+    path: "{{mysql_data_home_dir}}/{{env}}/{{component_name}}"
+    state: absent
+  tags: [mysqlComponent]
+  when: database.erase_data_directory == "true"
+  
 - name: create mysql data directory
   file:
-    path: "{{mysql_data_home_dir}}/{{env}}/{{name}}"
+    path: "{{mysql_data_home_dir}}/{{env}}/{{component_name}}"
     state: directory
   tags: [mysqlComponent]
 
 - name: copy mysql database creation file
-  command: cp {{project_home_dir}}/{{database.path}}/{{item}} {{mysql_data_home_dir}}/{{env}}/{{name}}/ creates="{{mysql_data_home_dir}}/{{env}}/{{name}}/{{item}}"
+  command: cp {{project_home_dir}}/{{item}} {{mysql_data_home_dir}}/{{env}}/{{component_name}}/ creates="{{mysql_data_home_dir}}/{{env}}/{{component_name}}/{{item}}"
   with_items: "{{database.scripts}}"
   tags: [mysqlComponent]
   notify:
@@ -16,7 +23,7 @@
 
 - name: start mysql container
   docker:
-    name: "{{name}}_{{env}}"
+    name: "{{component_name}}_{{env}}"
     image: "{{image}}"
     state: started
     ports:
@@ -24,7 +31,7 @@
     env:
       MYSQL_ROOT_PASSWORD: "{{database.password}}"
     volumes:
-    - "{{mysql_data_home_dir}}/{{env}}/{{name}}:/var/lib/mysql"
+    - "{{mysql_data_home_dir}}/{{env}}/{{component_name}}:/var/lib/mysql"
     docker_api_version: 1.18
   tags: [mysqlComponent]
   notify:

@@ -3,17 +3,18 @@
 
 # Create the container for Tomcat Component. Prepare some files and configuration
 - hosts: docker-machines
-# load variables in specified files
-  vars_files:
-  - "/tmp/config/{{env}}/{{application}}/{{name}}/{{file}}"
+  # load configuration for the component
+  vars_files: 
+    - "/tmp/config/{{env}}/{{application}}/{{component_name}}/{{configuration_file}}"
   roles:
     - {role: common}
     - {role: tomcat}
 
 # Prepare a 'tomcat' entry in inventory, pointing to the Tomcat container  
 - hosts: docker-machines
-  vars_files:
-  - "/tmp/config/{{env}}/{{application}}/{{name}}/{{file}}"
+  # load configuration for the component
+  vars_files: 
+    - "/tmp/config/{{env}}/{{application}}/{{component_name}}/{{configuration_file}}"
   tasks:
   # create a new "tomcat" node in the hosts inventory
   - name: add Tomcat container to inventory
@@ -24,7 +25,9 @@
 
 # Deploy in the Tomcat container
 - hosts: tomcat
-  vars_files:
-  - "/tmp/config/{{env}}/{{application}}/{{name}}/{{file}}"
+  # load configuration for the component
+  vars_files: 
+    - "/tmp/config/{{env}}/{{application}}/{{component_name}}/{{configuration_file}}"
+  # deploy in container
   roles:
     - {role: tomcat_application_deployer}
