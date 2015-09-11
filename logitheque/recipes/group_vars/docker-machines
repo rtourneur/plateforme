@@ -14,5 +14,4 @@ jenkins_home_dir:         "{{base_dir}}/jenkins_home"
 project_home_dir:         "{{jenkins_home_dir}}/workspace/{{application}}"
 
 #Ansible
-ansible_config:           "/tmp/config"
-ansible_env:              "{{ansible_config}}/env"
+ansible_application_dir:  "/tmp/config/env"

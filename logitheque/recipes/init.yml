@@ -2,25 +2,9 @@
 - hosts: docker-machines
   tasks:
   - debug: var="{{application}}_{{env}}"
-  
-  - name: create config directory for ansible container
-    file:
-      path: "{{ansible_config}}"
-      state: directory
-    tags: [init-infra]
 
-  - name: create environment directory for ansible container
-    file:
-      path: "{{ansible_env}}"
-      state: directory
-    tags: [init-infra]
-    
-  - name: create application directory for ansible container
-    file:
-      path: "{{ansible_env}}/{{application}}"
-      state: directory
-    tags: [init-infra]
-      
-  - name: copy the application directory from paltforme to ansible container
-    shell: scp -r -P {{ansible_container_ssh_port}} /opt/data/jenkins_home/workspace/{{application}}/* sshuser@{{inventory_hostname}}:{{ansible_env}}/{{application}}
-    tags: [init-infra]
+  - name: create the local directory 
+    local_action: file path={{ansible_application_dir}} state=directory
+
+  - name: pull the application directory for ansible container
+    synchronize: mode=pull src=/opt/data/jenkins_home/workspace/{{application}} dest={{ansible_application_dir}}
