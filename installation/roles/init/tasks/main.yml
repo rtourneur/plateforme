@@ -32,7 +32,7 @@
 
 # Copy the config files
 - name: copy certs
-  copy: 
+  template: 
     src: "{{item}}"
     dest: "{{docker_home}}/certs/{{item}}"
   with_items:
