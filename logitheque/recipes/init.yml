@@ -3,12 +3,24 @@
   tasks:
   - debug: var="{{application}}_{{env}}"
   
-  - name: create application directory for ansible container
+  - name: create config directory for ansible container
     file:
-      path: "/home/sshuser/{{application}}"
+      path: "{{ansible_config}}"
       state: directory
     tags: [init-infra]
-  
+
+  - name: create environment directory for ansible container
+    file:
+      path: "{{ansible_env}}"
+      state: directory
+    tags: [init-infra]
+    
+  - name: create application directory for ansible container
+    file:
+      path: "{{ansible_env}}/{{application}}"
+      state: directory
+    tags: [init-infra]
+      
   - name: copy the application directory from paltforme to ansible container
-    shell: scp -r -P {{ansible_container_ssh_port}} /opt/data/jenkins_home/workspace/{{application}}/* sshuser@{{inventory_hostname}}:/home/sshuser/{{application}}
+    shell: scp -r -P {{ansible_container_ssh_port}} /opt/data/jenkins_home/workspace/{{application}}/* sshuser@{{inventory_hostname}}:{{ansible_env}}/{{application}}
     tags: [init-infra]

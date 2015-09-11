@@ -13,3 +13,6 @@ mysql_data_home_dir:          "{{base_dir}}/mysql_data/{{application}}"
 jenkins_home_dir:         "{{base_dir}}/jenkins_home"
 project_home_dir:         "{{jenkins_home_dir}}/workspace/{{application}}"
 
+#Ansible
+ansible_config:           "/tmp/config"
+ansible_env:              "{{ansible_config}}/env"
