@@ -10,7 +10,7 @@
     add_host: hostname="{{inventory_hostname}}"
         groups=tomcat
         ansible_ssh_user="sshuser"
-        ansible_ssh_port="{{tomcat_ssh_port}}"
+        ansible_ssh_port="{{tomcat.ports.ssh.host}}"
     
 - hosts: tomcat
   roles:
