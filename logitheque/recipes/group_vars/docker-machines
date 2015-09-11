@@ -7,7 +7,7 @@
 base_dir:           "/opt/data"
 
 #Mysql
-mysql_data_home_dir:          "{{base_dir}}/mysql_data"
+mysql_data_home_dir:          "{{base_dir}}/mysql_data/{{application}}"
 
 #Jenkins
 jenkins_home_dir:         "{{base_dir}}/jenkins_home"
