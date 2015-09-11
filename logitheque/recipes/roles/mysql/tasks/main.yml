@@ -1,43 +1,30 @@
 ---
 # tasks file for mysql
 
-- name: open firewall for mysql for CentOS
-  firewalld:
-    zone: public
-    permanent: true
-    immediate: true 
-    state: enabled
-    port: "{{item.value.host}}/tcp"
-  with_dict: "{{mysql.ports}}"
-  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
-  become: yes
-  become_method: sudo
-  tags: [mysqlComponent]
-
 - name: create mysql data directory
   file:
-    path: "{{mysql_data_home_dir}}/{{env}}"
+    path: "{{mysql_data_home_dir}}/{{env}}/{{name}}"
     state: directory
   tags: [mysqlComponent]
 
 - name: copy mysql database creation file
-  command: cp {{jenkins_home_dir}}/workspace/{{application}}/{{mysql.database.path}}/{{item}} {{mysql_data_home_dir}}/{{env}}/ creates="{{mysql_data_home_dir}}/{{env}}/{{item}}"
-  with_items: "{{mysql.database.scripts}}"
+  command: cp {{project_home_dir}}/{{database.path}}/{{item}} {{mysql_data_home_dir}}/{{env}}/{{name}}/ creates="{{mysql_data_home_dir}}/{{env}}/{{name}}/{{item}}"
+  with_items: "{{database.scripts}}"
   tags: [mysqlComponent]
   notify:
   - create mysql database
 
 - name: start mysql container
   docker:
-    name: "mysql_{{env}}"
-    image: "mysql:5.6.26"
+    name: "{{name}}_{{env}}"
+    image: "{{image}}"
     state: started
     ports:
-    - "{{mysql.ports.mysql.host}}:{{mysql.ports.mysql.container}}"
+    - "{{ports.mysql.host}}:{{ports.mysql.container}}"
     env:
-      MYSQL_ROOT_PASSWORD: "{{mysql.database.password}}"
+      MYSQL_ROOT_PASSWORD: "{{database.password}}"
     volumes:
-    - "{{mysql_data_home_dir}}/{{env}}:/var/lib/mysql"
+    - "{{mysql_data_home_dir}}/{{env}}/{{name}}:/var/lib/mysql"
     docker_api_version: 1.18
   tags: [mysqlComponent]
   notify:

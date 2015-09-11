@@ -3,5 +3,9 @@
 
 # Create and configure the container for Mysql Component
 - hosts: docker-machines
+# load variables in specified files
+  vars_files:
+  - "/tmp/config/{{env}}/{{application}}/{{name}}/{{file}}"
   roles:
+    - {role: common}
     - {role: mysql}

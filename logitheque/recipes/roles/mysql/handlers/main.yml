@@ -9,6 +9,6 @@
 
 # apply the SQL script for data initialization
 - name: create mysql database
-  command: docker exec mysql_{{env}} sh -c 'mysql --user=root --password={{mysql.database.password}} mysql < /var/lib/mysql/{{item}}'
-  with_items: "{{mysql.database.scripts}}"
+  command: docker exec {{name}}_{{env}} sh -c 'mysql --user=root --password={{database.password}} mysql < /var/lib/mysql/{{item}}'
+  with_items: "{{database.scripts}}"
   tags: [mysqlComponent]

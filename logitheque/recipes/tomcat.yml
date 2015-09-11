@@ -3,20 +3,28 @@
 
 # Create the container for Tomcat Component. Prepare some files and configuration
 - hosts: docker-machines
+# load variables in specified files
+  vars_files:
+  - "/tmp/config/{{env}}/{{application}}/{{name}}/{{file}}"
   roles:
+    - {role: common}
     - {role: tomcat}
 
 # Prepare a 'tomcat' entry in inventory, pointing to the Tomcat container  
 - hosts: docker-machines
+  vars_files:
+  - "/tmp/config/{{env}}/{{application}}/{{name}}/{{file}}"
   tasks:
   # create a new "tomcat" node in the hosts inventory
   - name: add Tomcat container to inventory
     add_host: hostname="{{inventory_hostname}}"
         groups=tomcat
         ansible_ssh_user="sshuser"
-        ansible_ssh_port="{{tomcat.ports.ssh.host}}"
+        ansible_ssh_port="{{ports.ssh.host}}"
 
 # Deploy in the Tomcat container
 - hosts: tomcat
+  vars_files:
+  - "/tmp/config/{{env}}/{{application}}/{{name}}/{{file}}"
   roles:
     - {role: tomcat_application_deployer}

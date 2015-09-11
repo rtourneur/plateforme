@@ -1,0 +1,17 @@
+---
+# tasks file for common
+
+# On CentOs, open the ports in the firewall to allow accessing the service
+- name: open firewall for component
+  firewalld:
+    zone: public
+    permanent: true
+    immediate: true 
+    state: enabled
+    port: "{{item.value.host}}/tcp"
+  with_dict: "{{ports}}"
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+  become: yes
+  become_method: sudo
+  tags: [firewallComponent]
+

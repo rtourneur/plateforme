@@ -6,18 +6,10 @@
 # Base folder for datas
 base_dir:           "/opt/data"
 
-home_:        "{{ansible_env.HOME}}"
-
-#Docker
-docker_home:  "{{home_}}/docker"
-repo_dir:     "{{docker_home}}/repo"
-mysql_dir:    "{{repo_dir}}/mysql"
-tomcat_dir:   "{{repo_dir}}/tomcat"
-
 #Mysql
 mysql_data_home_dir:          "{{base_dir}}/mysql_data"
 
 #Jenkins
 jenkins_home_dir:         "{{base_dir}}/jenkins_home"
-
+project_home_dir:         "{{jenkins_home_dir}}/workspace/{{application}}"
 

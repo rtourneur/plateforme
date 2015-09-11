@@ -3,5 +3,5 @@
 
 # set write permission to Tomcat's autodeploy directory
 - name: set credentials for webapps directory
-  command: docker exec tomcat_{{env}} sh -c 'chmod a+w /usr/local/tomcat/webapps'
+  command: docker exec {{name}}_{{env}} sh -c 'chmod a+w /usr/local/tomcat/webapps'
   tags: [tomcatComponent]

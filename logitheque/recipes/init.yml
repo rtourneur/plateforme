@@ -1,0 +1,4 @@
+
+- hosts: docker-machines
+  tasks:
+  - debug: var="{{application}}_{{env}}"

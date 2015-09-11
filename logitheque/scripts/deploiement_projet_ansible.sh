@@ -30,7 +30,7 @@ while [ "$1" != "" ]; do
                                 ;;
         -e | --envir )          shift
                                 env=$1
-                                ;;                              
+                                ;;
         -h | --help )           usage
                                 exit
                                 ;;
@@ -47,5 +47,17 @@ fi
 
 PLATEFORME_HOST=`cat ~/plateforme_host`
 
-# Exemple de création du dossier de l'application dans le conteneur ansible tout en utilsant une commande ansible Ad-Hoc 
-#ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible localhost -m file -a 'dest=/home/sshuser/$appname state=directory'"
+# copy the ansible configuration file into the home directory
+ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "cp -u /opt/recipes/ansible.cfg ."
+
+# execute the init playbook
+ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/init.yml -i /opt/recipes/inventory -e application=$appname -e env=$env"
+
+# execute the playbooks for each directories in config/env 
+for dir in $(ls ~/workspace/$appname/src/config/$env)
+do 
+  cd ~/workspace/$appname/src/config/$env/$dir
+  file=$(ls *yml)
+  echo ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/inventory -e application=$appname -e env=$env -e name=$dir -e file=$file"
+  ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/inventory -e application=$appname -e env=$env -e name=$dir -e file=$file"
+done

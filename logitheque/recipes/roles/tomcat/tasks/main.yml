@@ -1,38 +1,24 @@
 ---
 # tasks file for tomcat component
 
-# On CentOs, open the ports in the firewall to allow accessing the service
-- name: open firewall for tomcat for CentOS
-  firewalld:
-    zone: public
-    permanent: true
-    immediate: true 
-    state: enabled
-    port: "{{item.value.host}}/tcp"
-  with_dict: "{{tomcat.ports}}"
-  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
-  become: yes
-  become_method: sudo
-  tags: [tomcatComponent]
-  
   # launch the container for Tomcat
 - name: launch Tomcat container
   docker:
     #  Container name depends on environment
-    name: "tomcat_{{env}}"
-    image: "polymont/tomcat:8"
+    name: "{{name}}_{{env}}"
+    image: "{{image}}"
     state: started
     
     # ports will be mapped depending on target environment
     #TODO faire une boucle
     ports:
-    - "{{tomcat.ports.tomcat.host}}:{{tomcat.ports.tomcat.container}}"
-    - "{{tomcat.ports.ssh.host}}:{{tomcat.ports.ssh.container}}"
+    - "{{ports.tomcat.host}}:{{ports.tomcat.container}}"
+    - "{{ports.ssh.host}}:{{ports.ssh.container}}"
     
     # linking with database. 
     #TODO faire une boucle
     links:
-    - "{{tomcat.link.container}}_{{env}}:{{tomcat.link.alias}}"
+    - "{{link.container}}_{{env}}:{{link.alias}}"
     docker_api_version: 1.18
   tags: [tomcatComponent]
   # notify handler : set write permission to Tomcat's autodeploy directory
@@ -42,11 +28,11 @@
 - name: get application war file 
   # get the war file to inject, from Jenkins data. Put it in a temporary place for later deployment
   fetch :
-    # Get the war file from {{jenkins_home_dir}}
+    # Get the war file from {{project_home_dir}}
     # TODO corriger cela. la source semble ne pas être la bonne, car dans le serveur tomcat, le war ne fait pas la bonne taille. 
     # Le war se trouve sur /opt/data/jenkins_home/workspace/application1/formation-tp3-web/target/formation-tp3-web-0.0.1-SNAPSHOT.war
     # ex : src=/opt/data/jenkins_home/workspace/application1/formation-tp3-web/target/formation-tp3-web-0.0.1-SNAPSHOT.war
-    src: "{{jenkins_home_dir}}/workspace/{{application}}/{{tomcat.appserver.path}}/{{tomcat.appserver.war}}"
+    src: "{{project_home_dir}}/{{appserver.path}}/{{appserver.war}}"
     #TODO use project/application in the name to make it more unique
     dest: "/tmp/{{env}}/"
     flat: yes
