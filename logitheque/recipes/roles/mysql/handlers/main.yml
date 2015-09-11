@@ -1,10 +1,13 @@
 ---
 # handlers file for mysql
+
+# wait some time for startup of the component, before allowing further configuration tasks
 - name : wait mysql initialisation
   pause:
     seconds: "60"
   tags: [mysqlComponent]
 
+# apply the SQL script for data initialization
 - name: create mysql database
   command: docker exec mysql_{{env}} sh -c 'mysql --user=root --password={{mysql.database.password}} mysql < /var/lib/mysql/{{item}}'
   with_items: "{{mysql.database.scripts}}"

@@ -1,4 +1,7 @@
 # execute: ansible-playbook mysql.yml -i inventory -e application=(applicationName) -e env=(environmentName)
+# This playbook handles Tomcat component setup and deployment.
+
+# Create and configure the container for Mysql Component
 - hosts: docker-machines
   roles:
     - {role: mysql}

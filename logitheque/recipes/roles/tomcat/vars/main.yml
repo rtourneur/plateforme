@@ -1,10 +1,2 @@
 ---
 # vars file for tomcat component
-tomcat_http_port: "10080"
-tomcat_ssh_port: "10022"
-war_path: "formation-tp3-web/target"
-war_name: "formation-tp3-web-0.0.1-SNAPSHOT.war"
-
-# Global vars for deployement
-application: "victime"
-

@@ -1,17 +1,22 @@
 # execute: ansible-playbook tomcat.yml -i inventory -e application=(applicationName) -e env=(environmentName)
+# This playbook handles Tomcat component setup and deployment.
+
+# Create the container for Tomcat Component. Prepare some files and configuration
 - hosts: docker-machines
   roles:
     - {role: tomcat}
-    
+
+# Prepare a 'tomcat' entry in inventory, pointing to the Tomcat container  
 - hosts: docker-machines
   tasks:
-  # create a new "tomcat" node in the hosts inventory, add Tomcat container to it in order to inject the war file
+  # create a new "tomcat" node in the hosts inventory
   - name: add Tomcat container to inventory
     add_host: hostname="{{inventory_hostname}}"
         groups=tomcat
         ansible_ssh_user="sshuser"
         ansible_ssh_port="{{tomcat.ports.ssh.host}}"
-    
+
+# Deploy in the Tomcat container
 - hosts: tomcat
   roles:
     - {role: tomcat_application_deployer}

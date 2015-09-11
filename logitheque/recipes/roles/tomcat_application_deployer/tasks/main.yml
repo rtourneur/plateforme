@@ -1,10 +1,11 @@
 ---
 # tasks file for tomcat application deployment
 
+# Inject the war file in the container, in tomcat's autodeploy directory /usr/local/tomcat/webapps
 - name: inject application war file in tomcat
-  # Inject the war file in the container, under /usr/local/tomcat/webapps
   copy:
-    # Inject in tomcat autodeploy dir 
+    # the war file has been placed in /tmp/env by tomcat role
     src: "/tmp/{{env}}/{{tomcat.appserver.war}}"
+    # Inject in tomcat autodeploy dir 
     dest: "/usr/local/tomcat/webapps"
   tags: [tomcatDeployer]

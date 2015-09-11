@@ -35,9 +35,12 @@
     - "{{tomcat.link.container}}_{{env}}:{{tomcat.link.alias}}"
     docker_api_version: 1.18
   tags: [tomcatComponent]
+  # notify handler : set write permission to Tomcat's autodeploy directory
+  notify: 
+  - set credentials for webapps directory
  
 - name: get application war file 
-  # get the war file to inject, from Jenkins data
+  # get the war file to inject, from Jenkins data. Put it in a temporary place for later deployment
   fetch :
     # Get the war file from {{jenkins_home_dir}}
     # TODO corriger cela. la source semble ne pas être la bonne, car dans le serveur tomcat, le war ne fait pas la bonne taille. 
@@ -46,5 +49,5 @@
     src: "{{jenkins_home_dir}}/workspace/{{application}}/{{tomcat.appserver.path}}/{{tomcat.appserver.war}}"
     #TODO use project/application in the name to make it more unique
     dest: "/tmp/{{env}}/"
-    flat: "yes"
+    flat: yes
   tags: [tomcatComponent]

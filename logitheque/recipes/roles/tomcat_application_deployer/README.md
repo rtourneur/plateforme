@@ -1,7 +1,8 @@
 tomcat component
 =========
 
-This role manages tasks for tomcat infrastructure component
+This role manages tasks for deployment in tomcat infrastructure component
+It is intended to work in the Tomcat container prepared by tomcat role.
 
 Requirements
 ------------
