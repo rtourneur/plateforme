@@ -8,6 +8,7 @@ function usage
     echo "Options :"
     echo "  -a APP_NAME, --application APP_NAME"
     echo "                        Application name"
+    echo "  -e ENV, --envir ENV   Deployment environment"
     echo "  -h, --help            show this help message and exit"
 }
 
@@ -15,6 +16,7 @@ function usage
 echo "Vérification des paramètres"
 
 appname=
+env=
 
 if [ $# -eq 0 ]; then
   usage
@@ -26,6 +28,9 @@ while [ "$1" != "" ]; do
         -a | --application )    shift
                                 appname=$1
                                 ;;
+        -e | --envir )          shift
+                                env=$1
+                                ;;                              
         -h | --help )           usage
                                 exit
                                 ;;
@@ -35,7 +40,7 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if [[ -z "$appname" ]]; then
+if [[ -z "$appname" || -z "$env" ]]; then
   usage
   exit
 fi
@@ -43,4 +48,4 @@ fi
 PLATEFORME_HOST=`cat ~/plateforme_host`
 
 # Exemple de création du dossier de l'application dans le conteneur ansible tout en utilsant une commande ansible Ad-Hoc 
-ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible localhost -m file -a 'dest=/home/sshuser/$appname state=directory'"
+#ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible localhost -m file -a 'dest=/home/sshuser/$appname state=directory'"

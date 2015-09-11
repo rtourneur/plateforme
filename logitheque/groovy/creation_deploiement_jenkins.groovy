@@ -13,7 +13,7 @@ def depl_ = "_deploiement"
 def job_deploiement = "$job_$depl_"
 def freeStyleProject = instance.createProject(FreeStyleProject.class,job_deploiement)
 
-def command = "/opt/scripts/deploiement_projet_ansible.sh -a $job_"
+def command = "/opt/scripts/deploiement_projet_ansible.sh -a $job_ -e dev"
 Builder build= new Shell(command);
 
 /*
