@@ -7,4 +7,4 @@
     local_action: file path={{ansible_application_dir}} state=directory
 
   - name: pull the application directory for ansible container
-    synchronize: mode=pull src=/opt/data/jenkins_home/workspace/{{application}} dest={{ansible_application_dir}}
+    synchronize: mode=pull src={{project_home_dir}}/src/config/{{env}}/ dest={{ansible_application_dir}}
