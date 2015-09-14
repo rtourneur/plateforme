@@ -50,14 +50,17 @@ PLATEFORME_HOST=`cat ~/plateforme_host`
 # copy the ansible configuration file into the home directory
 ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "cp -u /opt/recipes/ansible.cfg ."
 
+# Get the name of the inventory file
+  . ~/workspace/$appname/src/config/$env/infra.properties
+  
 # execute the init playbook
-ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/init.yml -i /opt/recipes/inventory -e application=$appname -e env=$env"
+ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/init.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
 
 # execute the playbooks for each directories in config/env, each directory being named after the name of the component it configures 
 for dir in $(ls ~/workspace/$appname/src/config/$env)
 do 
   cd ~/workspace/$appname/src/config/$env/$dir
   file=$(ls *yml)
-  echo ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/inventory -e application=$appname -e env=$env -e component_name=$dir -e configuration_file=$file"
-  ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/inventory -e application=$appname -e env=$env -e component_name=$dir -e configuration_file=$file"
+  echo ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$dir -e configuration_file=$file"
+  ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$dir -e configuration_file=$file"
 done
