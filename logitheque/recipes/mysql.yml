@@ -5,7 +5,7 @@
 - hosts: docker-machines
   # load configuration for the component
   vars_files: 
-    - "/tmp/config/{{env}}/{{application}}/{{component_name}}/{{configuration_file}}"
+    - "{{config_var_file}}"
   roles:
     - {role: common}
     - {role: mysql}

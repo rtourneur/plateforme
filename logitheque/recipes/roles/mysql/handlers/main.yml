@@ -9,6 +9,6 @@
 
 # apply SQL script on database
 - name: execute mysql database script
-  command: docker exec {{component_name}}_{{env}} sh -c 'mysql --default-character-set=utf8 --user=root --password={{database.password}} mysql < /var/lib/mysql/{{item}}'
+  command: docker exec {{component_full_name}} sh -c 'mysql --default-character-set=utf8 --user=root --password={{database.password}} mysql < /var/lib/mysql/{{item}}'
   with_items: "{{database.scripts}}"
   tags: [mysqlComponent]

@@ -5,7 +5,7 @@
 - name: launch Tomcat container
   docker:
     #  Container name depends on environment
-    name: "{{component_name}}_{{env}}"
+    name: "{{component_full_name}}"
     image: "{{image}}"
     state: started
     
@@ -18,7 +18,7 @@
     # linking with database. 
     #TODO faire une boucle
     links:
-    - "{{link.container}}_{{env}}:{{link.alias}}"
+    - "{{link.container}}_{{application}}_{{env}}:{{link.alias}}"
     docker_api_version: 1.18
   tags: [tomcatComponent]
   # notify handler : set write permission to Tomcat's autodeploy directory
@@ -31,6 +31,6 @@
     # Get the war file from {{project_home_dir}}
     src: "{{project_home_dir}}/{{appserver.path}}/{{appserver.war}}"
     #TODO use project/application in the name to make it more unique
-    dest: "/tmp/{{env}}/"
+    dest: "{{temp_folder}}/"
     flat: yes
   tags: [tomcatComponent]

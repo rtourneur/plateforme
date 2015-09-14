@@ -5,7 +5,7 @@
 - hosts: docker-machines
   # load configuration for the component
   vars_files: 
-    - "/tmp/config/{{env}}/{{application}}/{{component_name}}/{{configuration_file}}"
+    - "{{config_var_file}}"
   roles:
     - {role: common}
     - {role: tomcat}
@@ -14,7 +14,7 @@
 - hosts: docker-machines
   # load configuration for the component
   vars_files: 
-    - "/tmp/config/{{env}}/{{application}}/{{component_name}}/{{configuration_file}}"
+    - "{{config_var_file}}"
   tasks:
   # create a new "tomcat" node in the hosts inventory
   - name: add Tomcat container to inventory
@@ -27,7 +27,7 @@
 - hosts: tomcat
   # load configuration for the component
   vars_files: 
-    - "/tmp/config/{{env}}/{{application}}/{{component_name}}/{{configuration_file}}"
+    - "{{config_var_file}}"
   # deploy in container
   roles:
     - {role: tomcat_application_deployer}

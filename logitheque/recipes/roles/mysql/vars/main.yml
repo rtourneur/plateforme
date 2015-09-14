@@ -1,2 +1,4 @@
 ---
 # vars file for mysql
+mysql_data_component_dir:          "{{base_dir}}/mysql_data/{{component_path}}"
+

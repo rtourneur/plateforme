@@ -3,15 +3,17 @@
 # Here we define some parameters for this machine, for the tools it has, and for the containers it hosts 
 # The contents of this file will be used in the Ansible inventory definition 'hosts-docker'
 
+# General
+component_full_name:      "{{component_name}}_{{application}}_{{env}}"
+component_path:           "{{application}}/{{component_name}}/{{env}}"
+temp_folder:              "/tmp/{{application}}/{{env}}"
+config_path:              "/tmp/config/{{env}}/{{application}}"
+config_var_file:          "{{config_path}}/{{component_name}}/{{configuration_file}}"
+
 # Base folder for datas
 base_dir:           "/opt/data"
-
-#Mysql
-mysql_data_home_dir:          "{{base_dir}}/mysql_data/{{application}}"
 
 #Jenkins
 jenkins_home_dir:         "{{base_dir}}/jenkins_home"
 project_home_dir:         "{{jenkins_home_dir}}/workspace/{{application}}"
 
-#Ansible
-ansible_application_dir:  "/tmp/config/{{env}}/{{application}}"

@@ -1,10 +1,10 @@
 
 - hosts: docker-machines
-  tasks:
-  - debug: var="{{application}}_{{env}}"
+
+  tasks: 
 
   - name: create the local directory 
-    local_action: file path={{ansible_application_dir}} state=directory
+    local_action: file path={{config_path}} state=directory
 
   - name: pull the application directory for ansible container
-    synchronize: mode=pull src={{project_home_dir}}/src/config/{{env}}/ dest={{ansible_application_dir}}
+    synchronize: mode=pull src={{project_home_dir}}/src/config/{{env}}/ dest={{config_path}}

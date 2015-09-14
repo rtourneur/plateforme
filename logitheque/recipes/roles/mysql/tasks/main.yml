@@ -3,20 +3,22 @@
 
 - name: erase mysql data directory
   file:
-    path: "{{mysql_data_home_dir}}/{{env}}/{{component_name}}"
+    path: "{{mysql_data_component_dir}}"
     state: absent
   tags: [mysqlComponent]
+  become: yes
+  become_method: sudo
   when: database.erase_data_directory == "true"
   
 - name: create mysql data directory
   file:
-    path: "{{mysql_data_home_dir}}/{{env}}/{{component_name}}"
+    path: "{{mysql_data_component_dir}}"
     state: directory
   tags: [mysqlComponent]
 
 # copy database script, and execute it agains the database server
 - name: copy mysql database script
-  command: cp -p {{project_home_dir}}/{{database.path}}/{{item}} {{mysql_data_home_dir}}/{{env}}/{{component_name}}/ creates="{{mysql_data_home_dir}}/{{env}}/{{component_name}}/{{item}}"
+  command: cp -p {{project_home_dir}}/{{database.path}}/{{item}} {{mysql_data_component_dir}}/ creates="{{mysql_data_component_dir}}/{{item}}"
   with_items: "{{database.scripts}}"
   tags: [mysqlComponent]
   # user 'notify' to trigger the execution of the Sql script
@@ -27,7 +29,7 @@
 
 - name: start mysql container
   docker:
-    name: "{{component_name}}_{{env}}"
+    name: "{{component_full_name}}"
     image: "{{image}}"
     state: started
     ports:
@@ -35,7 +37,7 @@
     env:
       MYSQL_ROOT_PASSWORD: "{{database.password}}"
     volumes:
-    - "{{mysql_data_home_dir}}/{{env}}/{{component_name}}:/var/lib/mysql"
+    - "{{mysql_data_component_dir}}:/var/lib/mysql"
     docker_api_version: 1.18
   tags: [mysqlComponent]
   notify:

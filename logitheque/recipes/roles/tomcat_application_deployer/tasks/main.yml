@@ -5,7 +5,7 @@
 - name: inject application war file in tomcat
   copy:
     # the war file has been placed in /tmp/env by tomcat role
-    src: "/tmp/{{env}}/{{appserver.war}}"
+    src: "{{temp_folder}}/{{appserver.war}}"
     # Inject in tomcat autodeploy dir 
     dest: "/usr/local/tomcat/webapps"
   tags: [tomcatDeployer]
