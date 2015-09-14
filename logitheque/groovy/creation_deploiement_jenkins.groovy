@@ -20,7 +20,9 @@ Builder build= new Shell(command);
  * Creation du lien entre le job deployment et le job maven
  * Déclenchement du build que si la construction est stable
 */
-freeStyleProject.addTrigger(new ReverseBuildTrigger(job_, Result.SUCCESS))
+ReverseBuildTrigger trigger = new ReverseBuildTrigger(job_, Result.SUCCESS);
+freeStyleProject.addTrigger(trigger)
+trigger.start(freeStyleProject, true)
 
 /*
  * Appel du script shell
