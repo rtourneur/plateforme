@@ -4,7 +4,7 @@
 # wait some time for startup of the component, before allowing further configuration tasks
 - name : wait mysql initialisation
   pause:
-    seconds: "{{max_startup_time}}"
+    seconds: "{{database.max_startup_time}}"
   tags: [mysqlComponent]
 
 # apply SQL script on database

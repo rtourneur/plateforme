@@ -16,7 +16,7 @@
 
 # copy database script, and execute it agains the database server
 - name: copy mysql database script
-  command: cp {{project_home_dir}}/{{item}} {{mysql_data_home_dir}}/{{env}}/{{component_name}}/ creates="{{mysql_data_home_dir}}/{{env}}/{{component_name}}/{{item}}"
+  command: cp {{project_home_dir}}/{{database.path}}/{{item}} {{mysql_data_home_dir}}/{{env}}/{{component_name}}/ creates="{{mysql_data_home_dir}}/{{env}}/{{component_name}}/{{item}}"
   with_items: "{{database.scripts}}"
   tags: [mysqlComponent]
   # user 'notify' to trigger the execution of the Sql script
