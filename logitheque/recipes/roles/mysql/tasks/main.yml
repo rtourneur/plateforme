@@ -9,7 +9,7 @@
   become: yes
   become_method: sudo
   when: database.erase_data_directory == "true"
-  
+
 - name: create mysql data directory
   file:
     path: "{{mysql_data_component_dir}}"
@@ -18,7 +18,9 @@
 
 # copy database script, and execute it agains the database server
 - name: copy mysql database script
-  command: cp -p {{project_home_dir}}/{{database.path}}/{{item}} {{mysql_data_component_dir}}/ creates="{{mysql_data_component_dir}}/{{item}}"
+  copy: 
+    src: "{{temp_folder}}/{{component_name}}/{{item}}"
+    dest: "{{mysql_data_component_dir}}/{{item}}"
   with_items: "{{database.scripts}}"
   tags: [mysqlComponent]
   # user 'notify' to trigger the execution of the Sql script

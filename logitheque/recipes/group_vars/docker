@@ -1,0 +1,6 @@
+#*** vars for docker node ***
+
+# General
+component_full_name:      "{{component_name}}_{{application}}_{{env}}"
+component_path:           "{{application}}/{{component_name}}/{{env}}"
+

@@ -1,8 +1,24 @@
 # execute: ansible-playbook mysql.yml -i inventory -e application=(applicationName) -e env=(environmentName)
 # This playbook handles Tomcat component setup and deployment.
 
+# download the database scripts files
+- hosts: platform
+  # load configuration for the component
+  vars_files: 
+    - "{{config_var_file}}"
+
+  tasks:
+  
+  - name: transfers database scripts to local
+    fetch: 
+      src: "{{project_home_dir}}/{{database.path}}/{{item}}"
+      dest: "{{temp_folder}}/{{component_name}}/{{item}}"
+      flat: yes
+    with_items: "{{database.scripts}}"
+    tags: [mysqlComponent]
+
 # Create and configure the container for Mysql Component
-- hosts: docker-machines
+- hosts: docker
   # load configuration for the component
   vars_files: 
     - "{{config_var_file}}"

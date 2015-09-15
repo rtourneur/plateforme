@@ -25,12 +25,3 @@
   notify: 
   - set credentials for webapps directory
  
-- name: get application war file 
-  # get the war file to inject, from Jenkins data. Put it in a temporary place for later deployment
-  fetch :
-    # Get the war file from {{project_home_dir}}
-    src: "{{project_home_dir}}/{{appserver.path}}/{{appserver.war}}"
-    #TODO use project/application in the name to make it more unique
-    dest: "{{temp_folder}}/"
-    flat: yes
-  tags: [tomcatComponent]

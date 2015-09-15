@@ -1,0 +1,10 @@
+#*** vars for all nodes ***
+
+# Base folder for datas
+base_dir:           "/opt/data"
+
+# General
+config_path:              "/tmp/config/{{env}}/{{application}}"
+config_var_file:          "{{config_path}}/{{component_name}}/{{configuration_file}}"
+temp_folder:              "/tmp/{{application}}/{{env}}"
+

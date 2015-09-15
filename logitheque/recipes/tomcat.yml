@@ -1,8 +1,24 @@
 # execute: ansible-playbook tomcat.yml -i inventory -e application=(applicationName) -e env=(environmentName)
 # This playbook handles Tomcat component setup and deployment.
 
+- hosts: platform
+  # load configuration for the component
+  vars_files: 
+    - "{{config_var_file}}"
+
+  tasks: 
+
+  - name: get application war file 
+    # get the war file to inject, from Jenkins data. Put it in a temporary place for later deployment
+    fetch :
+      # Get the war file from {{project_home_dir}}
+      src: "{{project_home_dir}}/{{appserver.path}}/{{appserver.war}}"
+      dest: "{{temp_folder}}/{{component_name}}/"
+      flat: yes
+    tags: [tomcatComponent]
+
 # Create the container for Tomcat Component. Prepare some files and configuration
-- hosts: docker-machines
+- hosts: docker
   # load configuration for the component
   vars_files: 
     - "{{config_var_file}}"
@@ -11,7 +27,7 @@
     - {role: tomcat}
 
 # Prepare a 'tomcat' entry in inventory, pointing to the Tomcat container  
-- hosts: docker-machines
+- hosts: docker
   # load configuration for the component
   vars_files: 
     - "{{config_var_file}}"

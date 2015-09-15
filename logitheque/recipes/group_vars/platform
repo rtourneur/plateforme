@@ -1,0 +1,6 @@
+#*** vars for platform node ***
+
+#Jenkins
+jenkins_home_dir:         "{{base_dir}}/jenkins_home"
+project_home_dir:         "{{jenkins_home_dir}}/workspace/{{application}}"
+
