@@ -87,9 +87,11 @@
     - "{{jenkins_home_dir}}:/var/jenkins_home:rw"
     - "{{scripts_dir}}:/opt/scripts"
     docker_api_version: 1.18
-  notify:
-  - stop nginx container
-  tags: [jenkins]
+  register: jenkins_container_result
+
+- name: set value changed to jenkins_container_changed variable
+  set_fact:
+    jenkins_container_changed: jenkins_container_result.changed
 
 - name : copy groovy scripts
   template: 

@@ -16,6 +16,7 @@
   notify:
   - stop nginx container 
   - check or build nginx image
+  - restart nginx container
   tags: [nginx]
   when: generated.stdout == "true" or nginx_id_rsa.stat.exists == False
 
@@ -26,6 +27,7 @@
   notify:
   - stop nginx container 
   - check or build nginx image
+  - restart nginx container
   tags: [nginx]
 
 - name: check/make nginx image

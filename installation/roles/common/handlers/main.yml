@@ -40,7 +40,6 @@
     name: nginx
     image: "polymont/nginx"
     state: absent
-  notify: restart nginx container
   tags: [nginx, hub]
 
 - name: check or build ansible image
@@ -168,10 +167,16 @@
     volumes:
     - "{{gitblit_home_dir}}:/var/gitblit_home:rw"
     docker_api_version: 1.18 
+  register: restart_gitblit_result
+  notify: 
+  - set value changed to restart_gitblit_changed variable
   tags: [gitblit, hub]
-  notify:
-  - stop nginx container
 
+- name: set value changed to restart_gitblit_changed variable
+  set_fact:
+    restart_gitblit_changed: restart_gitblit_result.changed
+  tags: [gitblit, hub]
+  
 - name: restart jenkins container
   docker:
     name: jenkins
@@ -184,10 +189,16 @@
     - "{{jenkins_home_dir}}:/var/jenkins_home:rw"
     - "{{scripts_dir}}:/opt/scripts"
     docker_api_version: 1.18
+  register: restart_jenkins_result
+  notify: 
+  - set value changed to restart_jenkins_changed variable
   tags: [jenkins, hub]
-  notify:
-  - stop nginx container
 
+- name: set value changed to restart_jenkins_changed variable
+  set_fact:
+    restart_jenkins_changed: restart_jenkins_result.changed
+  tags: [jenkins, hub]
+  
 - name: restart registry container
   docker:
     name: registry
@@ -201,10 +212,16 @@
     env:
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
     docker_api_version: 1.18
-  tags: [registry, hub]
+  register: restart_registry_result
   notify:
-  - stop nginx container
+  - set value changed to restart_registry_changed variable
+  tags: [registry, hub]
 
+- name: set value changed to restart_registry_changed variable
+  set_fact:
+    restart_registry_changed: restart_registry_result.changed
+  tags: [registry, hub]
+  
 - name: restart nginx container
   docker:
     name: nginx
@@ -222,3 +239,11 @@
     - "{{docker_home}}/certs/:/etc/nginx/conf.d"
     docker_api_version: 1.18 
   tags: [nginx, hub]
+
+- name: Starting nginx container management
+  command: "echo Starting nginx container management"
+  changed_when: true
+  notify:
+  - stop nginx container
+  - restart nginx container
+  when: stop_restart_nginx_container

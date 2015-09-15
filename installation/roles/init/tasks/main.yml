@@ -38,16 +38,24 @@
   with_items:
   - registry.conf
   - registry.password
+  register: copy_certs_result
   tags: [nginx]
-  notify: stop nginx container
+
+- name: set value changed to copy_certs_changed variable
+  set_fact:
+    copy_certs_changed: copy_certs_result.changed
 
 - name: copy local certs
   command: cp -u ~/certs/{{item}} {{docker_home}}/certs/ creates="{{docker_home}}/certs/{{item}}"
   with_items:
   - registry.crt
   - registry.key
+  register: copy_local_certs_result
   tags: [nginx]
-  notify: stop nginx container
+
+- name: set value changed to copy_local_certs_changed variable
+  set_fact:
+    copy_local_certs_changed: copy_local_certs_result.changed
 
 - name: create scripts directory
   file: 
