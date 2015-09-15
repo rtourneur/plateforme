@@ -58,9 +58,11 @@ ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHosts
 
 # execute the playbooks for each directories in config/env, each directory being named after the name of the component it configures 
 for dir in $(ls ~/workspace/$appname/src/config/$env)
-do 
-  cd ~/workspace/$appname/src/config/$env/$dir
-  file=$(ls *yml)
-  echo ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$dir -e configuration_file=$file"
-  ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$dir -e configuration_file=$file"
+do
+  if [ "$dir" != "infra.properties" ]; then
+    cd ~/workspace/$appname/src/config/$env/$dir
+    file=$(ls *yml)
+    echo ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$dir -e configuration_file=$file"
+    ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$dir -e configuration_file=$file"
+  fi
 done
