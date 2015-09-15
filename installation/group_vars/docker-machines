@@ -41,3 +41,14 @@ scripts_dir:              "{{base_dir}}/scripts"
 
 #Registry
 registry_data:            "{{base_dir}}/registry_data"
+
+#Starting nginx container management
+restart_gitblit_changed:    false
+restart_jenkins_changed:    false
+restart_registry_changed:   false
+gitblit_container_changed:  false
+jenkins_container_changed:  false
+registry_container_changed: false
+copy_certs_changed:         false
+copy_local_certs_changed:   false
+stop_restart_nginx_container: "{{restart_gitblit_changed}} or {{restart_jenkins_changed}} or {{restart_registry_changed}} or {{gitblit_container_changed}} or {{jenkins_container_changed}} or {{registry_container_changed}} or {{copy_certs_changed}} or {{copy_local_certs_changed}}"

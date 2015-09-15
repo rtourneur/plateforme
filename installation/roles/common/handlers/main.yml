@@ -40,7 +40,6 @@
     name: nginx
     image: "polymont/nginx"
     state: absent
-  notify: restart nginx container
   tags: [nginx, hub]
 
 - name: check or build ansible image
@@ -168,9 +167,12 @@
     volumes:
     - "{{gitblit_home_dir}}:/var/gitblit_home:rw"
     docker_api_version: 1.18 
+  register: restart_gitblit_result
   tags: [gitblit, hub]
-  notify:
-  - stop nginx container
+
+- name: set value changed to restart_gitblit_changed variable
+  set_fact:
+    restart_gitblit_changed: restart_gitblit_result.changed
 
 - name: restart jenkins container
   docker:
@@ -184,9 +186,12 @@
     - "{{jenkins_home_dir}}:/var/jenkins_home:rw"
     - "{{scripts_dir}}:/opt/scripts"
     docker_api_version: 1.18
+  register: restart_jenkins_result
   tags: [jenkins, hub]
-  notify:
-  - stop nginx container
+
+- name: set value changed to restart_jenkins_changed variable
+  set_fact:
+    restart_jenkins_changed: restart_jenkins_result.changed
 
 - name: restart registry container
   docker:
@@ -201,9 +206,12 @@
     env:
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
     docker_api_version: 1.18
+  register: restart_registry_result
   tags: [registry, hub]
-  notify:
-  - stop nginx container
+
+- name: set value changed to restart_registry_changed variable
+  set_fact:
+    restart_registry_changed: restart_registry_result.changed
 
 - name: restart nginx container
   docker:

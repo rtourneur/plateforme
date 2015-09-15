@@ -5,3 +5,11 @@
   shell: 'echo "false" > {{ssh_keys_generate_dir}}/status'
   when: generated.stdout == "true"
 
+- name: Starting nginx container management
+  command: "echo Starting nginx container management"
+  changed_when: true
+  notify:
+  - stop nginx container
+  - restart nginx container
+  when: stop_restart_nginx_container
+
