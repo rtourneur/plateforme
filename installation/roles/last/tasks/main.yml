@@ -4,12 +4,11 @@
 - name: set false to status file after the copy ssh keys 
   shell: 'echo "false" > {{ssh_keys_generate_dir}}/status'
   when: generated.stdout == "true"
+  tags: [last]
 
-- name: Starting nginx container management
+- name: stop and start nginx container management
   command: "echo Starting nginx container management"
   changed_when: true
   notify:
-  - stop nginx container
-  - restart nginx container
-  when: stop_restart_nginx_container
-
+  - Starting nginx container management
+  tags: [last]
