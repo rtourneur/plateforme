@@ -2,7 +2,28 @@ tomcat component
 =========
 
 This role manages tasks for tomcat infrastructure component.
-Most work is done by this role, but the final deployment is managed by the Tomcat_application_deployer role
+Most work is done by this role, but the final deployment is managed by the Tomcat_application_deployer role (this chain is managed by the tomcat playbook)
+
+The component descriptor (Ansible playbook) for this component can define variables as in the example below :
+
+image: "polymont/tomcat:8"
+ports:
+  tomcat:
+    host: "10080"
+    container: "8080"
+  ssh:
+    host: "10022"
+    container: "22"
+link:
+  container: "mysql"
+  alias: "formation" 
+appserver:
+  path: "formation-tp3-web/target"
+  war: "formation-tp3-web-0.0.1-SNAPSHOT.war"
+
+appserver.path defines the path of the war file in the project (target of the build)
+appserver.war defines the name of the war file
+
 
 Requirements
 ------------

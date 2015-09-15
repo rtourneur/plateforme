@@ -5,18 +5,10 @@
   # load configuration for the component
   vars_files: 
     - "{{config_var_file}}"
-
-  tasks: 
-
-  - name: get application war file 
-    # get the war file to inject, from Jenkins data. Put it in a temporary place for later deployment
-    fetch :
-      # Get the war file from {{project_home_dir}}
-      src: "{{project_home_dir}}/{{appserver.path}}/{{appserver.war}}"
-      dest: "{{temp_folder}}/{{component_name}}/"
-      flat: yes
-    tags: [tomcatComponent]
-
+  # Gather artifacts to deploy
+  roles:  
+   - {role: artifact}
+     
 # Create the container for Tomcat Component. Prepare some files and configuration
 - hosts: docker
   # load configuration for the component

@@ -4,8 +4,8 @@
 # Inject the war file in the container, in tomcat's autodeploy directory /usr/local/tomcat/webapps
 - name: inject application war file in tomcat
   copy:
-    # the war file has been placed in /tmp/env by tomcat role
-    src: "{{temp_folder}}/{{component_name}}/{{appserver.war}}"
+    # the war files has been placed in /tmp/env by tomcat role
+    src: "{{temp_folder}}/{{component_name}}/artifacts/"
     # Inject in tomcat autodeploy dir 
     dest: "/usr/local/tomcat/webapps"
   tags: [tomcatDeployer]

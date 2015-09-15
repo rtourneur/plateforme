@@ -1,0 +1,30 @@
+---
+# tasks file for artifact
+
+# identify war files, put result in yaml format in a temp file on platform
+- name: search artifacts to deploy
+  script: findArtifacts.sh {{project_home_dir}} {{appserver.artifactExtension}} /tmp/{{component_full_name}}_artifacts.yml
+  tags: [tomcatComponent]
+  
+# get artifacts file in Ansible
+- name: get artifacts file 
+  fetch: 
+   # Get the war file from {{project_home_dir}}
+    src: "/tmp/{{component_full_name}}_artifacts.yml"
+    dest: "{{temp_folder}}/{{component_name}}/artifact.yml"
+    flat: yes
+  tags: [tomcatComponent]
+    
+- name: include application war files in variable
+  include_vars: "{{temp_folder}}/{{component_name}}/artifact.yml"
+     
+- name: get application war file 
+  # get the war file to inject, from Jenkins data. Put it in a temporary place for later deployment
+  # items list is found in 'files' variable imported from artifacts file
+  fetch: 
+    # Get the war file from {{project_home_dir}}
+    src: "{{item}}"
+    dest: "{{temp_folder}}/{{component_name}}/artifacts/"
+    flat: yes
+  with_items: "{{files}}"
+  tags: [tomcatComponent]

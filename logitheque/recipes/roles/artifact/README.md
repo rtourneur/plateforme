@@ -1,26 +1,7 @@
-Common component
+Role Name
 =========
 
-This role is the base role for components of the 'logitheque'.
-It provides common (if not universal) utilities :
-- opening of communication ports in CentOS firewall
-
-All components are driven by component descriptors, provided as Ansible playbooks defining variables.
-These variables are directives used to conduct the configuration of the component.
-
-At least, the component descriptor will define the name of the docker image to use :
-image: "mysql:5.6.26"
-
-The component descriptor may also contain the definition of a docker link 
-link:
-  container: "targetContainerName"
-  alias: "linkName"
-  
-The component descriptor may also contain the definition of ports mapping for the container
-ports:
-  myportname:
-    host: "10306"
-    container: "3306"    
+A brief description of the role goes here.
 
 Requirements
 ------------

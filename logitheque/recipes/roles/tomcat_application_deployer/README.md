@@ -1,8 +1,10 @@
-tomcat component
+tomcat component deployer
 =========
 
 This role manages tasks for deployment in tomcat infrastructure component
-It is intended to work in the Tomcat container prepared by tomcat role.
+It is intended to work in the Tomcat container prepared by tomcat role, and deploys the war file. (this chain is managed by the tomcat playbook)
+
+The component descriptor (Ansible playbook) for this component is the same as Tomcat component.
 
 Requirements
 ------------

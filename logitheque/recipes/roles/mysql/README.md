@@ -3,6 +3,28 @@ Role Name
 
 This role manages tasks for mysql infrastructure component.
 
+The component descriptor (Ansible playbook) for this component can define variables as in the example below :
+
+image: "mysql:5.6.26"
+ports:
+  mysql:
+    host: "10306"
+    container: "3306"
+database:
+  password: "root"
+  erase_data_directory: "false"
+  max_startup_time: "30"
+  path: "src/database"
+  scripts:
+  - "create_db_formation.sql"
+  - "create_table_catalogue_formation.sql"
+
+database.password defines the Mysql root user password.
+database.erase_data_directory: when set to "true", the entire Mysql data directory is erased. All data is lost.
+database.max_startup_time defines the time interval to wait after the startup of the container and the first command sent to it. Allows the database server to initialize.
+database.path definies the directory (form the working copy of the project directory) for the initialization scripts (see below)
+database.scripts is a (possibly void) list of Sql initialization scripts to run on the database. It is executed as Mysql root user (to allow for database creation).
+
 Requirements
 ------------
 
