@@ -19,3 +19,5 @@
     tag: "8"
     state: present
   tags: [tomcat]
+  notify:
+  - tag tomcat image
