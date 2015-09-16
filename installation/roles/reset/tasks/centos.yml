@@ -4,31 +4,36 @@
   yum: 
     name: "{{ epel_repo_url }}"
     state: absent
-  when: ansible_distribution == "CentOS" and
-          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   tags: [docker]
 
 - name: remove EPEL GPG key
   rpm_key:
     key: "{{ epel_repo_gpg_key_url }}"
     state: absent
-  when: ansible_distribution == "CentOS" and
-          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   tags: [docker]
 
 - name: remove python-pip
   yum:
     name: python-pip
     state: absent
-  when: ansible_distribution == "CentOS" and
-          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   tags: [docker]
 
 - name: remove docker on centos
   yum: 
-    name: docker-engine
+    name: "{{item}}"
     state: absent
-  when: ansible_distribution == "CentOS" and
-          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  with_items:
+  - docker-engine
+  - docker-selinux
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   tags: [docker]
 
+- name: remove docker repo on centos
+  file:
+    path: /etc/yum.repos.d/docker.repo
+    state: absent
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+  tags: [docker]

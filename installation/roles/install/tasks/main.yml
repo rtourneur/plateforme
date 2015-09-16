@@ -20,8 +20,7 @@
     name: ansible
     groups: wheel
     append: yes
-  when: ansible_distribution == "CentOS" and
-          (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   tags: [install]
 
 - name: authorize platform key to ansible
