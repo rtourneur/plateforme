@@ -45,8 +45,20 @@
   set_fact:
     copy_certs_changed: copy_certs_result.changed
 
+- name: get local certs in home
+  fetch:
+    src: "~/certs/{{item}}"
+    dest: "/tmp/certs/{{item}}"
+    flat: yes
+  with_items:
+  - registry.crt
+  - registry.key
+  tags: [nginx]
+
 - name: copy local certs
-  command: cp -u ~/certs/{{item}} {{docker_home}}/certs/
+  copy: 
+    src: "/tmp/certs/{{item}}"
+    dest: "{{docker_home}}/certs/{{item}}"
   with_items:
   - registry.crt
   - registry.key
@@ -56,6 +68,12 @@
 - name: set value changed to copy_local_certs_changed variable
   set_fact:
     copy_local_certs_changed: copy_local_certs_result.changed
+
+- name: remove local certs from home 
+  local_action: file path=/tmp/certs/{{item}} state=absent
+  with_items:
+  - registry.crt
+  - registry.key
 
 - name: create scripts directory
   file: 
