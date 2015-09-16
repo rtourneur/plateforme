@@ -252,7 +252,7 @@
 
 - name: wait nginx initialisation
   pause:
-    seconds: "60"
+    seconds: "20"
   tags: [nginx]
   when: stop_restart_nginx_container
 
