@@ -9,24 +9,6 @@
   tags: [ansible]
   notify: restart ansible container
 
-- name: stop gitblit container
-  docker:
-    name: gitblit
-    image: "polymont/gitblit"
-    state: stopped
-    docker_api_version: 1.18
-  tags: [gitblit, hub]
-  notify: restart gitblit container
-
-- name: stop jenkins container
-  docker:
-    name: jenkins
-    image: "polymont/jenkins"
-    state: stopped
-    docker_api_version: 1.18
-  tags: [jenkins, hub]
-  notify: restart jenkins container
-
 - name: stop registry container
   docker:
     name: registry
@@ -34,13 +16,6 @@
     state: stopped
   tags: [registry, hub]
   notify: restart registry container
-
-- name: stop nginx container
-  docker:
-    name: nginx
-    image: "polymont/nginx"
-    state: absent
-  tags: [nginx, hub]
 
 - name: check or build ansible image
   docker_image: 
@@ -89,6 +64,15 @@
   - check or build gitblit image
   - check or build tomcat image
 
+- name: stop gitblit container
+  docker:
+    name: gitblit
+    image: "polymont/gitblit"
+    state: stopped
+    docker_api_version: 1.18
+  tags: [gitblit, hub]
+  notify: restart gitblit container
+
 - name: check or build gitblit image
   docker_image:
     path: "{{gitblit_dir}}"
@@ -107,6 +91,15 @@
   - stop jenkins container
   - check or build jenkins image
   - tag tomcat image
+
+- name: stop jenkins container
+  docker:
+    name: jenkins
+    image: "polymont/jenkins"
+    state: stopped
+    docker_api_version: 1.18
+  tags: [jenkins, hub]
+  notify: restart jenkins container
 
 - name: check or build jenkins image
   docker_image:
@@ -223,6 +216,21 @@
     restart_registry_changed: restart_registry_result.changed
   tags: [registry, hub]
   
+- name: Starting nginx container management
+  command: "echo Starting nginx container management"
+  changed_when: true
+  notify:
+  - stop nginx container
+  - restart nginx container
+  when: stop_restart_nginx_container
+
+- name: stop nginx container
+  docker:
+    name: nginx
+    image: "polymont/nginx"
+    state: absent
+  tags: [nginx, hub]
+
 - name: restart nginx container
   docker:
     name: nginx
@@ -241,14 +249,5 @@
     docker_api_version: 1.18 
   tags: [nginx, hub]
 
-- name: Starting nginx container management
-  command: "echo Starting nginx container management"
-  changed_when: true
-  notify:
-  - stop nginx container
-  - restart nginx container
-  when: stop_restart_nginx_container
-
 - name: tag tomcat image
   script: tagDockerImage.sh polymont/tomcat:8 {{inventory_hostname}}
-
