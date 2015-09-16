@@ -46,7 +46,7 @@
     copy_certs_changed: copy_certs_result.changed
 
 - name: copy local certs
-  command: cp -u ~/certs/{{item}} {{docker_home}}/certs/ creates="{{docker_home}}/certs/{{item}}"
+  command: cp -u ~/certs/{{item}} {{docker_home}}/certs/
   with_items:
   - registry.crt
   - registry.key
