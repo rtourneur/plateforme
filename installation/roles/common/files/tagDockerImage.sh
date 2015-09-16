@@ -7,7 +7,7 @@ image=$1
 registry=$2
 
 # Tag the docker image
-docker tag $image $registry/$image
+docker tag -f $image $registry/$image
 
 # Log to the registry
 # Todo : manage the credentials

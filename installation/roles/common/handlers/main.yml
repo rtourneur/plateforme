@@ -90,6 +90,7 @@
   notify:
   - stop jenkins container
   - check or build jenkins image
+  - wait nginx initialisation
   - tag tomcat image
 
 - name: stop jenkins container
@@ -248,6 +249,12 @@
     - "{{docker_home}}/certs/:/etc/nginx/conf.d"
     docker_api_version: 1.18 
   tags: [nginx, hub]
+
+- name: wait nginx initialisation
+  pause:
+    seconds: "60"
+  tags: [nginx]
+  when: stop_restart_nginx_container
 
 - name: tag tomcat image
   script: tagDockerImage.sh polymont/tomcat:8 {{inventory_hostname}}

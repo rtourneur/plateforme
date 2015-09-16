@@ -20,4 +20,5 @@
     state: present
   tags: [tomcat]
   notify:
+  - wait nginx initialisation
   - tag tomcat image
