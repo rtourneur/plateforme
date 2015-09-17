@@ -53,4 +53,4 @@
     volumes:
     - "{{docker_home}}/certs/:/etc/nginx/conf.d"
     docker_api_version: 1.18
-  tags: [nginx, hub]
+  tags: [nginx, start]

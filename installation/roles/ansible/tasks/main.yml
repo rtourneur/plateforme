@@ -50,4 +50,4 @@
     volumes: 
     - "{{recipes_dir}}:/opt/recipes"
     docker_api_version: 1.18
-  tags: [ansible]
+  tags: [ansible, start]

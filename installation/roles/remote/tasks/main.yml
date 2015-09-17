@@ -33,4 +33,4 @@
     volumes: 
     - "{{scripts_dir}}:/opt/scripts"
     docker_api_version: 1.18
-  tags: [remote]
+  tags: [remote, start]

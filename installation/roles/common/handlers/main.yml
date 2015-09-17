@@ -14,7 +14,7 @@
     name: registry
     image: "polymont/registry"
     state: stopped
-  tags: [registry, hub]
+  tags: [registry]
   notify: restart registry container
 
 - name: check or build ansible image
@@ -70,7 +70,7 @@
     image: "polymont/gitblit"
     state: stopped
     docker_api_version: 1.18
-  tags: [gitblit, hub]
+  tags: [gitblit]
   notify: restart gitblit container
 
 - name: check or build gitblit image
@@ -78,7 +78,7 @@
     path: "{{gitblit_dir}}"
     name: "polymont/gitblit"
     state: build
-  tags: [gitblit, hub]
+  tags: [gitblit]
 
 - name: check or build tomcat image
   docker_image:
@@ -99,7 +99,7 @@
     image: "polymont/jenkins"
     state: stopped
     docker_api_version: 1.18
-  tags: [jenkins, hub]
+  tags: [jenkins]
   notify: restart jenkins container
 
 - name: check or build jenkins image
@@ -107,21 +107,21 @@
     path: "{{jenkins_dir}}"
     name: "polymont/jenkins"
     state: build
-  tags: [jenkins, hub]
+  tags: [jenkins]
 
 - name: check or build registry image
   docker_image: 
     path: "{{registry_dir}}"
     name: "polymont/registry" 
     state: build
-  tags: [registry, hub]
+  tags: [registry]
 
 - name: check or build nginx image
   docker_image: 
     path: "{{nginx_dir}}"
     name: "polymont/nginx" 
     state: build
-  tags: [nginx, hub]
+  tags: [nginx]
 
 - name: restart ansible container
   docker:
@@ -165,12 +165,12 @@
   register: restart_gitblit_result
   notify: 
   - set value changed to restart_gitblit_changed variable
-  tags: [gitblit, hub]
+  tags: [gitblit]
 
 - name: set value changed to restart_gitblit_changed variable
   set_fact:
     restart_gitblit_changed: restart_gitblit_result.changed
-  tags: [gitblit, hub]
+  tags: [gitblit]
   
 - name: restart jenkins container
   docker:
@@ -187,12 +187,12 @@
   register: restart_jenkins_result
   notify: 
   - set value changed to restart_jenkins_changed variable
-  tags: [jenkins, hub]
+  tags: [jenkins]
 
 - name: set value changed to restart_jenkins_changed variable
   set_fact:
     restart_jenkins_changed: restart_jenkins_result.changed
-  tags: [jenkins, hub]
+  tags: [jenkins]
   
 - name: restart registry container
   docker:
@@ -210,12 +210,12 @@
   register: restart_registry_result
   notify:
   - set value changed to restart_registry_changed variable
-  tags: [registry, hub]
+  tags: [registry]
 
 - name: set value changed to restart_registry_changed variable
   set_fact:
     restart_registry_changed: restart_registry_result.changed
-  tags: [registry, hub]
+  tags: [registry]
   
 - name: Starting nginx container management
   command: "echo Starting nginx container management"
@@ -230,7 +230,7 @@
     name: nginx
     image: "polymont/nginx"
     state: absent
-  tags: [nginx, hub]
+  tags: [nginx]
 
 - name: restart nginx container
   docker:
@@ -248,7 +248,7 @@
     volumes:
     - "{{docker_home}}/certs/:/etc/nginx/conf.d"
     docker_api_version: 1.18 
-  tags: [nginx, hub]
+  tags: [nginx]
 
 - name: wait nginx initialisation
   pause:

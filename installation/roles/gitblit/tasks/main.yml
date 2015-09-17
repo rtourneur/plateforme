@@ -58,11 +58,12 @@
     - "{{gitblit_ssh_port}}:22"
     docker_api_version: 1.18 
   register: gitblit_container_result
-  tags: [gitblit, hub]
+  tags: [gitblit]
 
 - name: set value changed to gitblit_container_changed variable
   set_fact:
     gitblit_container_changed: gitblit_container_result.changed
+  tags: [gitblit, start]
 
 - name : wait gitblit initialisation
   pause:

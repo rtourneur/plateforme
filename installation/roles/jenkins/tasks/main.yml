@@ -88,10 +88,12 @@
     - "{{scripts_dir}}:/opt/scripts"
     docker_api_version: 1.18
   register: jenkins_container_result
+  tags: [jenkins, start]
 
 - name: set value changed to jenkins_container_changed variable
   set_fact:
     jenkins_container_changed: jenkins_container_result.changed
+  tags: [jenkins]
 
 - name : copy groovy scripts
   template: 

@@ -59,8 +59,9 @@
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
     docker_api_version: 1.18
   register: registry_container_result
-  tags: [registry, hub]
+  tags: [registry, start]
 
 - name: set value changed to registry_container_changed variable
   set_fact:
     registry_container_changed: registry_container_result.changed
+  tags: [registry]
