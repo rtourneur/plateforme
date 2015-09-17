@@ -1,4 +1,0 @@
-#*** vars for CentOS hosts ***
-
-# Define Docker-py version to use (used by Ansible for manipulating Docker, depends on Operating system)
-dockerpy_version: "1.3.1"
