@@ -5,7 +5,6 @@
   # load configuration for the component
   vars_files: 
     - "{{config_var_file}}"
-    - /opt/recipes/registry.yml
   # Gather artifacts to deploy
   roles: 
    - {role: artifact}
@@ -24,7 +23,8 @@
   # load configuration for the component
   vars_files: 
     - "{{config_var_file}}"
-  tasks:
+    - /opt/recipes/registry.yml
+  tasks: 
   # create a new "tomcat" node in the hosts inventory
   - name: add Tomcat container to inventory
     add_host: hostname="{{inventory_hostname}}"
