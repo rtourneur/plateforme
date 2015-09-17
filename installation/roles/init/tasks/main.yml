@@ -109,8 +109,11 @@
     mode: "0644"
   tags: [ansible]
 
-- name: copy inventory
+- name: copy inventory and registry
   template:
-    src: inventory
+    src: "{{item}}"
     dest: "{{recipes_dir}}/"
+  with_items:
+  - inventory
+  - registry.yml
   tags: [ansible]

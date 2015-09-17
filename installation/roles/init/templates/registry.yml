@@ -1,0 +1,5 @@
+---
+registryHost:       "{{inventory_hostname}}"
+registryUser:       "testuser"
+registryPassword:   "testpassword"
+registryEmail:      "raphael.tourneur@polymont.fr"
