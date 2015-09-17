@@ -28,17 +28,13 @@
           (ansible_distribution_release == "jessie" or ansible_distribution_release == "wheezy")
   tags: [docker]
 
-- name: install docker on debian
-  apt: 
-    name: docker.engine
+- name: install docker and python-pip on debian
+  apt:
+    name: "{{item}}"
     state: present
-  when: ansible_distribution == "Debian" and
-          (ansible_distribution_release == "jessie" or ansible_distribution_release == "wheezy")
-  tags: [docker]
-
-- name: easy install python-pip on debian
-  easy_install: 
-    name: pip
+  with_items:
+  - docker-engine
+  - python-pip
   when: ansible_distribution == "Debian" and
           (ansible_distribution_release == "jessie" or ansible_distribution_release == "wheezy")
   tags: [docker]

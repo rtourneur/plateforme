@@ -6,7 +6,7 @@
   tags: [install, update_all]
 
 - name: install apt sshpass
-  yum: 
+  apt: 
     name: sshpass
     state: latest
   when: ansible_distribution == "Debian" 
