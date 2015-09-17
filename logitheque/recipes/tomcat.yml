@@ -5,10 +5,11 @@
   # load configuration for the component
   vars_files: 
     - "{{config_var_file}}"
+    - /opt/recipes/registry.yml
   # Gather artifacts to deploy
-  roles:  
+  roles: 
    - {role: artifact}
-     
+
 # Create the container for Tomcat Component. Prepare some files and configuration
 - hosts: docker
   # load configuration for the component

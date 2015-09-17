@@ -20,6 +20,35 @@
     links:
     - "{{link.container}}_{{application}}_{{env}}:{{link.alias}}"
     docker_api_version: 1.18
+  when: not privateRegistry
+  tags: [tomcatComponent]
+  # notify handler : set write permission to Tomcat's autodeploy directory
+  notify: 
+  - set credentials for webapps directory
+ 
+- name: launch Tomcat container from registry
+  docker:
+    #  Container name depends on environment
+    name: "{{component_full_name}}"
+    image: "{{registryHost}}/{{image}}"
+    state: started
+    
+    # ports will be mapped depending on target environment
+    #TODO faire une boucle
+    ports:
+    - "{{ports.tomcat.host}}:{{ports.tomcat.container}}"
+    - "{{ports.ssh.host}}:{{ports.ssh.container}}"
+    
+    # linking with database. 
+    #TODO faire une boucle
+    links:
+    - "{{link.container}}_{{application}}_{{env}}:{{link.alias}}"
+    registry: "{{registryHost}}"
+    username: "{{registryUser}}"
+    password: "{{registryPassword}}"
+    email: "{{registryEmail}}"
+    docker_api_version: 1.18
+  when: privateRegistry
   tags: [tomcatComponent]
   # notify handler : set write permission to Tomcat's autodeploy directory
   notify: 
