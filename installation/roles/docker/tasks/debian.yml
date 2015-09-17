@@ -39,6 +39,14 @@
           (ansible_distribution_release == "jessie" or ansible_distribution_release == "wheezy")
   tags: [docker]
 
+# module easy_install does not work
+- name: easy install pip on debian
+  command: easy_install pip
+  when: ansible_distribution == "Debian" and
+          (ansible_distribution_release == "jessie" or ansible_distribution_release == "wheezy")
+  tags: [docker]
+
+
 - name: install python-pip on debian
   apt:
     name: python-pip
