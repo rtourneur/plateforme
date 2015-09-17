@@ -1,8 +1,0 @@
----
-# gitblit playbook for docker-machines node
-- hosts: docker-machines
-  roles:
-    - { role: init }
-    - { role: ubuntu }
-    - { role: java } 
-    - { role: gitblit }

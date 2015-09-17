@@ -1,6 +1,0 @@
----
-# registry playbook for docker-machines node
-- hosts: docker-machines
-  roles:
-    - { role: init }
-    - { role: registry }
