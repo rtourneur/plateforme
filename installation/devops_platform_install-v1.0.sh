@@ -1,28 +1,26 @@
 #!/bin/bash
-#Execute: sudo bash devops_platform_deployer_release-0.1.sh
+#Execute: ./devops_platform_install-v1.0.sh
 
-###### Devops platform removal script ######
+###### Devops platform deployer script ######
 
 # usage reminder output
 function usage
 {
-    echo "Usage : devops_platform_deployer_release-0.1.sh [[[-u user ] [-i host] [[-f]]] | [-h]]"
+    echo "Usage : devops_platform_install-v1.0.sh [[[-u user ] [-i host]] | [-h]]"
     echo ""
     echo "Options :"
     echo "  -u USER, --user USER  Gitblit valid user"
     echo "  -i HOST, --inventory HOST"
     echo "                        Hostname for install (or ip adress)"
-    echo "  -f, --full            full suppression"
     echo "  -h, --help            show this help message and exit"
 }
  
 
 ##### Main
-echo "Vérification des paramètres"
+echo "Parameters checking..."
 
 user=
 host=
-full=false
 
 if [ $# -eq 0 ]; then
   echo "test"
@@ -42,8 +40,6 @@ while [ "$1" != "" ]; do
         -h | --help )           usage
                                 exit
                                 ;;
-        -f | --full )           full=true
-                                ;;
         * )                     usage
                                 exit 1
     esac
@@ -60,7 +56,7 @@ echo '$host = ' $host
 
 #(Pre-req: python >= 2.7)
 
-# Installation of the tools required for the platform reset (removal). The main tool is Ansible.
+# Installation of the tools required for the platform deployment (installation). The main tool is Ansible.
 
 #First add the EPEL repository:
 printf "**************************** ADDING EPEL REPOSITORY ****************************\n"
@@ -70,8 +66,9 @@ sudo rpm -iUvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch
 printf "**************************** INSTALLING GIT ****************************\n"
 sudo yum install -y git
 
-# pull platform deployer source code from the repository
-printf "**************************** PULL PLATFORME SOURCE CODE ****************************\n"
+# pull platform source code from the repository
+printf "**************************** PULL PLATFORM SOURCE CODE ****************************\n"
+printf "Pulling from git.polymont-itservices.fr with user $user\n"
 git clone ssh://$user@git.polymont-itservices.fr:29418/Interne/4SASL00004-Devops/plateforme.git
 
 # verify ssh is installed
@@ -82,31 +79,37 @@ sudo yum install -y openssh-clients sshpass
 printf "**************************** INSTALL ANSIBLE ****************************\n"
 sudo yum install -y ansible
 
-#create rsa key used for SSH connection from Ansible to containers of the platform 
+#create rsa key used for SSH connection from Ansible to platform machine
 printf "**************************** CREATE SSH KEY  ****************************\n"
 ssh-keygen -t rsa -b 2048
 ssh-copy-id -i ~/.ssh/id_rsa root@$host
 
-# configure ansible/hosts file
+# set ansible/hosts file
 printf "**************************** SET HOSTS FOR ANSIBLE ****************************\n"
-# create Ansible inventory file and configure the reset Host
+# create Ansible inventory file and configure the installer Host
+# Here we create the inventory file 'hosts-install', based on the predefined variables from the file 'install-machines', and appending the inventory definition for the Ansible host (the platform-deployer Ansible) 
 echo '[install-machines]' > ~/hosts-install && echo $host '  ansible_ssh_user=root' >> ~/hosts-install
-# docker will be removed in this process. Docker cache or volumes may not be cleaned up and belong in the filesystem.
+# create Ansible inventory file and configure the docker Host
+# Here we create the inventory file 'hosts-docker', based on the predefined variables from the file 'docker-machines', and appending the inventory definition for the Docker host (the platform-holder Docker) 
+echo '[docker-machines]' > ~/hosts-docker && echo $host '  ansible_ssh_user=ansible' >> ~/hosts-docker
 
-printf "**************************** UNDEPLOY THE PLATFORM ****************************\n"
-# using the installation playbook and the installer inventory file, run the reset process
-skip_tags=
-if [ "$full" == "false" ]; then
-  skip_tags="--skip-tags remove-all"
-fi
-
-# using the installation playbook and the installer inventory file, run the reset process
-ansible-playbook plateforme/installation/reset_platforme.yml $skip_tags  -i ~/hosts-install 
+printf "**************************** DEPLOY THE PLATFORM ****************************\n"
+# using the installation playbook and the installer inventory file, run the phase 1 of the install process
+ansible-playbook plateforme/installation/install_platform.yml --skip-tags "update_all" -i ~/hosts-install --extra-vars "host-fqdn=$host"
 OUT=$?
 if [ $OUT -ne 0 ]; then
-  echo " Erreur de désinstallation"
+  echo " Erreur d'installation phase 1"
   exit 1
 fi
 
-printf "**************************** REMOVE PLATFORME SOURCE CODE ****************************\n"
+# using the installation playbook and the docker inventory file, run the phase 2 of the install process
+ansible-playbook plateforme/installation/devops_platform.yml -i ~/hosts-docker
+OUT=$?
+if [ $OUT -ne 0 ]; then
+  echo " Erreur d'installation phase 2"
+  exit 1
+fi
+
+printf "**************************** REMOVE PLATFORM SOURCE CODE ****************************\n"
+# Cleanup
 rm -rf plateforme
