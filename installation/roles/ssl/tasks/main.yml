@@ -1,23 +1,29 @@
 ---
 # tasks file for ssl
+
+# Generate SSL certificate for https and secured registry only on platform host
 - name: create SSL cert directory
   file:
     path: certs
     state: directory
   sudo_user: ansible
   tags: [ssl]
+  when: inventory_hostname == host_fqdn
 
 - name: create self-signed SSL cert
   command: openssl req -newkey rsa:4096 -nodes -x509 -sha256 -subj "/C=FR/ST=Rhone/L=Lyon/O=Polymont IT/CN={{inventory_hostname}}" -keyout certs/registry.key -days 365 -out certs/registry.crt creates=certs/registry.crt
   sudo_user: ansible
   tags: [ssl]
+  when: inventory_hostname == host_fqdn
 
+# Install SSL certificate for access to registry when not trusted on all docker hosts
+# todo replace inventory_hostname with host-fqdn
 - name: create SSL cert directory for docker
   file:
-    path: "/etc/docker/certs.d/{{inventory_hostname}}"
+    path: "/etc/docker/certs.d/{{host_fqdn}}"
     state: directory
   tags: [ssl]
 
 - name: install SSL cert for docker
-  command: cp -u /home/ansible/certs/registry.crt /etc/docker/certs.d/{{inventory_hostname}}/ca.crt
+  command: cp -u /home/ansible/certs/registry.crt /etc/docker/certs.d/{{host_fqdn}}/ca.crt
   tags: [ssl]

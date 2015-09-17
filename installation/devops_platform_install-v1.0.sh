@@ -95,7 +95,7 @@ echo '[docker-machines]' > ~/hosts-docker && echo $host '  ansible_ssh_user=ansi
 
 printf "**************************** DEPLOY THE PLATFORM ****************************\n"
 # using the installation playbook and the installer inventory file, run the phase 1 of the install process
-ansible-playbook plateforme/installation/install_platform.yml --skip-tags "update_all" -i ~/hosts-install --extra-vars "host-fqdn=$host"
+ansible-playbook plateforme/installation/install_platform.yml --skip-tags "update_all" -i ~/hosts-install --extra-vars "host_fqdn=$host"
 OUT=$?
 if [ $OUT -ne 0 ]; then
   echo " Erreur d'installation phase 1"
