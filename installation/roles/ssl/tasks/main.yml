@@ -16,14 +16,29 @@
   tags: [ssl]
   when: inventory_hostname == host_fqdn
 
+- name: get self-signed SSL cert in local
+  fetch:
+    src: ~/certs/registry.crt
+    dest: /tmp/certs/registry.crt
+    flat: yes
+  sudo_user: ansible
+  tags: [ssl]
+  when: inventory_hostname == host_fqdn
+
 # Install SSL certificate for access to registry when not trusted on all docker hosts
-# todo replace inventory_hostname with host-fqdn
-- name: create SSL cert directory for docker
+- name: create SSL cert directory for docker registry
   file:
     path: "/etc/docker/certs.d/{{host_fqdn}}"
     state: directory
   tags: [ssl]
 
-- name: install SSL cert for docker
-  command: cp -u /home/ansible/certs/registry.crt /etc/docker/certs.d/{{host_fqdn}}/ca.crt
+- name: install self-signed SSL cert for docker registry
+  copy: 
+    src: /tmp/certs/registry.crt
+    dest: "/etc/docker/certs.d/{{host_fqdn}}/ca.crt"
   tags: [ssl]
+
+- name: remove self-signed SSL cert from local 
+  local_action: file path=/tmp/certs/registry.crt state=absent
+  tags: [ssl]
+  
