@@ -9,6 +9,7 @@
 
 - stat: path="{{registry_dir}}/id_rsa.pub"
   register: registry_id_rsa
+  tags: [registry]
 
 # when 'generated' flag is present, copy rsa keys for enabling ssh connections
 - name: copy ssh keys to registry role
@@ -16,8 +17,8 @@
   notify:
   - stop registry container 
   - check or build registry image
-  tags: [registry]
   when: generated.stdout == "true" or registry_id_rsa.stat.exists == False
+  tags: [registry]
 
 - name: copy registry exec file
   copy: 

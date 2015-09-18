@@ -15,8 +15,8 @@
   command: cp -u ~/.ssh/id_rsa.pub {{ubuntu_dir}}
   notify: 
   - check or build ubuntu image
-  tags: [ubuntu]
   when: generated.stdout == "true" or ubuntu_id_rsa.stat.exists == False
+  tags: [ubuntu]
 
 - name: copy ubuntu dockerfile
   copy: 

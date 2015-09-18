@@ -44,6 +44,7 @@
 - name: set value changed to copy_certs_changed variable
   set_fact:
     copy_certs_changed: copy_certs_result.changed
+  tags: [nginx]
 
 - name: get local certs in home
   fetch:
@@ -68,12 +69,14 @@
 - name: set value changed to copy_local_certs_changed variable
   set_fact:
     copy_local_certs_changed: copy_local_certs_result.changed
+  tags: [nginx]
 
 - name: remove local certs from home 
   local_action: file path=/tmp/certs/{{item}} state=absent
   with_items:
   - registry.crt
   - registry.key
+  tags: [nginx]
 
 - name: create scripts directory
   file: 

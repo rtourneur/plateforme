@@ -6,16 +6,16 @@
     image: "polymont/ansible:centos7"
     state: stopped
     docker_api_version: 1.18
-  tags: [ansible]
   notify: restart ansible container
+  tags: [ansible]
 
 - name: stop registry container
   docker:
     name: registry
     image: "polymont/registry"
     state: stopped
-  tags: [registry]
   notify: restart registry container
+  tags: [registry]
 
 - name: check or build ansible image
   docker_image: 
@@ -30,10 +30,10 @@
     path: "{{ubuntu_dir}}"
     name: "polymont/ubuntu"
     state: build
-  tags: [ubuntu]
   notify: 
   - check or build java image
   - check or build remote image
+  tags: [ubuntu]
 
 - name: stop remote container
   docker:
@@ -41,8 +41,8 @@
     image: "polymont/remote"
     state: stopped
     docker_api_version: 1.18
-  tags: [remote]
   notify: restart remote container
+  tags: [remote]
 
 - name: check or build remote image
   docker_image: 
@@ -57,12 +57,12 @@
     name: "polymont/java"
     tag: jdk8
     state: build
-  tags: [java]
   notify:
   - stop gitblit container
   - stop jenkins container
   - check or build gitblit image
   - check or build tomcat image
+  tags: [java]
 
 - name: stop gitblit container
   docker:
@@ -70,8 +70,8 @@
     image: "polymont/gitblit"
     state: stopped
     docker_api_version: 1.18
-  tags: [gitblit]
   notify: restart gitblit container
+  tags: [gitblit]
 
 - name: check or build gitblit image
   docker_image:
@@ -86,12 +86,12 @@
     name: "polymont/tomcat"
     tag: "8"
     state: build
-  tags: [tomcat]
   notify:
   - stop jenkins container
   - check or build jenkins image
   - wait nginx initialisation
   - tag tomcat image
+  tags: [tomcat]
 
 - name: stop jenkins container
   docker:
@@ -99,8 +99,8 @@
     image: "polymont/jenkins"
     state: stopped
     docker_api_version: 1.18
-  tags: [jenkins]
   notify: restart jenkins container
+  tags: [jenkins]
 
 - name: check or build jenkins image
   docker_image:
@@ -224,6 +224,7 @@
   - stop nginx container
   - restart nginx container
   when: stop_restart_nginx_container
+  tags: [nginx]
 
 - name: stop nginx container
   docker:
@@ -253,8 +254,9 @@
 - name: wait nginx initialisation
   pause:
     seconds: "20"
-  tags: [nginx]
   when: stop_restart_nginx_container
+  tags: [nginx]
 
 - name: tag tomcat image
   script: tagDockerImage.sh polymont/tomcat:8 {{inventory_hostname}}
+  tags: [image]

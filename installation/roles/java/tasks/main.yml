@@ -4,6 +4,7 @@
   file:
     path: "{{java_dir}}"
     state: directory
+  tags: [java]
 
 - name: copy java dockerfile
   copy: 
@@ -11,6 +12,7 @@
     dest: "{{java_dir}}/Dockerfile"
   notify: 
   - check or build java image
+  tags: [java]
 
 - name: check/make java image
   docker_image: 

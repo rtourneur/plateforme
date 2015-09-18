@@ -9,6 +9,7 @@
 
 - stat: path="{{nginx_dir}}/id_rsa.pub"
   register: nginx_id_rsa
+  tags: [nginx]
 
 # when 'generated' flag is present, copy rsa keys for enabling ssh connections
 - name: copy ssh keys to nginx role
@@ -17,8 +18,8 @@
   - stop nginx container 
   - check or build nginx image
   - restart nginx container
-  tags: [nginx]
   when: generated.stdout == "true" or nginx_id_rsa.stat.exists == False
+  tags: [nginx]
 
 - name: copy nginx dockerfile
   copy: 

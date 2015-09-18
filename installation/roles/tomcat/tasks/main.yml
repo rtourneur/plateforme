@@ -4,6 +4,7 @@
   file:
     path: "{{tomcat_dir}}"
     state: directory
+  tags: [tomcat]
 
 - name: copy tomcat dockerfile
   copy: 
@@ -11,6 +12,7 @@
     dest: "{{tomcat_dir}}/Dockerfile"
   notify: 
   - check or build tomcat image
+  tags: [tomcat]
 
 - name: check/make tomcat image
   docker_image: 
@@ -18,7 +20,8 @@
     name: "polymont/tomcat"
     tag: "8"
     state: present
-  tags: [tomcat]
   notify:
   - wait nginx initialisation
   - tag tomcat image
+  tags: [tomcat]
+  

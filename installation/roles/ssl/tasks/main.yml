@@ -7,14 +7,14 @@
     path: certs
     state: directory
   sudo_user: ansible
-  tags: [ssl]
   when: inventory_hostname == host_fqdn
+  tags: [ssl]
 
 - name: create self-signed SSL cert
   command: openssl req -newkey rsa:4096 -nodes -x509 -sha256 -subj "/C=FR/ST=Rhone/L=Lyon/O=Polymont IT/CN={{inventory_hostname}}" -keyout certs/registry.key -days 365 -out certs/registry.crt creates=certs/registry.crt
   sudo_user: ansible
-  tags: [ssl]
   when: inventory_hostname == host_fqdn
+  tags: [ssl]
 
 - name: get self-signed SSL cert in local
   fetch:
@@ -22,8 +22,8 @@
     dest: /tmp/certs/registry.crt
     flat: yes
   sudo_user: ansible
-  tags: [ssl]
   when: inventory_hostname == host_fqdn
+  tags: [ssl]
 
 # Install SSL certificate for access to registry when not trusted on all docker hosts
 - name: create SSL cert directory for docker registry

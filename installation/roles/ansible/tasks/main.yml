@@ -9,6 +9,7 @@
 
 - stat: path="{{ansible_dir}}/id_rsa.pub"
   register: ansible_id_rsa
+  tags: [ansible]
 
 # when 'generated' flag is present, copy rsa keys for enabling ssh connections
 - name: copy ssh keys to ansible role
@@ -19,8 +20,8 @@
   notify:
     - stop ansible container
     - check or build ansible image
-  tags: [ansible]
   when: generated.stdout == "true" or ansible_id_rsa.stat.exists == False
+  tags: [ansible]
 
 - name: copy ansible dockerfile
   copy:
