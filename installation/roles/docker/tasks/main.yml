@@ -39,3 +39,11 @@
     name: docker-py
     state: latest
   tags: [docker]
+
+- name: initialize local inventory directory
+  local_action: file path=/tmp/inventory state=directory
+  tags: [docker]
+
+- name: initialize inventory for server
+  local_action: template src=inventory dest="/tmp/inventory/docker-{{inventory_hostname}}"
+  tags: [docker]

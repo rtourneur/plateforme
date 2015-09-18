@@ -109,11 +109,18 @@
     mode: "0644"
   tags: [ansible]
 
-- name: copy inventory and registry
+- name: copy registry reference file
   template:
-    src: "{{item}}"
+    src: registry.yml
     dest: "{{recipes_dir}}/"
-  with_items:
-  - inventory
-  - registry.yml
+  tags: [ansible]
+
+- name: copy inventory for servers
+  copy:
+    src: /tmp/inventory/
+    dest: "{{recipes_dir}}/"
+  tags: [ansible]
+
+- name: remove local inventory directory
+  local_action: file path=/tmp/inventory state=absent
   tags: [ansible]
