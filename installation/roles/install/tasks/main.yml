@@ -60,6 +60,7 @@
 
 - name: remove platform SSH key from local 
   local_action: file path=/tmp/ssh/id_rsa.pub state=absent
+  when: inventory_hostname == host_fqdn
   tags: [install]
 
 # Directory for ssh keys status of generation

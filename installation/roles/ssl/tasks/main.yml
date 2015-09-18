@@ -40,5 +40,5 @@
 
 - name: remove self-signed SSL cert from local 
   local_action: file path=/tmp/certs/registry.crt state=absent
+  when: inventory_hostname == host_fqdn
   tags: [ssl]
-  
