@@ -3,7 +3,7 @@
 - include: centos.yml
 - include: debian.yml
 
-- name: create ansible user and the platform key
+- name: create ansible user and the platform SSH key
   user:
     name: ansible
     uid: "{{ansible_uid}}"
@@ -14,6 +14,17 @@
     update_password: on_create
   tags: [install]
   notify: set true to status file after the ssh keys generation
+  when: inventory_hostname == host_fqdn
+
+- name: create ansible user on others servers
+  user:
+    name: ansible
+    uid: "{{ansible_uid}}"
+    shell: /bin/bash
+    password: "{{ upassword |password_hash('sha512') }}"
+    update_password: on_create
+  tags: [install]
+  when: inventory_hostname != host_fqdn
 
 - name: add ansible user to wheel group
   user: 
@@ -23,10 +34,26 @@
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   tags: [install]
 
-- name: authorize platform key to ansible
-  command: cp -p /home/ansible/.ssh/id_rsa.pub /home/ansible/.ssh/authorized_keys creates=/home/ansible/.ssh/authorized_key
+- name: get platform SSH key in local
+  fetch:
+    src: ~/.ssh/id_rsa.pub
+    dest: /tmp/ssh/id_rsa.pub
+    flat: yes
+  sudo_user: ansible
   tags: [install]
-  
+  when: inventory_hostname == host_fqdn
+
+- name: authorize platform SSH key to ansible
+  copy: 
+    src: /tmp/ssh/id_rsa.pub
+    dest: /home/ansible/.ssh/authorized_keys
+  sudo_user: ansible
+  tags: [install]
+
+- name: remove platform SSH key from local 
+  local_action: file path=/tmp/ssh/id_rsa.pub state=absent
+  tags: [install]
+
 # Directory for ssh keys status of generation
 - name: create ssh keys generate status directory
   file:
