@@ -26,12 +26,20 @@
   tags: [install]
   when: inventory_hostname != host_fqdn
 
-- name: add ansible user to wheel group
+- name: add ansible user to wheel group on centos
   user: 
     name: ansible
     groups: wheel
     append: yes
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+  tags: [install]
+
+- name: add ansible user to sudo group on debian
+  user: 
+    name: ansible
+    groups: sudo
+    append: yes
+  when: ansible_distribution == "Debian" 
   tags: [install]
 
 - name: get platform SSH key in local
