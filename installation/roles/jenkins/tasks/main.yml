@@ -112,6 +112,7 @@
 - name : wait jenkins initialisation
   pause:
     seconds: "60"
+  when: jenkins_container_changed
   tags: [jenkins]
 
 - name : configure Jenkins

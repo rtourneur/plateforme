@@ -68,6 +68,7 @@
 - name : wait gitblit initialisation
   pause:
     seconds: "60"
+  when: gitblit_container_changed
   tags: [gitblit]
 
 - name : configure gitblit
