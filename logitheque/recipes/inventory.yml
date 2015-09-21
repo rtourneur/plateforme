@@ -1,0 +1,24 @@
+---
+# Register the docker server in a file on the platform
+
+- hosts: docker
+
+  tasks:
+  
+  - name: create the temp directory in local
+    local_action: file path=/tmp/inventory state=directory
+
+  - name: create the inventory file in local
+    local_action: shell echo 'server={{inventory_hostname}}' >> /tmp/inventory/{{application}}-{{env}}.properties
+
+- hosts: platform
+
+  tasks: 
+
+  - name: push the inventory file 
+    copy:
+      src: "/tmp/inventory/{{application}}-{{env}}.properties"
+      dest: /opt/data/deployment/
+
+  - name: delete the inventory file in local
+    local_action: file path="/tmp/inventory/{{application}}-{{env}}.properties" state=absent
