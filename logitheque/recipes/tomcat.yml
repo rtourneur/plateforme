@@ -14,6 +14,7 @@
   # load configuration for the component
   vars_files: 
     - "{{config_var_file}}"
+    - /opt/recipes/registry.yml
   roles:
     - {role: common}
     - {role: tomcat}
@@ -23,7 +24,6 @@
   # load configuration for the component
   vars_files: 
     - "{{config_var_file}}"
-    - /opt/recipes/registry.yml
   tasks: 
   # create a new "tomcat" node in the hosts inventory
   - name: add Tomcat container to inventory
