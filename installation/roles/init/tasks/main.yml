@@ -99,10 +99,13 @@
     mode: "0644"
   tags: [install]
 
-- name: create recipes directory
+- name: create recipes and deployment directory
   file: 
-    path: "{{recipes_dir}}" 
+    path: "{{item}}" 
     state: directory
+  with_items:
+  - "{{recipes_dir}}"
+  - "{{deployment_dir}}"
   tags: [ansible]
 
 - name: copy recipes scripts 
