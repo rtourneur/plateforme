@@ -63,7 +63,7 @@ fi
 PLATEFORME_HOST=`cat ~/plateforme_host`
 
 # copy the ansible configuration file into the home directory
-ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "cp -u /opt/recipes/ansible.cfg ."
+ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "cp -u /opt/recipes/ansible.cfg ."
 
 # Get the name of the inventory file
   . ~/workspace/$appname/src/config/$env/infra.properties
@@ -71,9 +71,9 @@ ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHosts
 # execute the init playbook
 echo execute init playbook
 echo '...'
-echo ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/init.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
+echo ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/init.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
 echo '...'
-ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/init.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
+ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/init.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
 
 # execute the playbooks for each directories in config/env, each directory being named after the name of the component it configures 
 # the name of directory must follow : {name} (if order not required) or {d}-{name} (if order is required, the sort is on {d})
@@ -84,9 +84,9 @@ do
     getContainerName
     file=$(ls *yml)
     echo '...'
-    echo ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$container -e configuration_file=$file"
+    echo ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$container -e configuration_file=$file"
     echo '...'
-    ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$container -e configuration_file=$file"
+    ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$container -e configuration_file=$file"
   fi
 done
 
@@ -94,7 +94,7 @@ done
 # execute the inventory playbook
 echo execute inventory playbook
 echo '...'
-echo ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/inventory.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
+echo ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/inventory.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
 echo '...'
-ssh sshuser@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/inventory.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
+ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/inventory.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
 
