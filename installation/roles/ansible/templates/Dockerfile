@@ -17,9 +17,9 @@ RUN yum -y install epel-release && \
 # Static environment variables
 ENV ANSIBLE_HOSTS=/etc/ansible/hosts 
 
-# configure SSH and ssh user
+# configure SSH and ansible user
 # note that "-G wheel" enables running in "wheel" group, that is, in centos, the sudoers group
-RUN useradd --create-home -G wheel -s/bin/bash sshuser -p $(openssl passwd -1 'novia69')
+RUN useradd --create-home -G wheel -s/bin/bash ansible -u {{ansible_user_uid}} -p $(openssl passwd -1 '{{upassword}}')
 
 # Add rsa keys
 #  |___ id_rsa
@@ -28,10 +28,10 @@ RUN useradd --create-home -G wheel -s/bin/bash sshuser -p $(openssl passwd -1 'n
 # will be able to connect via SSH to all containers of the platform configured 
 # with these keys (see  usage of id_rsa.pub in some dockerfiles, for example in
 # polymont/ubuntu image)
-ADD  id_rsa.pub  /home/sshuser/.ssh/authorized_keys
-COPY id_rsa      /home/sshuser/.ssh/
+ADD  id_rsa.pub  /home/ansible/.ssh/authorized_keys
+COPY id_rsa      /home/ansible/.ssh/
 #set the appropriate rights to the files
-RUN chown sshuser:sshuser /home/sshuser/.ssh && chown sshuser:sshuser /home/sshuser/.ssh/* 
+RUN chown ansible:ansible /home/ansible/.ssh && chown ansible:ansible /home/ansible/.ssh/* 
 
 EXPOSE 22
 

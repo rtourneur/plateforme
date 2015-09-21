@@ -132,7 +132,7 @@
     ports:
     - "{{ansible_container_ssh_port}}:22"
     volumes: 
-    - "{{recipes_dir}}:/opt/recipes"
+    - "{{base_dir}}:/opt"
     docker_api_version: 1.18
   tags: [ansible]
 
