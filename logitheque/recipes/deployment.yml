@@ -6,10 +6,10 @@
   tasks:
   
   - name: create the temp directory in local
-    local_action: file path=/tmp/inventory state=directory
+    local_action: file path=/tmp/deployment state=directory
 
   - name: create the inventory file in local
-    local_action: shell echo 'server={{inventory_hostname}}' >> /tmp/inventory/{{application}}-{{env}}.properties
+    local_action: shell echo 'server={{inventory_hostname}}' >> /tmp/deployment/{{application}}-{{env}}.properties
 
 - hosts: platform
 
@@ -17,8 +17,8 @@
 
   - name: push the inventory file 
     copy:
-      src: "/tmp/inventory/{{application}}-{{env}}.properties"
+      src: "/tmp/deployment/{{application}}-{{env}}.properties"
       dest: /opt/data/deployment/
 
   - name: delete the inventory file in local
-    local_action: file path="/tmp/inventory/{{application}}-{{env}}.properties" state=absent
+    local_action: file path="/tmp/deployment/{{application}}-{{env}}.properties" state=absent

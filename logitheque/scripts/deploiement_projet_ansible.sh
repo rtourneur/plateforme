@@ -94,7 +94,7 @@ done
 # execute the inventory playbook
 echo execute inventory playbook
 echo '...'
-echo ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/inventory.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
+echo ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/deployment.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
 echo '...'
-ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/inventory.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
+ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/deployment.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
 
