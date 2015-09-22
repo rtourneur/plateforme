@@ -26,7 +26,7 @@
     include_vars: "/opt/deployment/{{application}}-{{env}}.yml"
 
   - name: stop old containers
-    command: docker stop {{item}} && docker rm {{item}}
+    command: docker stop {{item}}
     with_items: "{{containers}}"
 
   - name: remove old containers
