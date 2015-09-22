@@ -31,9 +31,16 @@
 # temporary add platform host in docker containers
 - hosts: docker-machines
   tasks:
+
   - name: add platform host to docker containers
     command: docker exec {{item}} sh -c 'echo {{ansible_default_ipv4.address}} {{inventory_hostname}}>> /etc/hosts'
     with_items:
     - remote
-    - ansible
     - jenkins
+
+  - name: include server file
+    include_vars: "/tmp/servers.yml"
+
+  - name: add servers host to ansible containers
+    command: docker exec ansible sh -c 'echo {{item.address}} {{item.hostname}}>> /etc/hosts'
+    with_items: "{{servers}}"

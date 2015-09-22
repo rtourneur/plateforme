@@ -14,4 +14,10 @@
       state: absent
     tags: [install, ssh-remove]
   
-  
+# temporary references ip adress and hostname
+  - name: create server file in local
+    local_action: shell echo 'servers:' > /tmp/servers.yml
+    when: inventory_hostname == host_fqdn
+
+  - name: add server info in server file
+    local_action: shell echo '- { address':' "{{ansible_default_ipv4.address}}", hostname':' "{{inventory_hostname}}" }' >> /tmp/servers.yml

@@ -54,6 +54,21 @@ fi
 echo '$user = ' $user
 echo '$host = ' $host
 
+OLDIFS=$IFS
+IFS=":"
+read -a hosts <<< "$(printf "%s" "$host")"
+IFS=$OLDIFS
+i=0
+for server in "${hosts[@]}"
+do
+  if [ $i -eq 0 ]; then
+    echo 'install platform on '$server
+    i=1
+  else
+    echo 'install docker on '$server
+  fi
+done
+
 #(Pre-req: python >= 2.7)
 
 # Installation of the tools required for the platform deployment (installation). The main tool is Ansible.
@@ -82,20 +97,28 @@ sudo yum install -y ansible
 #create rsa key used for SSH connection from Ansible to platform machine
 printf "**************************** CREATE SSH KEY  ****************************\n"
 ssh-keygen -t rsa -b 2048
-ssh-copy-id -i ~/.ssh/id_rsa root@$host
+for server in "${hosts[@]}"
+do
+  echo install ssh key on $server
+  ssh-copy-id -i ~/.ssh/id_rsa root@$server
+done
 
 # set ansible/hosts file
 printf "**************************** SET HOSTS FOR ANSIBLE ****************************\n"
 # create Ansible inventory file and configure the installer Host
 # Here we create the inventory file 'hosts-install', based on the predefined variables from the file 'install-machines', and appending the inventory definition for the Ansible host (the platform-deployer Ansible) 
-echo '[install-machines]' > ~/hosts-install && echo $host '  ansible_ssh_user=root' >> ~/hosts-install
+echo '[install-machines]' > ~/hosts-install
+for i in "${hosts[@]}"
+do
+  echo $server  '  ansible_ssh_user=root' >> ~/hosts-install
+done
 # create Ansible inventory file and configure the docker Host
 # Here we create the inventory file 'hosts-docker', based on the predefined variables from the file 'docker-machines', and appending the inventory definition for the Docker host (the platform-holder Docker) 
-echo '[docker-machines]' > ~/hosts-docker && echo $host '  ansible_ssh_user=ansible' >> ~/hosts-docker
+echo '[docker-machines]' > ~/hosts-docker && echo ${hosts[0]} '  ansible_ssh_user=ansible' >> ~/hosts-docker
 
 printf "**************************** DEPLOY THE PLATFORM ****************************\n"
 # using the installation playbook and the installer inventory file, run the phase 1 of the install process
-ansible-playbook plateforme/installation/install_platform.yml --skip-tags "update_all" -i ~/hosts-install --extra-vars "host_fqdn=$host"
+ansible-playbook plateforme/installation/install_platform.yml --skip-tags "update_all" -i ~/hosts-install --extra-vars "host_fqdn=$${hosts[0]}"
 OUT=$?
 if [ $OUT -ne 0 ]; then
   echo " Erreur d'installation phase 1"
