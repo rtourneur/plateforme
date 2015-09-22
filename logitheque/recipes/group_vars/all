@@ -1,6 +1,6 @@
 #*** vars for all nodes ***
 
-# Base folder for datas
+# Base folder for datas on platform
 base_dir:           "/opt/data"
 
 # General

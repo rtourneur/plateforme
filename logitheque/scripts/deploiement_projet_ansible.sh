@@ -74,6 +74,11 @@ echo '...'
 echo ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/init.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
 echo '...'
 ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/init.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
+OUT=$?
+if [ $OUT -ne 0 ]; then
+  echo " Erreur d'initialisation"
+  exit 1
+fi
 
 # execute the playbooks for each directories in config/env, each directory being named after the name of the component it configures 
 # the name of directory must follow : {name} (if order not required) or {d}-{name} (if order is required, the sort is on {d})
@@ -87,14 +92,11 @@ do
     echo ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$container -e configuration_file=$file"
     echo '...'
     ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$container -e configuration_file=$file"
+    OUT=$?
+    if [ $OUT -ne 0 ]; then
+      echo " Erreur de traitement"
+      exit 1
+    fi
   fi
 done
-
-
-# execute the inventory playbook
-echo execute inventory playbook
-echo '...'
-echo ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/deployment.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
-echo '...'
-ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/deployment.yml -i /opt/recipes/$inventory -e application=$appname -e env=$env"
 

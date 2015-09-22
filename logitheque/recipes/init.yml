@@ -1,4 +1,6 @@
+---
 
+# Copy the configuration files in local
 - hosts: platform
 
   tasks: 
@@ -8,3 +10,31 @@
 
   - name: pull the application directory for ansible container
     synchronize: mode=pull src={{project_home_dir}}/src/config/{{env}}/ dest={{config_path}}
+
+# Read the existing deployment file and the old server if needed
+- hosts: docker
+
+  roles:
+  - {role: deployment}
+
+# Remove old containers on previous server
+- hosts: server
+
+  tasks:
+  
+  - name: include deployment file
+    include_vars: "/opt/deployment/{{application}}-{{env}}.yml"
+
+  - name: stop old containers
+    command: docker stop {{item}} && docker rm {{item}}
+    with_items: "{{containers}}"
+
+  - name: remove old containers
+    command: docker rm {{item}}
+    with_items: "{{containers}}"
+
+# Register the deployment file
+- hosts: docker
+
+  roles:
+  - {role: register}

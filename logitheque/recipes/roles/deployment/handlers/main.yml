@@ -1,0 +1,9 @@
+---
+# handlers file for deployment
+# Register old docker server
+- name: register old server
+  add_host: 
+    hostname: "{{server}}"
+    groups: server
+  when: server != inventory_hostname
+

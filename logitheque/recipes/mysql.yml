@@ -25,3 +25,8 @@
   roles:
     - {role: common}
     - {role: mysql}
+
+  tasks:
+    
+  - name: register mysql container
+    local_action: shell echo '- {{component_full_name}}' >> /opt/deployment/{{application}}-{{env}}.yml

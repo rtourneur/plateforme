@@ -1,0 +1,14 @@
+---
+# tasks file for deployment
+
+- name: register deployment file
+  local_action: stat path="/opt/deployment/{{application}}-{{env}}.yml"
+  register: deployment
+  
+- name: include deployment file
+  include_vars: "/opt/deployment/{{application}}-{{env}}.yml"
+  when: deployment.stat.exists
+  changed_when: True
+  notify:
+  - register old server
+

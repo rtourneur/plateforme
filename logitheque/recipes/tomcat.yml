@@ -19,6 +19,11 @@
     - {role: common}
     - {role: tomcat}
 
+  tasks:
+    
+  - name: register tomcat container
+    local_action: shell echo '- {{component_full_name}}' >> /opt/deployment/{{application}}-{{env}}.yml
+
 # Prepare a 'tomcat' entry in inventory, pointing to the Tomcat container  
 - hosts: docker
   # load configuration for the component

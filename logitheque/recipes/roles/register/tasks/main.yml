@@ -1,0 +1,5 @@
+---
+# tasks file for register
+
+- name: create the new deployment file
+  local_action: template src=app_env.yml dest=/opt/deployment/{{application}}-{{env}}.yml 
