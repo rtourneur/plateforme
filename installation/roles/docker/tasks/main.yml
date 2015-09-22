@@ -42,6 +42,7 @@
 
 - name: initialize local inventory directory
   local_action: file path=/tmp/inventory state=directory
+  run_once: true
   tags: [docker]
 
 - name: initialize inventory for server
