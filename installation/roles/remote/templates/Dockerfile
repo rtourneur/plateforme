@@ -16,5 +16,8 @@ RUN chown sshuser:sshuser /home/sshuser/.ssh/id_rsa
 #add volume
 VOLUME /opt/scripts
 
+#add scripts in sudoers for remote
+RUN echo 'remote ALL=/opt/scripts/*.sh' >> /etc/sudoers
+
 #Set gitblit hostname
 RUN echo {{inventory_hostname}} > /home/remote/plateforme_host && chown remote /home/remote/plateforme_host

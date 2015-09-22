@@ -1,0 +1,45 @@
+---
+
+# Read the existing deployment file
+- hosts: platform
+
+  tasks: 
+
+  - name: register deployment file
+    local_action: stat path="/opt/deployment/{{application}}-{{env}}.yml"
+    register: deployment
+    
+  - name: include deployment file
+    include_vars: "/opt/deployment/{{application}}-{{env}}.yml"
+    when: deployment.stat.exists
+
+  - name: register server
+    add_host: 
+      hostname: "{{server}}"
+      groups: server
+    when: deployment.stat.exists
+
+
+# Remove application containers on server
+- hosts: server
+
+  tasks:
+  
+  - name: include deployment file
+    include_vars: "/opt/deployment/{{application}}-{{env}}.yml"
+
+  - name: stop old containers
+    command: docker stop {{item}}
+    with_items: "{{containers}}"
+
+  - name: remove old containers
+    command: docker rm {{item}}
+    with_items: "{{containers}}"
+
+# Remove the deployment file
+- hosts: platform
+
+  tasks:
+  
+  - name: remove deployment file
+    local_action: file path=/opt/deployment/{{application}}-{{env}}.yml state=absent
