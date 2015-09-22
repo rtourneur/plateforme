@@ -89,9 +89,9 @@ do
     getContainerName
     file=$(ls *yml)
     echo '...'
-    echo ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$container -e configuration_file=$file"
+    echo ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$container -e configuration_file=$dir/$file"
     echo '...'
-    ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$container -e configuration_file=$file"
+    ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "ansible-playbook /opt/recipes/$file -i /opt/recipes/$inventory -e application=$appname -e env=$env -e component_name=$container -e configuration_file=$dir/$file"
     OUT=$?
     if [ $OUT -ne 0 ]; then
       echo " Erreur de traitement"

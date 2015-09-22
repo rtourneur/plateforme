@@ -5,6 +5,6 @@ base_dir:           "/opt/data"
 
 # General
 config_path:              "/tmp/config/{{env}}/{{application}}"
-config_var_file:          "{{config_path}}/{{component_name}}/{{configuration_file}}"
+config_var_file:          "{{config_path}}/{{configuration_file}}"
 temp_folder:              "/tmp/{{application}}/{{env}}"
 component_full_name:      "{{component_name}}_{{application}}_{{env}}"
