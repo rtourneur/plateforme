@@ -15,6 +15,19 @@
     - check or build remote image
   tags: [remote]
 
+- stat: path="{{remote_dir}}/id_rsa"
+  register: remote_id_rsa
+  tags: [remote]
+
+# when 'generated' flag is present, copy rsa keys for enabling ssh connections
+- name: copy ssh keys to remote role
+  command: cp -u ~/.ssh/id_rsa {{remote_dir}}
+  notify:
+    - stop remote container
+    - check or build remote image
+  when: generated.stdout == "true" or remote_id_rsa.stat.exists == False
+  tags: [remote]
+
 - name: create remote image
   docker_image: 
     path: "{{remote_dir}}" 

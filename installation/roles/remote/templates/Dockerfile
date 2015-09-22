@@ -9,6 +9,10 @@ RUN apt-get update && apt-get install -y sshpass && rm -rf /var/lib/apt/lists/*
 #add remote user
 RUN useradd -p $(openssl passwd -1 '{{remote_user_password}}') -s /bin/bash -m remote
 
+# Add rsa key
+COPY id_rsa      /home/sshuser/.ssh/
+RUN chown sshuser:sshuser /home/sshuser/.ssh/id_rsa 
+
 #add volume
 VOLUME /opt/scripts
 
