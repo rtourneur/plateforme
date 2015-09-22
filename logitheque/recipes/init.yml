@@ -9,7 +9,11 @@
     local_action: file path={{config_path}} state=directory
 
   - name: pull the application directory for ansible container
-    synchronize: mode=pull src={{project_home_dir}}/src/config/{{env}}/ dest={{config_path}}
+    synchronize: 
+      mode: pull 
+      src: "{{project_home_dir}}/src/config/{{env}}/" 
+      dest: "{{config_path}}"
+      delete: yes
 
 # Read the existing deployment file and the old server if needed
 - hosts: docker
