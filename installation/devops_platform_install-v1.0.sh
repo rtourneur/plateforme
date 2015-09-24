@@ -11,7 +11,9 @@ function usage
     echo "Options :"
     echo "  -u USER, --user USER  Gitblit valid user"
     echo "  -i HOST, --inventory HOST"
-    echo "                        Hostname for install (or ip adress)"
+    echo "                        list of Hostnames for install, separated by colon (:) "
+    echo "                        The first Hostname is the main server where the platform will be deployed"
+    echo "                        The other Hostnames are the docker servers for the deployment of applications"
     echo "  -h, --help            show this help message and exit"
 }
  
