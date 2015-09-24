@@ -67,7 +67,11 @@ ssh ansible@$PLATEFORME_HOST -p 2022 -oStrictHostKeyChecking=no -oUserKnownHosts
 
 # Get the name of the inventory file
   . ~/workspace/$appname/src/config/$env/infra.properties
-  
+
+if [[ -z "$inventory" || "$inventory" == "inventory" ]]; then
+  inventory=docker-$PLATEFORME_HOST
+fi
+
 # execute the init playbook
 echo execute init playbook
 echo '...'
